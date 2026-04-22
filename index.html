@@ -1,144 +1,575 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>SWAL Lead Management</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Steelwool Africa LTD - Lead Management</title>
+  
+  <!-- PWA Meta Tags -->
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#667eea">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="SWAL Leads">
+  <link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%23667eea'/%3E%3Ctext x='50' y='67' font-size='50' text-anchor='middle' fill='white'%3ES%3C/text%3E%3C/svg%3E">
+  
   <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { 
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); 
-      min-height: 100vh; 
-      padding: 20px; 
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body { font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: linear-gradient(135deg,#667eea 0%,#764ba2 100%); min-height:100vh; padding:20px; display:flex; justify-content:center; align-items:center; }
+    .container { background:white; border-radius:12px; box-shadow:0 20px 60px rgba(0,0,0,0.3); max-width:760px; width:100%; padding:28px; }
+    .header { text-align:center; margin-bottom:18px; padding-bottom:12px; border-bottom:3px solid #667eea; }
+    h1 { color:#333; font-size:22px; margin-bottom:4px; }
+    .subtitle { color:#666; font-size:14px; }
+    .form-group { margin-bottom:14px; }
+    label { display:block; margin-bottom:8px; color:#333; font-weight:600; font-size:13px; }
+    input[type="text"], input[type="password"], input[type="email"], input[type="number"], select { width:100%; padding:10px 12px; border:2px solid #e1e8ed; border-radius:8px; font-size:13px; transition:all 0.3s ease; background:white; }
+    select { cursor:pointer; }
+    .section-title { color:#667eea; font-size:16px; font-weight:700; margin-top:18px; margin-bottom:10px; padding-bottom:6px; border-bottom:2px solid #f0f0f0; }
+    .btn { width:100%; padding:12px; background: linear-gradient(135deg,#667eea 0%,#764ba2 100%); color:white; border:none; border-radius:8px; font-size:15px; font-weight:600; cursor:pointer; transition:all 0.3s ease; margin-top:8px; }
+    .btn.small { width:48%; padding:10px; font-size:13px; }
+    .btn-row { display:flex; gap:8px; }
+    .message { padding:12px; border-radius:8px; margin-top:14px; display:none; font-size:13px; }
+    .message.success { background:#d4edda; color:#155724; border:1px solid #c3e6cb; }
+    .message.error { background:#f8d7da; color:#721c24; border:1px solid #f5c6cb; }
+    .message.info { background:#d1ecf1; color:#0c5460; border:1px solid #bee5eb; }
+    .message.show { display:block; animation: slideIn 0.3s ease; }
+    .loading { display:none; text-align:center; color:#667eea; font-size:13px; margin-top:8px; }
+    .loading.show { display:block; }
+    @keyframes slideIn { from { opacity:0; transform:translateY(-10px);} to { opacity:1; transform:translateY(0);} }
+    .meta { font-size:12px; color:#666; margin-top:6px; }
+    .details-table { width:100%; border-collapse:collapse; margin-top:12px; border-radius:8px; overflow:hidden; }
+    .details-table th, .details-table td { padding:10px 12px; border-bottom:1px solid #f0f0f0; text-align:left; font-size:13px; }
+    .details-table th { background:#fafafa; font-weight:700; color:#333; }
+    .small-muted { font-size:12px; color:#666; margin-top:6px; }
+    .hidden { display:none; }
+    .field-inline { display:flex; gap:8px; align-items:center; }
+    .field-inline > * { flex:1; }
+    .offline-banner { background:#ffc107; color:#333; padding:8px; text-align:center; border-radius:8px; margin-bottom:15px; font-size:12px; display:none; }
+    .offline-banner.show { display:block; }
+    
+    @media (max-width:640px) {
+      .btn-row { flex-direction:column; }
+      .btn.small { width:100%; }
     }
-    .container { 
-      background: white; 
-      border-radius: 12px; 
-      max-width: 800px; 
-      margin: 0 auto; 
-      padding: 30px; 
-      box-shadow: 0 20px 60px rgba(0,0,0,0.3); 
-    }
-    h1 { color: #667eea; margin-bottom: 10px; }
-    .form-group { margin-bottom: 15px; }
-    label { display: block; margin-bottom: 5px; font-weight: bold; }
-    input, select { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px; }
-    button { 
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); 
-      color: white; 
-      padding: 12px 24px; 
-      border: none; 
-      border-radius: 5px; 
-      cursor: pointer; 
-      font-size: 16px;
-      margin-top: 10px;
-    }
-    button:hover { transform: translateY(-2px); }
-    .message { 
-      margin-top: 15px; 
-      padding: 10px; 
-      border-radius: 5px; 
-      display: none; 
-    }
-    .message.show { display: block; }
-    .success { background: #d4edda; color: #155724; }
-    .error { background: #f8d7da; color: #721c24; }
-    .loading { display: none; text-align: center; margin-top: 10px; }
-    .loading.show { display: block; }
   </style>
 </head>
 <body>
   <div class="container">
-    <h1>🏢 Steelwool Africa LTD</h1>
-    <p>Lead Generation Follow-up System</p>
-    
-    <!-- UPDATE THIS URL -->
-    <input type="hidden" id="scriptUrl" value="YOUR_GOOGLE_APPS_SCRIPT_URL">
-    
-    <div class="form-group">
-      <label>Customer Code</label>
-      <input type="text" id="customerCode" placeholder="Enter customer code">
-      <button onclick="loadLead()">Load Lead</button>
+    <div class="offline-banner" id="offlineBanner">
+      ⚠️ You are offline. Data will sync when connection is restored.
     </div>
     
-    <div id="leadDetails" style="display:none; margin-top:20px;">
-      <h3>Customer Details</h3>
-      <div id="details"></div>
+    <div class="header">
+      <h1>Steelwool Africa LTD</h1>
+      <p class="subtitle">Lead Generation Follow-up System</p>
+      <p id="loggedInAs" class="meta"></p>
     </div>
-    
-    <div class="loading" id="loading">Loading...</div>
-    <div class="message" id="message"></div>
+
+    <form id="leadForm">
+      <div class="form-group">
+        <label for="roleSelect">Select Role *</label>
+        <select id="roleSelect" required>
+          <option value="">-- Select Role --</option>
+          <option value="Supervisor">Supervisor</option>
+          <option value="SalesRep">Sales Representative</option>
+        </select>
+      </div>
+
+      <div id="salesRepAuthSection" class="hidden">
+        <div class="form-group">
+          <label for="salesRepEmailAuth">Sales Rep Email *</label>
+          <input type="email" id="salesRepEmailAuth" placeholder="salesrep@example.com">
+        </div>
+        <div class="form-group">
+          <label for="salesRepPasswordAuth">Sales Rep Password *</label>
+          <input type="password" id="salesRepPasswordAuth" placeholder="Enter your password">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="customerCode">Customer Code *</label>
+        <div class="field-inline">
+          <input type="text" id="customerCode" required placeholder="Enter customer code">
+          <button type="button" id="loadBtn" class="btn small" style="width:auto;padding:10px 14px;">Load</button>
+        </div>
+      </div>
+
+      <div id="detailsSection" class="hidden">
+        <div class="section-title">Customer Details</div>
+        <div style="overflow-x:auto;">
+          <table class="details-table">
+            <thead><tr><th>Field</th><th>Value</th></tr></thead>
+            <tbody id="detailsTableBody"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="section-title">Qualification</div>
+      <div class="form-group">
+        <select id="qualification">
+          <option value="">-- Select Status --</option>
+          <option value="YES">YES</option>
+          <option value="NO">NO</option>
+          <option value="Volume Too Small">Volume Too Small</option>
+          <option value="Bad Previous History">Bad Previous History</option>
+          <option value="Other">Other</option>
+        </select>
+      </div>
+
+      <div class="btn-row" style="margin-bottom:14px;">
+        <button type="button" id="approveBtn" class="btn small" style="background:linear-gradient(135deg,#22c55e 0%,#16a34a 100%); display:none;">Approve</button>
+        <button type="button" id="declineBtn" class="btn small" style="background:linear-gradient(135deg,#ef4444 0%,#dc2626 100%); display:none;">Decline</button>
+      </div>
+
+      <div class="section-title">Presentation</div>
+      <div class="form-group">
+        <select id="presentation">
+          <option value="">-- Select Status --</option>
+          <option value="YES">YES</option>
+          <option value="Refused to Trade">Refused to Trade</option>
+          <option value="Refuse to Provide KYC">Refuse to Provide KYC</option>
+          <option value="Other">Other</option>
+        </select>
+      </div>
+
+      <div class="section-title">KYC Onboarding</div>
+      <div class="form-group">
+        <select id="kycOnboarding">
+          <option value="">-- Select KYC Status --</option>
+          <option value="YES">YES</option>
+          <option value="NO">NO</option>
+          <option value="Pending">Pending</option>
+        </select>
+      </div>
+
+      <div id="salesRepEmailContainer" class="form-group hidden">
+        <label for="salesRepEmail">Sales Rep Email</label>
+        <input type="email" id="salesRepEmail" placeholder="salesrep@example.com">
+      </div>
+
+      <button type="submit" class="btn" id="submitBtn">Submit</button>
+
+      <div class="loading" id="loading">Processing...</div>
+      <div class="message" id="message"></div>
+    </form>
   </div>
 
   <script>
-    const SCRIPT_URL = document.getElementById('scriptUrl').value;
+    // ========== CONFIGURATION ==========
+    // IMPORTANT: Replace this with your Google Apps Script URL
+    const SCRIPT_URL = 'https://script.google.com/macros/s/YOUR_SCRIPT_ID/exec';
     
+    // ========== STATE MANAGEMENT ==========
+    let currentLoadedLead = null;
+    let isSupervisorAuthenticated = false;
+    let supervisorPasswordCached = '';
+    
+    // ========== DOM ELEMENTS ==========
+    const roleSelect = document.getElementById('roleSelect');
+    const loadBtn = document.getElementById('loadBtn');
+    const customerCodeInput = document.getElementById('customerCode');
+    const qualificationSelect = document.getElementById('qualification');
+    const presentationSelect = document.getElementById('presentation');
+    const kycSelect = document.getElementById('kycOnboarding');
+    const approveBtn = document.getElementById('approveBtn');
+    const declineBtn = document.getElementById('declineBtn');
+    const submitBtn = document.getElementById('submitBtn');
+    const loading = document.getElementById('loading');
+    const message = document.getElementById('message');
+    const detailsSection = document.getElementById('detailsSection');
+    const detailsTableBody = document.getElementById('detailsTableBody');
+    const salesRepEmailContainer = document.getElementById('salesRepEmailContainer');
+    const salesRepEmailInput = document.getElementById('salesRepEmail');
+    const salesRepAuthSection = document.getElementById('salesRepAuthSection');
+    const salesRepEmailAuth = document.getElementById('salesRepEmailAuth');
+    const salesRepPasswordAuth = document.getElementById('salesRepPasswordAuth');
+    const offlineBanner = document.getElementById('offlineBanner');
+    
+    // ========== UTILITY FUNCTIONS ==========
     function showMessage(text, type) {
-      const msg = document.getElementById('message');
-      msg.textContent = text;
-      msg.className = `message ${type} show`;
-      setTimeout(() => msg.classList.remove('show'), 5000);
+      message.className = `message ${type} show`;
+      message.textContent = text;
+      setTimeout(() => message.classList.remove('show'), 5000);
     }
     
-    async function loadLead() {
-      const customerCode = document.getElementById('customerCode').value.trim();
-      if (!customerCode) {
-        showMessage('Please enter a customer code', 'error');
-        return;
+    function updateOfflineStatus() {
+      if (!navigator.onLine) {
+        offlineBanner.classList.add('show');
+      } else {
+        offlineBanner.classList.remove('show');
+      }
+    }
+    
+    // ========== API CALL FUNCTION ==========
+    async function callAPI(action, data = {}) {
+      if (!navigator.onLine) {
+        showMessage('You are offline. Please check your connection.', 'error');
+        throw new Error('Offline');
       }
       
-      const loading = document.getElementById('loading');
-      loading.classList.add('show');
+      const payload = { action, ...data };
+      console.log('Calling API:', action, payload);
+      
+      try {
+        const response = await fetch(SCRIPT_URL, {
+          method: 'POST',
+          mode: 'no-cors',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+        
+        // With no-cors, we can't read the response directly
+        // So we return a success indicator and rely on the server
+        return { success: true, data: payload };
+      } catch (error) {
+        console.error('API Error:', error);
+        showMessage('Network error: ' + error.message, 'error');
+        throw error;
+      }
+    }
+    
+    // For Google Apps Script that returns JSON (using cors mode)
+    async function callAPIWithResponse(action, data = {}) {
+      if (!navigator.onLine) {
+        showMessage('You are offline. Please check your connection.', 'error');
+        throw new Error('Offline');
+      }
+      
+      const payload = { action, ...data };
+      console.log('Calling API (with response):', action, payload);
       
       try {
         const response = await fetch(SCRIPT_URL, {
           method: 'POST',
           mode: 'cors',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            action: 'getLeadStatus',
-            customerCode: customerCode,
-            role: 'Supervisor'
-          })
+          body: JSON.stringify(payload)
         });
         
         const result = await response.json();
-        loading.classList.remove('show');
-        
-        if (result && result.success) {
-          displayLeadDetails(result.data);
-          showMessage('Lead loaded successfully!', 'success');
-        } else {
-          showMessage(result.message || 'Lead not found', 'error');
-        }
+        return result;
       } catch (error) {
-        loading.classList.remove('show');
-        showMessage('Error: ' + error.message, 'error');
-        console.error('Error:', error);
+        console.error('API Error:', error);
+        showMessage('Network error: ' + error.message, 'error');
+        throw error;
       }
     }
     
-    function displayLeadDetails(data) {
-      const detailsDiv = document.getElementById('details');
-      detailsDiv.innerHTML = `
-        <table style="width:100%; border-collapse: collapse;">
-          <tr><td style="padding:8px;"><strong>Store Name:</strong></td><td>${data.storeName || 'N/A'}</td></tr>
-          <tr><td style="padding:8px;"><strong>Region:</strong></td><td>${data.region || 'N/A'}</td></tr>
-          <tr><td style="padding:8px;"><strong>Area:</strong></td><td>${data.area || 'N/A'}</td></tr>
-          <tr><td style="padding:8px;"><strong>Location:</strong></td><td>${data.location || 'N/A'}</td></tr>
-          <tr><td style="padding:8px;"><strong>Contact Person:</strong></td><td>${data.contactPerson || 'N/A'}</td></tr>
-          <tr><td style="padding:8px;"><strong>Mobile:</strong></td><td>${data.mobileNumber || 'N/A'}</td></tr>
-          <tr><td style="padding:8px;"><strong>Qualification:</strong></td><td>${data.qualification || 'Pending'}</td></tr>
-          <tr><td style="padding:8px;"><strong>Approval:</strong></td><td>${data.approval || 'Pending'}</td></tr>
-        </table>
-      `;
-      document.getElementById('leadDetails').style.display = 'block';
+    // ========== LOAD LEAD ==========
+    async function loadLead() {
+      const code = customerCodeInput.value.trim();
+      const role = roleSelect.value;
+      
+      if (!role) {
+        showMessage('Please select a role first.', 'error');
+        return;
+      }
+      
+      if (!code) {
+        showMessage('Enter customer code to load.', 'error');
+        return;
+      }
+      
+      let salesRepEmail = '';
+      let salesRepPassword = '';
+      
+      if (role === 'SalesRep') {
+        salesRepEmail = salesRepEmailAuth.value.trim();
+        salesRepPassword = salesRepPasswordAuth.value.trim();
+        if (!salesRepEmail || !salesRepPassword) {
+          showMessage('Please enter your Sales Rep email and password.', 'error');
+          return;
+        }
+      }
+      
+      loading.classList.add('show');
+      
+      try {
+        const result = await callAPIWithResponse('getLeadStatus', {
+          customerCode: code,
+          role: role,
+          salesRepEmail: salesRepEmail,
+          salesRepPassword: salesRepPassword
+        });
+        
+        loading.classList.remove('show');
+        
+        if (!result || !result.success) {
+          showMessage(result?.message || 'Unable to load lead', 'error');
+          return;
+        }
+        
+        currentLoadedLead = result.data;
+        qualificationSelect.value = currentLoadedLead.qualification || '';
+        presentationSelect.value = currentLoadedLead.presentation || '';
+        kycSelect.value = currentLoadedLead.kycOnboarding || '';
+        salesRepEmailInput.value = currentLoadedLead.salesRepEmail || '';
+        
+        // Display details in table
+        const details = [
+          ['Region', currentLoadedLead.region],
+          ['Area', currentLoadedLead.area],
+          ['Location', currentLoadedLead.location],
+          ['Store Name', currentLoadedLead.storeName],
+          ['Contact Person', currentLoadedLead.contactPerson],
+          ['Mobile Number', currentLoadedLead.mobileNumber],
+          ['Outlet Category', currentLoadedLead.outletCategory],
+          ['Brands Stocked', currentLoadedLead.brandsStocked],
+          ['Purchase Frequency', currentLoadedLead.purchaseFrequency],
+          ['Main Supplier', currentLoadedLead.mainSupplier],
+          ['Distributor Type', currentLoadedLead.distributorType],
+          ['Weldplus Awareness', currentLoadedLead.weldplusAwareness],
+          ['Additional Feedback', currentLoadedLead.additionalFeedback],
+          ['Customer Code', currentLoadedLead.customerCode]
+        ];
+        
+        detailsTableBody.innerHTML = details.map(([field, value]) => `
+          <tr><th style="background:#fafafa;width:40%">${field}</th><td>${value || 'N/A'}</td></tr>
+        `).join('');
+        
+        detailsSection.classList.remove('hidden');
+        updateUiForRoleAndStatus();
+        showMessage('Lead loaded successfully', 'success');
+        
+      } catch (error) {
+        loading.classList.remove('show');
+        showMessage('Error loading lead: ' + error.message, 'error');
+      }
     }
     
-    // Test if page loaded
-    console.log('Page loaded successfully!');
-    showMessage('System ready. Enter a customer code to begin.', 'success');
+    // ========== SUPERVISOR VALIDATION ==========
+    async function validateSupervisor(password) {
+      try {
+        const result = await callAPIWithResponse('validateSupervisorPassword', { password: password });
+        return result.success;
+      } catch (error) {
+        return false;
+      }
+    }
+    
+    // ========== UPDATE UI BASED ON ROLE ==========
+    function updateUiForRoleAndStatus() {
+      const role = roleSelect.value;
+      const approval = currentLoadedLead?.approval || '';
+      
+      qualificationSelect.disabled = true;
+      presentationSelect.disabled = true;
+      kycSelect.disabled = true;
+      approveBtn.style.display = 'none';
+      declineBtn.style.display = 'none';
+      salesRepEmailContainer.classList.add('hidden');
+      salesRepAuthSection.classList.add('hidden');
+      
+      if (role === 'Supervisor') {
+        if (isSupervisorAuthenticated) {
+          qualificationSelect.disabled = false;
+          kycSelect.disabled = false;
+          approveBtn.style.display = 'inline-block';
+          declineBtn.style.display = 'inline-block';
+          salesRepEmailContainer.classList.remove('hidden');
+        } else {
+          const password = prompt('Enter Supervisor Password:');
+          if (password) {
+            validateSupervisor(password).then(valid => {
+              if (valid) {
+                isSupervisorAuthenticated = true;
+                supervisorPasswordCached = password;
+                updateUiForRoleAndStatus();
+                showMessage('Supervisor authenticated', 'success');
+              } else {
+                showMessage('Invalid password', 'error');
+                roleSelect.value = '';
+              }
+            });
+          } else {
+            roleSelect.value = '';
+          }
+        }
+      } else if (role === 'SalesRep') {
+        salesRepAuthSection.classList.remove('hidden');
+        if (approval === 'Approved') {
+          presentationSelect.disabled = false;
+          kycSelect.disabled = false;
+        }
+      }
+    }
+    
+    // ========== APPROVE LEAD ==========
+    async function approveLead() {
+      if (!currentLoadedLead) {
+        showMessage('Load a lead first', 'error');
+        return;
+      }
+      
+      const code = customerCodeInput.value.trim();
+      const qualificationValue = qualificationSelect.value;
+      const salesEmail = salesRepEmailInput.value.trim();
+      
+      if (!qualificationValue) {
+        showMessage('Please select a qualification status', 'error');
+        return;
+      }
+      
+      loading.classList.add('show');
+      
+      try {
+        await callAPI('updateQualificationBySupervisor', {
+          customerCode: code,
+          qualificationValue: qualificationValue,
+          approvalAction: 'Approved',
+          salesRepEmail: salesEmail,
+          password: supervisorPasswordCached
+        });
+        
+        showMessage('Lead approved successfully!', 'success');
+        await loadLead(); // Reload to get updated status
+        
+      } catch (error) {
+        showMessage('Error approving lead', 'error');
+      } finally {
+        loading.classList.remove('show');
+      }
+    }
+    
+    // ========== DECLINE LEAD ==========
+    async function declineLead() {
+      if (!currentLoadedLead) {
+        showMessage('Load a lead first', 'error');
+        return;
+      }
+      
+      const code = customerCodeInput.value.trim();
+      const qualificationValue = qualificationSelect.value;
+      const salesEmail = salesRepEmailInput.value.trim();
+      
+      if (!qualificationValue) {
+        showMessage('Please select a qualification status', 'error');
+        return;
+      }
+      
+      loading.classList.add('show');
+      
+      try {
+        await callAPI('updateQualificationBySupervisor', {
+          customerCode: code,
+          qualificationValue: qualificationValue,
+          approvalAction: 'Declined',
+          salesRepEmail: salesEmail,
+          password: supervisorPasswordCached
+        });
+        
+        showMessage('Lead declined', 'info');
+        await loadLead(); // Reload to get updated status
+        
+      } catch (error) {
+        showMessage('Error declining lead', 'error');
+      } finally {
+        loading.classList.remove('show');
+      }
+    }
+    
+    // ========== SUBMIT FORM ==========
+    async function handleSubmit(e) {
+      e.preventDefault();
+      
+      const code = customerCodeInput.value.trim();
+      if (!code || !currentLoadedLead) {
+        showMessage('Load a lead first', 'error');
+        return;
+      }
+      
+      const role = roleSelect.value;
+      
+      if (role === 'Supervisor') {
+        if (!isSupervisorAuthenticated) {
+          showMessage('Supervisor not authenticated', 'error');
+          return;
+        }
+        
+        loading.classList.add('show');
+        
+        try {
+          await callAPI('updateQualificationBySupervisor', {
+            customerCode: code,
+            qualificationValue: qualificationSelect.value,
+            approvalAction: '',
+            salesRepEmail: salesRepEmailInput.value.trim(),
+            password: supervisorPasswordCached
+          });
+          
+          showMessage('Qualification updated', 'success');
+          await loadLead();
+          
+        } catch (error) {
+          showMessage('Error updating', 'error');
+        } finally {
+          loading.classList.remove('show');
+        }
+        
+      } else if (role === 'SalesRep') {
+        const salesRepEmail = salesRepEmailAuth.value.trim();
+        const salesRepPassword = salesRepPasswordAuth.value.trim();
+        
+        if (!salesRepEmail || !salesRepPassword) {
+          showMessage('Please enter your credentials', 'error');
+          return;
+        }
+        
+        loading.classList.add('show');
+        
+        try {
+          await callAPI('updatePresentationBySalesRep', {
+            customerCode: code,
+            presentationValue: presentationSelect.value,
+            kycValue: kycSelect.value,
+            salesRepEmail: salesRepEmail,
+            password: salesRepPassword
+          });
+          
+          showMessage('Presentation and KYC updated', 'success');
+          await loadLead();
+          
+        } catch (error) {
+          showMessage('Error updating', 'error');
+        } finally {
+          loading.classList.remove('show');
+        }
+      }
+    }
+    
+    // ========== EVENT LISTENERS ==========
+    loadBtn.addEventListener('click', loadLead);
+    approveBtn.addEventListener('click', approveLead);
+    declineBtn.addEventListener('click', declineLead);
+    roleSelect.addEventListener('change', () => {
+      currentLoadedLead = null;
+      detailsSection.classList.add('hidden');
+      updateUiForRoleAndStatus();
+    });
+    document.getElementById('leadForm').addEventListener('submit', handleSubmit);
+    
+    // Online/Offline detection
+    window.addEventListener('online', () => {
+      updateOfflineStatus();
+      showMessage('Back online!', 'success');
+    });
+    window.addEventListener('offline', () => {
+      updateOfflineStatus();
+      showMessage('You are offline. Some features may be limited.', 'info');
+    });
+    updateOfflineStatus();
+    
+    // Register Service Worker
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('/sw.js').then(reg => {
+        console.log('Service Worker registered:', reg);
+      }).catch(err => {
+        console.log('Service Worker registration failed:', err);
+      });
+    }
+    
+    console.log('App loaded. Script URL:', SCRIPT_URL);
+    showMessage('System ready. Select a role and enter customer code.', 'info');
   </script>
 </body>
 </html>
