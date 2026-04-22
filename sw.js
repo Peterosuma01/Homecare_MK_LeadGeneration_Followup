@@ -11,7 +11,7 @@ const PRECACHE_URLS = [
 ];
 
 // API endpoints to cache (your Google Apps Script URL - UPDATE THIS)
-const API_BASE_URL = 'YOUR_GOOGLE_APPS_SCRIPT_URL'; // Replace with your deployed URL
+const API_BASE_URL = 'https://script.google.com/macros/s/AKfycbyHKyPOx-80IHPmAPV3JehaNJDhjWlR3aE4wwGgyNd-FUzPsNUJnQU25_9k1DN6oSAN/exec'; // Replace with your deployed URL
 
 // Install event - cache core assets
 self.addEventListener('install', (event) => {
