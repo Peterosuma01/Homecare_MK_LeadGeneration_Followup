@@ -1,7 +1,7 @@
 // API Handler for PWA
 const API_CONFIG = {
   // UPDATE THIS with your deployed Google Apps Script URL
-  baseUrl: 'https://script.google.com/macros/s/YOUR_SCRIPT_ID/exec',
+  baseUrl: 'https://script.google.com/macros/s/AKfycbyHKyPOx-80IHPmAPV3JehaNJDhjWlR3aE4wwGgyNd-FUzPsNUJnQU25_9k1DN6oSAN/exec',
   isOnline: navigator.onLine
 };
 
