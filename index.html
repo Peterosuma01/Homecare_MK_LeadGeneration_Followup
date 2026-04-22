@@ -1,9 +1,144 @@
-<!-- PWA Meta Tags -->
-<link rel="manifest" href="manifest.json">
-<meta name="theme-color" content="#667eea">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="SWAL Leads">
-<link rel="apple-touch-icon" href="icons/icon-192.png">
-<meta name="msapplication-TileImage" content="icons/icon-144.png">
-<meta name="msapplication-TileColor" content="#667eea">
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SWAL Lead Management</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { 
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); 
+      min-height: 100vh; 
+      padding: 20px; 
+    }
+    .container { 
+      background: white; 
+      border-radius: 12px; 
+      max-width: 800px; 
+      margin: 0 auto; 
+      padding: 30px; 
+      box-shadow: 0 20px 60px rgba(0,0,0,0.3); 
+    }
+    h1 { color: #667eea; margin-bottom: 10px; }
+    .form-group { margin-bottom: 15px; }
+    label { display: block; margin-bottom: 5px; font-weight: bold; }
+    input, select { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px; }
+    button { 
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); 
+      color: white; 
+      padding: 12px 24px; 
+      border: none; 
+      border-radius: 5px; 
+      cursor: pointer; 
+      font-size: 16px;
+      margin-top: 10px;
+    }
+    button:hover { transform: translateY(-2px); }
+    .message { 
+      margin-top: 15px; 
+      padding: 10px; 
+      border-radius: 5px; 
+      display: none; 
+    }
+    .message.show { display: block; }
+    .success { background: #d4edda; color: #155724; }
+    .error { background: #f8d7da; color: #721c24; }
+    .loading { display: none; text-align: center; margin-top: 10px; }
+    .loading.show { display: block; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>🏢 Steelwool Africa LTD</h1>
+    <p>Lead Generation Follow-up System</p>
+    
+    <!-- UPDATE THIS URL -->
+    <input type="hidden" id="scriptUrl" value="YOUR_GOOGLE_APPS_SCRIPT_URL">
+    
+    <div class="form-group">
+      <label>Customer Code</label>
+      <input type="text" id="customerCode" placeholder="Enter customer code">
+      <button onclick="loadLead()">Load Lead</button>
+    </div>
+    
+    <div id="leadDetails" style="display:none; margin-top:20px;">
+      <h3>Customer Details</h3>
+      <div id="details"></div>
+    </div>
+    
+    <div class="loading" id="loading">Loading...</div>
+    <div class="message" id="message"></div>
+  </div>
+
+  <script>
+    const SCRIPT_URL = document.getElementById('scriptUrl').value;
+    
+    function showMessage(text, type) {
+      const msg = document.getElementById('message');
+      msg.textContent = text;
+      msg.className = `message ${type} show`;
+      setTimeout(() => msg.classList.remove('show'), 5000);
+    }
+    
+    async function loadLead() {
+      const customerCode = document.getElementById('customerCode').value.trim();
+      if (!customerCode) {
+        showMessage('Please enter a customer code', 'error');
+        return;
+      }
+      
+      const loading = document.getElementById('loading');
+      loading.classList.add('show');
+      
+      try {
+        const response = await fetch(SCRIPT_URL, {
+          method: 'POST',
+          mode: 'cors',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            action: 'getLeadStatus',
+            customerCode: customerCode,
+            role: 'Supervisor'
+          })
+        });
+        
+        const result = await response.json();
+        loading.classList.remove('show');
+        
+        if (result && result.success) {
+          displayLeadDetails(result.data);
+          showMessage('Lead loaded successfully!', 'success');
+        } else {
+          showMessage(result.message || 'Lead not found', 'error');
+        }
+      } catch (error) {
+        loading.classList.remove('show');
+        showMessage('Error: ' + error.message, 'error');
+        console.error('Error:', error);
+      }
+    }
+    
+    function displayLeadDetails(data) {
+      const detailsDiv = document.getElementById('details');
+      detailsDiv.innerHTML = `
+        <table style="width:100%; border-collapse: collapse;">
+          <tr><td style="padding:8px;"><strong>Store Name:</strong></td><td>${data.storeName || 'N/A'}</td></tr>
+          <tr><td style="padding:8px;"><strong>Region:</strong></td><td>${data.region || 'N/A'}</td></tr>
+          <tr><td style="padding:8px;"><strong>Area:</strong></td><td>${data.area || 'N/A'}</td></tr>
+          <tr><td style="padding:8px;"><strong>Location:</strong></td><td>${data.location || 'N/A'}</td></tr>
+          <tr><td style="padding:8px;"><strong>Contact Person:</strong></td><td>${data.contactPerson || 'N/A'}</td></tr>
+          <tr><td style="padding:8px;"><strong>Mobile:</strong></td><td>${data.mobileNumber || 'N/A'}</td></tr>
+          <tr><td style="padding:8px;"><strong>Qualification:</strong></td><td>${data.qualification || 'Pending'}</td></tr>
+          <tr><td style="padding:8px;"><strong>Approval:</strong></td><td>${data.approval || 'Pending'}</td></tr>
+        </table>
+      `;
+      document.getElementById('leadDetails').style.display = 'block';
+    }
+    
+    // Test if page loaded
+    console.log('Page loaded successfully!');
+    showMessage('System ready. Enter a customer code to begin.', 'success');
+  </script>
+</body>
+</html>
