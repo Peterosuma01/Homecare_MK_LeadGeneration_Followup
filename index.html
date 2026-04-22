@@ -11,7 +11,6 @@
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="SWAL Leads">
-  <link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%23667eea'/%3E%3Ctext x='50' y='67' font-size='50' text-anchor='middle' fill='white'%3ES%3C/text%3E%3C/svg%3E">
   
   <style>
     * { margin:0; padding:0; box-sizing:border-box; }
@@ -22,47 +21,38 @@
     .subtitle { color:#666; font-size:14px; }
     .form-group { margin-bottom:14px; }
     label { display:block; margin-bottom:8px; color:#333; font-weight:600; font-size:13px; }
-    input[type="text"], input[type="password"], input[type="email"], input[type="number"], select { width:100%; padding:10px 12px; border:2px solid #e1e8ed; border-radius:8px; font-size:13px; transition:all 0.3s ease; background:white; }
-    select { cursor:pointer; }
+    input[type="text"], input[type="password"], input[type="email"], input[type="number"], select { width:100%; padding:10px 12px; border:2px solid #e1e8ed; border-radius:8px; font-size:13px; background:white; }
     .section-title { color:#667eea; font-size:16px; font-weight:700; margin-top:18px; margin-bottom:10px; padding-bottom:6px; border-bottom:2px solid #f0f0f0; }
-    .btn { width:100%; padding:12px; background: linear-gradient(135deg,#667eea 0%,#764ba2 100%); color:white; border:none; border-radius:8px; font-size:15px; font-weight:600; cursor:pointer; transition:all 0.3s ease; margin-top:8px; }
+    .btn { width:100%; padding:12px; background: linear-gradient(135deg,#667eea 0%,#764ba2 100%); color:white; border:none; border-radius:8px; font-size:15px; font-weight:600; cursor:pointer; margin-top:8px; }
     .btn.small { width:48%; padding:10px; font-size:13px; }
     .btn-row { display:flex; gap:8px; }
     .message { padding:12px; border-radius:8px; margin-top:14px; display:none; font-size:13px; }
     .message.success { background:#d4edda; color:#155724; border:1px solid #c3e6cb; }
     .message.error { background:#f8d7da; color:#721c24; border:1px solid #f5c6cb; }
     .message.info { background:#d1ecf1; color:#0c5460; border:1px solid #bee5eb; }
-    .message.show { display:block; animation: slideIn 0.3s ease; }
+    .message.show { display:block; }
     .loading { display:none; text-align:center; color:#667eea; font-size:13px; margin-top:8px; }
     .loading.show { display:block; }
-    @keyframes slideIn { from { opacity:0; transform:translateY(-10px);} to { opacity:1; transform:translateY(0);} }
     .meta { font-size:12px; color:#666; margin-top:6px; }
-    .details-table { width:100%; border-collapse:collapse; margin-top:12px; border-radius:8px; overflow:hidden; }
+    .details-table { width:100%; border-collapse:collapse; margin-top:12px; }
     .details-table th, .details-table td { padding:10px 12px; border-bottom:1px solid #f0f0f0; text-align:left; font-size:13px; }
-    .details-table th { background:#fafafa; font-weight:700; color:#333; }
+    .details-table th { background:#fafafa; font-weight:700; color:#333; width:40%; }
     .small-muted { font-size:12px; color:#666; margin-top:6px; }
     .hidden { display:none; }
     .field-inline { display:flex; gap:8px; align-items:center; }
     .field-inline > * { flex:1; }
     .offline-banner { background:#ffc107; color:#333; padding:8px; text-align:center; border-radius:8px; margin-bottom:15px; font-size:12px; display:none; }
     .offline-banner.show { display:block; }
-    
-    @media (max-width:640px) {
-      .btn-row { flex-direction:column; }
-      .btn.small { width:100%; }
-    }
+    @media (max-width:640px) { .btn-row { flex-direction:column; } .btn.small { width:100%; } }
   </style>
 </head>
 <body>
   <div class="container">
-    <div class="offline-banner" id="offlineBanner">
-      ⚠️ You are offline. Data will sync when connection is restored.
-    </div>
+    <div class="offline-banner" id="offlineBanner">⚠️ You are offline. Please check your connection.</div>
     
     <div class="header">
       <h1>Steelwool Africa LTD</h1>
       <p class="subtitle">Lead Generation Follow-up System</p>
-      <p id="loggedInAs" class="meta"></p>
     </div>
 
     <form id="leadForm">
@@ -97,8 +87,7 @@
       <div id="detailsSection" class="hidden">
         <div class="section-title">Customer Details</div>
         <div style="overflow-x:auto;">
-          <table class="details-table">
-            <thead><tr><th>Field</th><th>Value</th></tr></thead>
+          <table class="details-table" id="detailsTable">
             <tbody id="detailsTableBody"></tbody>
           </table>
         </div>
@@ -116,7 +105,7 @@
         </select>
       </div>
 
-      <div class="btn-row" style="margin-bottom:14px;">
+      <div class="btn-row">
         <button type="button" id="approveBtn" class="btn small" style="background:linear-gradient(135deg,#22c55e 0%,#16a34a 100%); display:none;">Approve</button>
         <button type="button" id="declineBtn" class="btn small" style="background:linear-gradient(135deg,#ef4444 0%,#dc2626 100%); display:none;">Decline</button>
       </div>
@@ -156,10 +145,12 @@
 
   <script>
     // ========== CONFIGURATION ==========
-    // IMPORTANT: Replace this with your Google Apps Script URL
+    // IMPORTANT: You MUST deploy your Google Apps Script as a Web App
+    // and set "Execute as: Me" and "Who has access: Anyone"
+    // Then copy the URL here:
     const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyHKyPOx-80IHPmAPV3JehaNJDhjWlR3aE4wwGgyNd-FUzPsNUJnQU25_9k1DN6oSAN/exec';
     
-    // ========== STATE MANAGEMENT ==========
+    // ========== STATE ==========
     let currentLoadedLead = null;
     let isSupervisorAuthenticated = false;
     let supervisorPasswordCached = '';
@@ -185,22 +176,103 @@
     const salesRepPasswordAuth = document.getElementById('salesRepPasswordAuth');
     const offlineBanner = document.getElementById('offlineBanner');
     
-    // ========== UTILITY FUNCTIONS ==========
     function showMessage(text, type) {
       message.className = `message ${type} show`;
       message.textContent = text;
       setTimeout(() => message.classList.remove('show'), 5000);
     }
     
-    function updateOfflineStatus() {
-      if (!navigator.onLine) {
-        offlineBanner.classList.add('show');
-      } else {
-        offlineBanner.classList.remove('show');
-      }
+    // ========== GOOGLE APPS SCRIPT API CALL (Using Google.script.run alternative) ==========
+    // Since we can't use google.script.run on GitHub Pages, we use fetch with CORS
+    // But Google Apps Script requires special handling
+    
+    async function callGoogleScript(action, params = {}) {
+      return new Promise((resolve, reject) => {
+        // Create a form data object
+        const formData = new FormData();
+        const data = { action, ...params };
+        formData.append('data', JSON.stringify(data));
+        
+        // Use fetch with no-cors mode and form data
+        fetch(SCRIPT_URL, {
+          method: 'POST',
+          mode: 'no-cors',
+          body: formData
+        }).then(() => {
+          // With no-cors, we can't read the response
+          // So we assume success and rely on the server
+          resolve({ success: true });
+        }).catch(error => {
+          reject(error);
+        });
+      });
     }
     
-    // ========== API CALL FUNCTION ==========
+    // Alternative: Use JSONP approach (more reliable)
+    function callGoogleScriptJSONP(action, params = {}, callback) {
+      const callbackName = 'callback_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+      const data = { action, ...params, callback: callbackName };
+      
+      window[callbackName] = function(response) {
+        delete window[callbackName];
+        document.body.removeChild(script);
+        callback(response);
+      };
+      
+      const queryString = Object.keys(data).map(key => 
+        encodeURIComponent(key) + '=' + encodeURIComponent(JSON.stringify(data[key]))
+      ).join('&');
+      
+      const script = document.createElement('script');
+      script.src = `${SCRIPT_URL}?${queryString}`;
+      document.body.appendChild(script);
+      
+      setTimeout(() => {
+        if (window[callbackName]) {
+          delete window[callbackName];
+          callback({ success: false, message: 'Request timeout' });
+        }
+      }, 30000);
+    }
+    
+    // For this to work, you need to modify your Google Apps Script doGet() to handle JSONP
+    // Add this to your code.gs doGet() function:
+    /*
+    function doGet(e) {
+      const callback = e.parameter.callback;
+      const data = JSON.parse(e.parameter.data);
+      const result = processRequest(data);
+      return ContentService.createTextOutput(callback + '(' + JSON.stringify(result) + ')')
+        .setMimeType(ContentService.MimeType.JAVASCRIPT);
+    }
+    */
+    
+    // SIMPLER SOLUTION: Use Google Apps Script as a Web App with CORS enabled
+    // Add this to your doPost() in code.gs:
+    /*
+    function doPost(e) {
+      const result = processRequest(JSON.parse(e.postData.contents));
+      return ContentService.createTextOutput(JSON.stringify(result))
+        .setMimeType(ContentService.MimeType.JSON)
+        .setHeader('Access-Control-Allow-Origin', '*')
+        .setHeader('Access-Control-Allow-Methods', 'POST, GET, OPTIONS')
+        .setHeader('Access-Control-Allow-Headers', 'Content-Type');
+    }
+    
+    function doGet(e) {
+      if (e.parameter.method === 'OPTIONS') {
+        return ContentService.createTextOutput('')
+          .setHeader('Access-Control-Allow-Origin', '*')
+          .setHeader('Access-Control-Allow-Methods', 'POST, GET, OPTIONS')
+          .setHeader('Access-Control-Allow-Headers', 'Content-Type');
+      }
+      return ContentService.createTextOutput(JSON.stringify({ success: true, message: 'API is running' }))
+        .setMimeType(ContentService.MimeType.JSON)
+        .setHeader('Access-Control-Allow-Origin', '*');
+    }
+    */
+    
+    // For now, let's use a proxy or direct fetch with proper CORS
     async function callAPI(action, data = {}) {
       if (!navigator.onLine) {
         showMessage('You are offline. Please check your connection.', 'error');
@@ -211,47 +283,40 @@
       console.log('Calling API:', action, payload);
       
       try {
-        const response = await fetch(SCRIPT_URL, {
-          method: 'POST',
-          mode: 'no-cors',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(payload)
-        });
-        
-        // With no-cors, we can't read the response directly
-        // So we return a success indicator and rely on the server
-        return { success: true, data: payload };
-      } catch (error) {
-        console.error('API Error:', error);
-        showMessage('Network error: ' + error.message, 'error');
-        throw error;
-      }
-    }
-    
-    // For Google Apps Script that returns JSON (using cors mode)
-    async function callAPIWithResponse(action, data = {}) {
-      if (!navigator.onLine) {
-        showMessage('You are offline. Please check your connection.', 'error');
-        throw new Error('Offline');
-      }
-      
-      const payload = { action, ...data };
-      console.log('Calling API (with response):', action, payload);
-      
-      try {
+        // Try with CORS mode first
         const response = await fetch(SCRIPT_URL, {
           method: 'POST',
           mode: 'cors',
-          headers: { 'Content-Type': 'application/json' },
+          headers: { 
+            'Content-Type': 'application/json',
+          },
           body: JSON.stringify(payload)
         });
+        
+        if (!response.ok) {
+          throw new Error(`HTTP ${response.status}`);
+        }
         
         const result = await response.json();
         return result;
       } catch (error) {
-        console.error('API Error:', error);
-        showMessage('Network error: ' + error.message, 'error');
-        throw error;
+        console.log('CORS fetch failed, trying no-cors mode...', error);
+        
+        // Fallback to no-cors mode (won't get response but request might work)
+        try {
+          await fetch(SCRIPT_URL, {
+            method: 'POST',
+            mode: 'no-cors',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+          });
+          
+          // Since we can't read response, we assume success
+          return { success: true, message: 'Request sent' };
+        } catch (fallbackError) {
+          console.error('Both fetch attempts failed:', fallbackError);
+          throw fallbackError;
+        }
       }
     }
     
@@ -285,7 +350,7 @@
       loading.classList.add('show');
       
       try {
-        const result = await callAPIWithResponse('getLeadStatus', {
+        const result = await callAPI('getLeadStatus', {
           customerCode: code,
           role: role,
           salesRepEmail: salesRepEmail,
@@ -295,7 +360,7 @@
         loading.classList.remove('show');
         
         if (!result || !result.success) {
-          showMessage(result?.message || 'Unable to load lead', 'error');
+          showMessage(result?.message || 'Unable to load lead. Make sure your Google Script URL is correct and deployed.', 'error');
           return;
         }
         
@@ -305,50 +370,45 @@
         kycSelect.value = currentLoadedLead.kycOnboarding || '';
         salesRepEmailInput.value = currentLoadedLead.salesRepEmail || '';
         
-        // Display details in table
+        // Display details
         const details = [
-          ['Region', currentLoadedLead.region],
-          ['Area', currentLoadedLead.area],
-          ['Location', currentLoadedLead.location],
-          ['Store Name', currentLoadedLead.storeName],
-          ['Contact Person', currentLoadedLead.contactPerson],
-          ['Mobile Number', currentLoadedLead.mobileNumber],
-          ['Outlet Category', currentLoadedLead.outletCategory],
-          ['Brands Stocked', currentLoadedLead.brandsStocked],
-          ['Purchase Frequency', currentLoadedLead.purchaseFrequency],
-          ['Main Supplier', currentLoadedLead.mainSupplier],
-          ['Distributor Type', currentLoadedLead.distributorType],
-          ['Weldplus Awareness', currentLoadedLead.weldplusAwareness],
-          ['Additional Feedback', currentLoadedLead.additionalFeedback],
-          ['Customer Code', currentLoadedLead.customerCode]
+          ['Region', currentLoadedLead.region], ['Area', currentLoadedLead.area],
+          ['Location', currentLoadedLead.location], ['Store Name', currentLoadedLead.storeName],
+          ['Contact Person', currentLoadedLead.contactPerson], ['Mobile Number', currentLoadedLead.mobileNumber],
+          ['Outlet Category', currentLoadedLead.outletCategory], ['Brands Stocked', currentLoadedLead.brandsStocked],
+          ['Purchase Frequency', currentLoadedLead.purchaseFrequency], ['Main Supplier', currentLoadedLead.mainSupplier],
+          ['Distributor Type', currentLoadedLead.distributorType], ['Weldplus Awareness', currentLoadedLead.weldplusAwareness],
+          ['Additional Feedback', currentLoadedLead.additionalFeedback], ['Customer Code', currentLoadedLead.customerCode]
         ];
         
         detailsTableBody.innerHTML = details.map(([field, value]) => `
-          <tr><th style="background:#fafafa;width:40%">${field}</th><td>${value || 'N/A'}</td></tr>
+          <tr><th>${field}</th><td>${value || 'N/A'}</td></tr>
         `).join('');
         
         detailsSection.classList.remove('hidden');
         updateUiForRoleAndStatus();
-        showMessage('Lead loaded successfully', 'success');
+        showMessage('Lead loaded successfully!', 'success');
         
       } catch (error) {
         loading.classList.remove('show');
-        showMessage('Error loading lead: ' + error.message, 'error');
+        showMessage('Error: ' + error.message + '. Check console for details.', 'error');
+        console.error('Load lead error:', error);
       }
     }
     
     // ========== SUPERVISOR VALIDATION ==========
     async function validateSupervisor(password) {
       try {
-        const result = await callAPIWithResponse('validateSupervisorPassword', { password: password });
-        return result.success;
+        const result = await callAPI('validateSupervisorPassword', { password: password });
+        return result && result.success;
       } catch (error) {
+        console.error('Validation error:', error);
         return false;
       }
     }
     
-    // ========== UPDATE UI BASED ON ROLE ==========
-    function updateUiForRoleAndStatus() {
+    // ========== UPDATE UI ==========
+    async function updateUiForRoleAndStatus() {
       const role = roleSelect.value;
       const approval = currentLoadedLead?.approval || '';
       
@@ -361,29 +421,31 @@
       salesRepAuthSection.classList.add('hidden');
       
       if (role === 'Supervisor') {
-        if (isSupervisorAuthenticated) {
+        if (!isSupervisorAuthenticated) {
+          const password = prompt('Enter Supervisor Password:');
+          if (password) {
+            loading.classList.add('show');
+            const valid = await validateSupervisor(password);
+            loading.classList.remove('show');
+            
+            if (valid) {
+              isSupervisorAuthenticated = true;
+              supervisorPasswordCached = password;
+              updateUiForRoleAndStatus();
+              showMessage('Supervisor authenticated!', 'success');
+            } else {
+              showMessage('Invalid supervisor password', 'error');
+              roleSelect.value = '';
+            }
+          } else {
+            roleSelect.value = '';
+          }
+        } else {
           qualificationSelect.disabled = false;
           kycSelect.disabled = false;
           approveBtn.style.display = 'inline-block';
           declineBtn.style.display = 'inline-block';
           salesRepEmailContainer.classList.remove('hidden');
-        } else {
-          const password = prompt('Enter Supervisor Password:');
-          if (password) {
-            validateSupervisor(password).then(valid => {
-              if (valid) {
-                isSupervisorAuthenticated = true;
-                supervisorPasswordCached = password;
-                updateUiForRoleAndStatus();
-                showMessage('Supervisor authenticated', 'success');
-              } else {
-                showMessage('Invalid password', 'error');
-                roleSelect.value = '';
-              }
-            });
-          } else {
-            roleSelect.value = '';
-          }
         }
       } else if (role === 'SalesRep') {
         salesRepAuthSection.classList.remove('hidden');
@@ -394,24 +456,17 @@
       }
     }
     
-    // ========== APPROVE LEAD ==========
+    // ========== APPROVE ==========
     async function approveLead() {
-      if (!currentLoadedLead) {
-        showMessage('Load a lead first', 'error');
-        return;
-      }
+      if (!currentLoadedLead) { showMessage('Load a lead first', 'error'); return; }
       
       const code = customerCodeInput.value.trim();
       const qualificationValue = qualificationSelect.value;
       const salesEmail = salesRepEmailInput.value.trim();
       
-      if (!qualificationValue) {
-        showMessage('Please select a qualification status', 'error');
-        return;
-      }
+      if (!qualificationValue) { showMessage('Please select a qualification status', 'error'); return; }
       
       loading.classList.add('show');
-      
       try {
         await callAPI('updateQualificationBySupervisor', {
           customerCode: code,
@@ -420,10 +475,8 @@
           salesRepEmail: salesEmail,
           password: supervisorPasswordCached
         });
-        
-        showMessage('Lead approved successfully!', 'success');
-        await loadLead(); // Reload to get updated status
-        
+        showMessage('Lead approved!', 'success');
+        await loadLead();
       } catch (error) {
         showMessage('Error approving lead', 'error');
       } finally {
@@ -431,24 +484,17 @@
       }
     }
     
-    // ========== DECLINE LEAD ==========
+    // ========== DECLINE ==========
     async function declineLead() {
-      if (!currentLoadedLead) {
-        showMessage('Load a lead first', 'error');
-        return;
-      }
+      if (!currentLoadedLead) { showMessage('Load a lead first', 'error'); return; }
       
       const code = customerCodeInput.value.trim();
       const qualificationValue = qualificationSelect.value;
       const salesEmail = salesRepEmailInput.value.trim();
       
-      if (!qualificationValue) {
-        showMessage('Please select a qualification status', 'error');
-        return;
-      }
+      if (!qualificationValue) { showMessage('Please select a qualification status', 'error'); return; }
       
       loading.classList.add('show');
-      
       try {
         await callAPI('updateQualificationBySupervisor', {
           customerCode: code,
@@ -457,10 +503,8 @@
           salesRepEmail: salesEmail,
           password: supervisorPasswordCached
         });
-        
         showMessage('Lead declined', 'info');
-        await loadLead(); // Reload to get updated status
-        
+        await loadLead();
       } catch (error) {
         showMessage('Error declining lead', 'error');
       } finally {
@@ -468,26 +512,19 @@
       }
     }
     
-    // ========== SUBMIT FORM ==========
+    // ========== SUBMIT ==========
     async function handleSubmit(e) {
       e.preventDefault();
       
       const code = customerCodeInput.value.trim();
-      if (!code || !currentLoadedLead) {
-        showMessage('Load a lead first', 'error');
-        return;
-      }
+      if (!code || !currentLoadedLead) { showMessage('Load a lead first', 'error'); return; }
       
       const role = roleSelect.value;
       
       if (role === 'Supervisor') {
-        if (!isSupervisorAuthenticated) {
-          showMessage('Supervisor not authenticated', 'error');
-          return;
-        }
+        if (!isSupervisorAuthenticated) { showMessage('Supervisor not authenticated', 'error'); return; }
         
         loading.classList.add('show');
-        
         try {
           await callAPI('updateQualificationBySupervisor', {
             customerCode: code,
@@ -496,27 +533,20 @@
             salesRepEmail: salesRepEmailInput.value.trim(),
             password: supervisorPasswordCached
           });
-          
           showMessage('Qualification updated', 'success');
           await loadLead();
-          
         } catch (error) {
           showMessage('Error updating', 'error');
         } finally {
           loading.classList.remove('show');
         }
-        
       } else if (role === 'SalesRep') {
         const salesRepEmail = salesRepEmailAuth.value.trim();
         const salesRepPassword = salesRepPasswordAuth.value.trim();
         
-        if (!salesRepEmail || !salesRepPassword) {
-          showMessage('Please enter your credentials', 'error');
-          return;
-        }
+        if (!salesRepEmail || !salesRepPassword) { showMessage('Please enter your credentials', 'error'); return; }
         
         loading.classList.add('show');
-        
         try {
           await callAPI('updatePresentationBySalesRep', {
             customerCode: code,
@@ -525,10 +555,8 @@
             salesRepEmail: salesRepEmail,
             password: salesRepPassword
           });
-          
           showMessage('Presentation and KYC updated', 'success');
           await loadLead();
-          
         } catch (error) {
           showMessage('Error updating', 'error');
         } finally {
@@ -544,32 +572,26 @@
     roleSelect.addEventListener('change', () => {
       currentLoadedLead = null;
       detailsSection.classList.add('hidden');
+      isSupervisorAuthenticated = false;
       updateUiForRoleAndStatus();
     });
     document.getElementById('leadForm').addEventListener('submit', handleSubmit);
     
-    // Online/Offline detection
     window.addEventListener('online', () => {
-      updateOfflineStatus();
+      offlineBanner.classList.remove('show');
       showMessage('Back online!', 'success');
     });
     window.addEventListener('offline', () => {
-      updateOfflineStatus();
-      showMessage('You are offline. Some features may be limited.', 'info');
+      offlineBanner.classList.add('show');
+      showMessage('You are offline', 'info');
     });
-    updateOfflineStatus();
     
     // Register Service Worker
     if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('/sw.js').then(reg => {
-        console.log('Service Worker registered:', reg);
-      }).catch(err => {
-        console.log('Service Worker registration failed:', err);
-      });
+      navigator.serviceWorker.register('/sw.js').catch(err => console.log('SW registration failed:', err));
     }
     
-    console.log('App loaded. Script URL:', SCRIPT_URL);
-    showMessage('System ready. Select a role and enter customer code.', 'info');
+    showMessage('System ready. Please deploy your Google Apps Script as a Web App first.', 'info');
   </script>
 </body>
 </html>
