@@ -6,7 +6,6 @@
   <meta name="theme-color" content="#667eea">
   <title>Steelwool Africa LTD - Lead Generation Follow-up</title>
   <link rel="manifest" href="manifest.json">
-  <!-- Libraries for PDF and Excel export -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
@@ -20,8 +19,9 @@
     .subtitle{color:#666;font-size:14px}
     .form-group{margin-bottom:14px}
     label{display:block;margin-bottom:8px;color:#333;font-weight:600;font-size:13px}
-    input[type="text"],input[type="password"],input[type="email"],input[type="number"],select{width:100%;padding:12px 14px;border:2px solid #e1e8ed;border-radius:8px;font-size:16px;transition:all 0.3s;background:#fff;-webkit-appearance:none;appearance:none}
-    input:focus,select:focus{outline:none;border-color:#667eea;box-shadow:0 0 0 3px rgba(102,126,234,0.2)}
+    input[type="text"],input[type="password"],input[type="email"],input[type="number"],input[type="tel"],select,textarea{width:100%;padding:12px 14px;border:2px solid #e1e8ed;border-radius:8px;font-size:16px;transition:all 0.3s;background:#fff;-webkit-appearance:none;appearance:none;font-family:inherit}
+    textarea{resize:vertical;min-height:60px}
+    input:focus,select:focus,textarea:focus{outline:none;border-color:#667eea;box-shadow:0 0 0 3px rgba(102,126,234,0.2)}
     select{cursor:pointer}
     .section-title{color:#667eea;font-size:16px;font-weight:700;margin-top:18px;margin-bottom:10px;padding-bottom:6px;border-bottom:2px solid #f0f0f0}
     .btn{width:100%;padding:12px;background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);color:#fff;border:none;border-radius:8px;font-size:15px;font-weight:600;cursor:pointer;transition:all 0.3s;margin-top:8px}
@@ -80,36 +80,30 @@
     .rep-stat-value{font-size:20px;font-weight:700;color:#667eea}
     .rep-stat-label{font-size:11px;color:#666;text-transform:uppercase}
     .milestone-badge{display:inline-block;padding:3px 8px;border-radius:12px;font-size:11px;font-weight:600;color:#fff}
-    .milestone-1{background:#f97316}
-    .milestone-2{background:#3b82f6}
-    .milestone-3{background:#22c55e}
+    .milestone-1{background:#f97316}.milestone-2{background:#3b82f6}.milestone-3{background:#22c55e}
     .download-row{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px;padding-top:8px;border-top:1px dashed #e1e8ed}
     .download-row .btn.small{font-size:11px;padding:6px 10px}
+    .checkbox-group{display:flex;flex-wrap:wrap;gap:10px;margin-top:6px}
+    .checkbox-group label{display:flex;align-items:center;gap:6px;font-weight:400;font-size:14px;cursor:pointer;padding:6px 12px;border:2px solid #e1e8ed;border-radius:6px;transition:all 0.2s}
+    .checkbox-group label:has(input:checked){border-color:#667eea;background:#f0f3ff}
+    .checkbox-group input[type="checkbox"]{width:18px;height:18px;accent-color:#667eea}
+    .lead-form-card{background:linear-gradient(135deg,#f0fdf4 0%,#ecfdf5 100%);border:2px solid #22c55e;border-radius:12px;padding:20px;margin-top:14px}
+    .lead-form-card .section-title{color:#16a34a}
+    .required{color:#dc2626}
     @media(max-width:640px){
-      .btn-row{flex-direction:column}
-      .btn.small{width:100%}
-      .container{padding:16px;margin:10px}
-      .field-inline{flex-direction:column}
-      .field-inline>input{width:100%;min-height:50px;font-size:16px}
+      .btn-row{flex-direction:column}.btn.small{width:100%}.container{padding:16px;margin:10px}
+      .field-inline{flex-direction:column}.field-inline>input{width:100%;min-height:50px;font-size:16px}
       .field-inline>.btn{width:100%;min-height:48px}
-      input[type="text"],input[type="password"],input[type="email"],input[type="number"],select{font-size:16px;padding:14px;min-height:50px}
-      h1{font-size:20px}
-      .dashboard-metrics{grid-template-columns:1fr 1fr}
-      .metric-card{padding:12px}
-      .metric-value{font-size:24px}
-      .rep-stats{flex-direction:column}
-      .download-row{flex-direction:column}
+      input[type="text"],input[type="password"],input[type="email"],input[type="number"],input[type="tel"],select,textarea{font-size:16px;padding:14px;min-height:50px}
+      h1{font-size:20px}.dashboard-metrics{grid-template-columns:1fr 1fr}.metric-card{padding:12px}.metric-value{font-size:24px}
+      .rep-stats{flex-direction:column}.download-row{flex-direction:column}.checkbox-group{flex-direction:column}
     }
   </style>
 </head>
 <body>
   <div class="container">
-    <div class="header">
-      <div class="header-title"><h1>Steelwool (Africa) Limited</h1></div>
-      <p class="subtitle">Hardware Lead Generation Follow-up</p>
-    </div>
+    <div class="header"><div class="header-title"><h1>Steelwool (Africa) Limited</h1></div><p class="subtitle">Hardware Lead Generation Follow-up</p></div>
     <div id="loginBadge" class="login-badge"><span class="icon">👨‍💼</span><span id="loginBadgeText"></span></div>
-
     <div id="supervisorDashboard" class="dashboard hidden">
       <div class="dashboard-title">📊 Supervisor Dashboard</div>
       <div class="dashboard-metrics">
@@ -120,65 +114,22 @@
         <div class="metric-card" style="background:rgba(34,197,94,0.2);border-color:rgba(34,197,94,0.3)"><div class="metric-value" id="metricConvertedLeads">0</div><div class="metric-label">Converted Leads</div></div>
         <div class="metric-card" style="background:rgba(34,197,94,0.2);border-color:rgba(34,197,94,0.3)"><div class="metric-value" id="metricConversionRate">0%</div><div class="metric-label">Conversion Rate</div></div>
       </div>
-      <div class="dashboard-actions">
-        <button class="btn small" id="btnRefreshDashboard" style="background:rgba(255,255,255,0.2)">🔄 Refresh</button>
-        <button class="btn small" id="btnViewApprovedLeads" style="background:rgba(34,197,94,0.9)">✅ View Approved Leads</button>
-      </div>
+      <div class="dashboard-actions"><button class="btn small" id="btnRefreshDashboard" style="background:rgba(255,255,255,0.2)">🔄 Refresh</button><button class="btn small" id="btnViewApprovedLeads" style="background:rgba(34,197,94,0.9)">✅ View Approved Leads</button></div>
     </div>
-
     <div id="salesRepDetailsSection" class="hidden">
       <div class="section-title">👤 Sales Representative Details</div>
-      <div class="form-group">
-        <label>Select Sales Representative</label>
-        <select id="salesRepSelect">
-          <option value="">-- Select Sales Rep --</option>
-          <option value="hardware1.swal@gmail.com">VALTO ONYANGO</option>
-          <option value="mountain.swal@gmail.com">FRANCIS OBALA</option>
-          <option value="hardware2.swal@gmail.com">STEPHEN MUENDO</option>
-          <option value="hardware3.swal@gmail.com">LAVINE KISANYA</option>
-          <option value="hardware4.swal@gmail.com">NGAIRA BRIAN</option>
-          <option value="hardware5.swal@gmail.com">KENNETH MUGAH</option>
-          <option value="hardware6.swal@gmail.com">ANTHONY BUNDI MUGAMBI</option>
-          <option value="eastern.swal@gmail.com">MUSYA KITHEKA</option>
-        </select>
-      </div>
+      <div class="form-group"><label>Select Sales Representative</label><select id="salesRepSelect"><option value="">-- Select Sales Rep --</option><option value="hardware1.swal@gmail.com">VALTO ONYANGO</option><option value="mountain.swal@gmail.com">FRANCIS OBALA</option><option value="hardware2.swal@gmail.com">STEPHEN MUENDO</option><option value="hardware3.swal@gmail.com">LAVINE KISANYA</option><option value="hardware4.swal@gmail.com">NGAIRA BRIAN</option><option value="hardware5.swal@gmail.com">KENNETH MUGAH</option><option value="hardware6.swal@gmail.com">ANTHONY BUNDI MUGAMBI</option><option value="eastern.swal@gmail.com">MUSYA KITHEKA</option></select></div>
       <div id="repDetailsCard" class="rep-details-card hidden">
-        <div class="rep-header">
-          <div><div class="rep-name" id="repName"></div><div class="rep-email" id="repEmail"></div></div>
-        </div>
-        <div class="rep-stats">
-          <div class="rep-stat"><div class="rep-stat-value" id="repTotalLeads">0</div><div class="rep-stat-label">Generated Leads</div></div>
-          <div class="rep-stat"><div class="rep-stat-value" id="repConvertedCount">0</div><div class="rep-stat-label">Converted Leads</div></div>
-        </div>
-        <div class="btn-row" style="margin-bottom:4px">
-          <button class="btn small btn-blue" id="btnRepAllLeads">📋 View All Leads</button>
-          <button class="btn small btn-orange" id="btnRepConvertedLeads">📦 View Converted Leads</button>
-        </div>
-        <!-- Download Buttons -->
-        <div class="download-row">
-          <span style="font-size:12px;font-weight:600;color:#333;margin-right:4px;align-self:center">⬇️ Download All Leads:</span>
-          <button class="btn small btn-teal" id="btnDownloadAllExcel">📗 Excel</button>
-          <button class="btn small btn-red" id="btnDownloadAllPdf">📕 PDF</button>
-        </div>
-        <div class="download-row">
-          <span style="font-size:12px;font-weight:600;color:#333;margin-right:4px;align-self:center">⬇️ Download Converted:</span>
-          <button class="btn small btn-teal" id="btnDownloadConvertedExcel">📗 Excel</button>
-          <button class="btn small btn-red" id="btnDownloadConvertedPdf">📕 PDF</button>
-        </div>
-        <div id="repLeadsTableSection" class="hidden">
-          <div class="section-title" id="repLeadsTitle" style="margin-top:8px">Leads</div>
-          <div class="table-wrap"><table class="leads-table" id="repLeadsTable"></table></div>
-          <button class="btn small btn-gray" id="btnCloseRepLeads" style="margin-top:8px">Close</button>
-        </div>
+        <div class="rep-header"><div><div class="rep-name" id="repName"></div><div class="rep-email" id="repEmail"></div></div></div>
+        <div class="rep-stats"><div class="rep-stat"><div class="rep-stat-value" id="repTotalLeads">0</div><div class="rep-stat-label">Generated Leads</div></div><div class="rep-stat"><div class="rep-stat-value" id="repConvertedCount">0</div><div class="rep-stat-label">Converted Leads</div></div></div>
+        <div class="btn-row" style="margin-bottom:4px"><button class="btn small btn-blue" id="btnRepAllLeads">📋 All Leads</button><button class="btn small btn-orange" id="btnRepConvertedLeads">📦 Converted</button></div>
+        <div class="download-row"><span style="font-size:12px;font-weight:600;color:#333;margin-right:4px;align-self:center">⬇️ All Leads:</span><button class="btn small btn-teal" id="btnDownloadAllExcel">📗 Excel</button><button class="btn small btn-red" id="btnDownloadAllPdf">📕 PDF</button></div>
+        <div class="download-row"><span style="font-size:12px;font-weight:600;color:#333;margin-right:4px;align-self:center">⬇️ Converted:</span><button class="btn small btn-teal" id="btnDownloadConvertedExcel">📗 Excel</button><button class="btn small btn-red" id="btnDownloadConvertedPdf">📕 PDF</button></div>
+        <div id="repLeadsTableSection" class="hidden"><div class="section-title" id="repLeadsTitle" style="margin-top:8px">Leads</div><div class="table-wrap"><table class="leads-table" id="repLeadsTable"></table></div><button class="btn small btn-gray" id="btnCloseRepLeads" style="margin-top:8px">Close</button></div>
       </div>
     </div>
-
     <div id="app">
-      <div class="form-group">
-        <label>Select Role *</label>
-        <select id="roleSelect"><option value="">-- Select Role --</option><option value="Supervisor">Supervisor</option><option value="SalesRep">Sales Representative</option></select>
-        <div class="meta">Supervisor: edit Qualification, Approve/Decline. Sales Rep: edit Presentation, place Orders.</div>
-      </div>
+      <div class="form-group"><label>Select Role *</label><select id="roleSelect"><option value="">-- Select Role --</option><option value="Supervisor">Supervisor</option><option value="SalesRep">Sales Representative</option></select><div class="meta">Supervisor: edit Qualification, Approve/Decline. Sales Rep: edit Presentation, place Orders, Generate Leads.</div></div>
       <div id="salesRepAuth" class="hidden">
         <div class="form-group"><label>Sales Rep Email *</label><input type="email" id="salesRepEmail" placeholder="salesrep@example.com"></div>
         <div class="form-group"><label>Sales Rep Password *</label><input type="password" id="salesRepPassword" placeholder="Enter password"></div>
@@ -190,25 +141,42 @@
         <button class="btn small btn-blue" id="btnViewOrders">View Orders Placed</button>
         <button class="btn small btn-blue hidden" id="btnViewQualified">View Qualified Leads</button>
         <button class="btn small btn-teal hidden" id="btnPlaceOrder">Place Order</button>
+        <button class="btn small btn-green hidden" id="btnGenerateLead">➕ Generate New Lead</button>
       </div>
+
+      <!-- LEAD GENERATION FORM -->
+      <div id="leadFormSection" class="hidden">
+        <div class="lead-form-card">
+          <div class="section-title">📝 Lead Generation Form</div>
+          <div class="form-group"><label>Region <span class="required">*</span></label><select id="lfRegion"><option value="">-- Select Region --</option><option>Nairobi Central</option><option>Nairobi East</option><option>Nairobi West</option><option>Nairobi North</option><option>Nairobi South</option><option>Mt Kenya Region</option><option>Eastern Region</option><option>Rift Valley Region</option><option>Western Region</option><option>Coast Region</option></select></div>
+          <div class="form-group"><label>Area <span class="required">*</span></label><input type="text" id="lfArea" placeholder="Enter area"></div>
+          <div class="form-group"><label>Location/Landmark <span class="required">*</span></label><input type="text" id="lfLocation" placeholder="Enter location or landmark"></div>
+          <div class="form-group"><label>Store Name (as it appears on the store signage) <span class="required">*</span></label><input type="text" id="lfStoreName" placeholder="Enter store name"></div>
+          <div class="form-group"><label>Contact Person</label><input type="text" id="lfContactPerson" placeholder="Enter contact person name"></div>
+          <div class="form-group"><label>Mobile Number</label><input type="tel" id="lfMobileNumber" placeholder="Enter mobile number"></div>
+          <div class="form-group"><label>Outlet Category (based on monthly sales volume) <span class="required">*</span></label><select id="lfOutletCategory"><option value="">-- Select Category --</option><option>Small ( Monthly volume of less than 100Kg)</option><option>Medium ( Monthly volume between 100Kg-400kg)</option><option>Large: ( Monthly Volume between 400kg-1000kg)</option><option>Mega: ( Monthly Volume above 1000kg)</option></select></div>
+          <div class="form-group"><label>Which brands is the outlet currently stocking? <span class="required">*</span></label><div class="checkbox-group" id="lfBrandsGroup"><label><input type="checkbox" value="Weldplus">Weldplus</label><label><input type="checkbox" value="AGI">AGI</label><label><input type="checkbox" value="Maruthi">Maruthi</label><label><input type="checkbox" value="Simba">Simba</label><label><input type="checkbox" value="Hero">Hero</label><label><input type="checkbox" value="Fontarc">Fontarc</label></div></div>
+         <div class="form-group"><label>Frequency of purchase of welding electrodes <span class="required">*</span></label><select id="lfPurchaseFreq"><option value="">-- Select Frequency --</option><option>Weekly</option><option>Twice per month</option><option>Monthly</option><option>Other</option></select></div>
+<div id="lfPurchaseFreqOtherBox" class="form-group hidden"><label>Specify other frequency <span class="required">*</span></label><input type="text" id="lfPurchaseFreqOther" placeholder="Enter purchase frequency" maxlength="200"></div>
+          <div class="form-group"><label>Do they purchase from Manufacturer or Distributor? <span class="required">*</span></label><select id="lfDistributorType"><option value="">-- Select --</option><option>Manufacturer</option><option>Distributor</option></select></div>
+        <div class="form-group"><label>Which distributor do they buy welding electrodes from?</label><input type="text" id="lfMainSupplier" placeholder="Enter distributor name"></div>
+          <div class="form-group"><label>Have they ever heard about Weldplus? <span class="required">*</span></label><select id="lfWeldplusAware"><option value="">-- Select --</option><option>Yes</option><option>No</option></select></div>
+          <div class="form-group"><label>Additional feedback (leave blank if none)</label><textarea id="lfAdditionalFeedback" placeholder="Record any additional feedback..."></textarea></div>
+          <div class="btn-row"><button class="btn btn-green" id="btnSubmitLeadForm">✅ Submit Lead</button><button class="btn btn-gray" id="btnCloseLeadForm" style="margin-top:4px">Cancel</button></div>
+        </div>
+      </div>
+
       <div class="form-group"><label>Customer Code *</label><div class="field-inline"><input type="text" id="customerCode" placeholder="Enter customer code"><button class="btn small" id="btnLoad">Load</button></div><div class="meta">Enter code and click Load to fetch data.</div></div>
       <div id="detailsSection" class="hidden"><div class="section-title">Customer Details</div><div style="overflow-x:auto"><table class="details-table" id="detailsTable"></table></div></div>
       <div id="leadsSection" class="hidden"><div class="section-title" id="leadsTitle">Leads</div><div class="table-wrap"><table class="leads-table" id="leadsTable"></table></div><button class="btn small btn-gray" id="btnCloseLeads" style="margin-top:12px">Close List</button></div>
-      <div id="ordersSection" class="hidden">
-        <div class="section-title">Place Order</div>
-        <div class="form-group"><label>Customer Code *</label><div class="field-inline"><input type="text" id="orderCustomerCode" placeholder="Enter customer code"><button class="btn small" id="btnCheckStatus">Check Status</button></div></div>
-        <div id="orderStatus" class="order-status hidden"></div>
-        <div class="form-group"><label>Order Number *</label><select id="orderNumber" disabled><option value="">-- Check status first --</option></select></div>
-        <div class="form-group"><label>Quantity (Kgs) *</label><input type="number" id="orderQuantity" placeholder="Enter quantity" min="0" step="0.01"></div>
-        <div class="btn-row"><button class="btn small btn-teal" id="btnSubmitOrder">Submit Order</button><button class="btn small btn-gray" id="btnCloseOrders">Close</button></div>
-      </div>
+      <div id="ordersSection" class="hidden"><div class="section-title">Place Order</div><div class="form-group"><label>Customer Code *</label><div class="field-inline"><input type="text" id="orderCustomerCode" placeholder="Enter customer code"><button class="btn small" id="btnCheckStatus">Check Status</button></div></div><div id="orderStatus" class="order-status hidden"></div><div class="form-group"><label>Order Number *</label><select id="orderNumber" disabled><option value="">-- Check status first --</option></select></div><div class="form-group"><label>Quantity (Kgs) *</label><input type="number" id="orderQuantity" placeholder="Enter quantity" min="0" step="0.01"></div><div class="btn-row"><button class="btn small btn-teal" id="btnSubmitOrder">Submit Order</button><button class="btn small btn-gray" id="btnCloseOrders">Close</button></div></div>
       <div class="section-title">Qualification</div>
       <div class="form-group"><label>Qualification Status *</label><select id="qualification" disabled><option value="">-- Select Status --</option><option value="YES">YES</option><option value="NO">NO</option><option value="Volume Too Small">Volume Too Small</option><option value="Bad Previous History">Bad Previous History</option><option value="Other">Other</option></select></div>
-      <div id="qualificationOtherBox" class="form-group hidden"><label>Specify Other Qualification Reason *</label><input type="text" id="qualificationOther" placeholder="Enter reason" maxlength="200"><div class="meta">Describe the qualification reason (max 200 characters)</div></div>
+      <div id="qualificationOtherBox" class="form-group hidden"><label>Specify Other Qualification Reason *</label><input type="text" id="qualificationOther" placeholder="Enter reason" maxlength="200"></div>
       <div id="approvalButtons" class="btn-row hidden" style="margin-bottom:14px"><button class="btn small btn-green" id="btnApprove">Approve</button><button class="btn small btn-red" id="btnDecline">Decline</button></div>
       <div class="section-title">Presentation</div>
       <div class="form-group"><label>Presentation Status *</label><select id="presentation" disabled><option value="">-- Select Status --</option><option value="YES">YES</option><option value="Refused to Trade">Refused to Trade</option><option value="Refuse to Provide KYC">Refuse to Provide KYC</option><option value="Other">Other</option></select></div>
-      <div id="presentationOtherBox" class="form-group hidden"><label>Specify Other Presentation Reason *</label><input type="text" id="presentationOther" placeholder="Enter reason" maxlength="200"><div class="meta">Describe the presentation reason (max 200 characters)</div></div>
+      <div id="presentationOtherBox" class="form-group hidden"><label>Specify Other Presentation Reason *</label><input type="text" id="presentationOther" placeholder="Enter reason" maxlength="200"></div>
       <div class="section-title">KYC Onboarding</div>
       <div class="form-group"><label>KYC Onboarding Status *</label><select id="kycOnboarding" disabled><option value="">-- Select Status --</option><option value="YES">YES</option><option value="NO">NO</option><option value="Pending">Pending</option></select><div class="meta">Lead must be KYC Onboarded before placing order.</div></div>
       <div id="assignSalesRep" class="form-group hidden"><label>Assign Sales Rep Email</label><input type="email" id="assignEmail" placeholder="salesrep@example.com"><div class="meta">Optional: assign a sales rep to this lead.</div></div>
@@ -218,126 +186,101 @@
     </div>
   </div>
   <div id="passwordModal" class="hidden"><div class="modal-overlay"><div class="modal"><h3>Supervisor Password</h3><input type="password" id="supervisorPassword" placeholder="Enter password" style="width:100%;padding:10px;border:1px solid #e1e8ed;border-radius:6px"><div id="passwordHint" class="hint"></div><div class="modal-actions"><button class="btn small btn-gray" id="btnCancelPassword">Cancel</button><button class="btn small" id="btnConfirmPassword">Submit</button></div></div></div></div>
-
   <script>
     const API_URL='https://script.google.com/macros/s/AKfycbyHKyPOx-80IHPmAPV3JehaNJDhjWlR3aE4wwGgyNd-FUzPsNUJnQU25_9k1DN6oSAN/exec';
     let currentLead=null,isSupervisorAuth=false,supervisorPw='',currentOrderStatus=null,salesRepName='',isSalesRepLoggedIn=false,dashboardData=null,currentRepData=null;
     const $=id=>document.getElementById(id);
-    const roleSelect=$('roleSelect'),salesRepAuth=$('salesRepAuth'),salesRepEmail=$('salesRepEmail'),salesRepPassword=$('salesRepPassword'),btnSalesRepLogin=$('btnSalesRepLogin'),salesRepLoginMsg=$('salesRepLoginMsg'),loginBadge=$('loginBadge'),loginBadgeText=$('loginBadgeText'),actionButtons=$('actionButtons'),btnViewLeads=$('btnViewLeads'),btnViewOrders=$('btnViewOrders'),btnViewQualified=$('btnViewQualified'),btnPlaceOrder=$('btnPlaceOrder'),customerCode=$('customerCode'),btnLoad=$('btnLoad'),detailsSection=$('detailsSection'),detailsTable=$('detailsTable'),leadsSection=$('leadsSection'),leadsTitle=$('leadsTitle'),leadsTable=$('leadsTable'),btnCloseLeads=$('btnCloseLeads'),ordersSection=$('ordersSection'),orderCustomerCode=$('orderCustomerCode'),btnCheckStatus=$('btnCheckStatus'),orderStatus=$('orderStatus'),orderNumber=$('orderNumber'),orderQuantity=$('orderQuantity'),btnSubmitOrder=$('btnSubmitOrder'),btnCloseOrders=$('btnCloseOrders'),qualification=$('qualification'),approvalButtons=$('approvalButtons'),btnApprove=$('btnApprove'),btnDecline=$('btnDecline'),presentation=$('presentation'),presentationOtherBox=$('presentationOtherBox'),presentationOther=$('presentationOther'),kycOnboarding=$('kycOnboarding'),qualificationOtherBox=$('qualificationOtherBox'),qualificationOther=$('qualificationOther'),assignSalesRep=$('assignSalesRep'),assignEmail=$('assignEmail'),btnSubmit=$('btnSubmit'),loading=$('loading'),message=$('message'),passwordModal=$('passwordModal'),supervisorPassword=$('supervisorPassword'),passwordHint=$('passwordHint'),btnCancelPassword=$('btnCancelPassword'),btnConfirmPassword=$('btnConfirmPassword');
+    const roleSelect=$('roleSelect'),salesRepAuth=$('salesRepAuth'),salesRepEmail=$('salesRepEmail'),salesRepPassword=$('salesRepPassword'),btnSalesRepLogin=$('btnSalesRepLogin'),salesRepLoginMsg=$('salesRepLoginMsg'),loginBadge=$('loginBadge'),loginBadgeText=$('loginBadgeText'),actionButtons=$('actionButtons'),btnViewLeads=$('btnViewLeads'),btnViewOrders=$('btnViewOrders'),btnViewQualified=$('btnViewQualified'),btnPlaceOrder=$('btnPlaceOrder'),btnGenerateLead=$('btnGenerateLead'),customerCode=$('customerCode'),btnLoad=$('btnLoad'),detailsSection=$('detailsSection'),detailsTable=$('detailsTable'),leadsSection=$('leadsSection'),leadsTitle=$('leadsTitle'),leadsTable=$('leadsTable'),btnCloseLeads=$('btnCloseLeads'),ordersSection=$('ordersSection'),orderCustomerCode=$('orderCustomerCode'),btnCheckStatus=$('btnCheckStatus'),orderStatus=$('orderStatus'),orderNumber=$('orderNumber'),orderQuantity=$('orderQuantity'),btnSubmitOrder=$('btnSubmitOrder'),btnCloseOrders=$('btnCloseOrders'),qualification=$('qualification'),approvalButtons=$('approvalButtons'),btnApprove=$('btnApprove'),btnDecline=$('btnDecline'),presentation=$('presentation'),presentationOtherBox=$('presentationOtherBox'),presentationOther=$('presentationOther'),kycOnboarding=$('kycOnboarding'),qualificationOtherBox=$('qualificationOtherBox'),qualificationOther=$('qualificationOther'),assignSalesRep=$('assignSalesRep'),assignEmail=$('assignEmail'),btnSubmit=$('btnSubmit'),loading=$('loading'),message=$('message'),passwordModal=$('passwordModal'),supervisorPassword=$('supervisorPassword'),passwordHint=$('passwordHint'),btnCancelPassword=$('btnCancelPassword'),btnConfirmPassword=$('btnConfirmPassword');
     const supervisorDashboard=$('supervisorDashboard'),metricTotalLeads=$('metricTotalLeads'),metricQualifiedLeads=$('metricQualifiedLeads'),metricQualificationRate=$('metricQualificationRate'),metricApprovedLeads=$('metricApprovedLeads'),metricConvertedLeads=$('metricConvertedLeads'),metricConversionRate=$('metricConversionRate'),btnRefreshDashboard=$('btnRefreshDashboard'),btnViewApprovedLeads=$('btnViewApprovedLeads');
     const salesRepDetailsSection=$('salesRepDetailsSection'),salesRepSelect=$('salesRepSelect'),repDetailsCard=$('repDetailsCard'),repName=$('repName'),repEmail=$('repEmail'),repTotalLeads=$('repTotalLeads'),repConvertedCount=$('repConvertedCount'),btnRepAllLeads=$('btnRepAllLeads'),btnRepConvertedLeads=$('btnRepConvertedLeads'),repLeadsTableSection=$('repLeadsTableSection'),repLeadsTitle=$('repLeadsTitle'),repLeadsTable=$('repLeadsTable'),btnCloseRepLeads=$('btnCloseRepLeads');
+    const leadFormSection=$('leadFormSection');
 
     async function api(action,data={}){loading.classList.add('show');try{const res=await fetch(API_URL,{method:'POST',headers:{'Content-Type':'text/plain'},body:JSON.stringify({action,...data})});return await res.json();}catch(e){return{success:false,message:'Network error: '+e.message};}finally{loading.classList.remove('show');}}
-    function showMsg(text,type='info'){message.className='message '+type;message.textContent=text;message.style.display='block';setTimeout(()=>message.style.display='none',5000);}
+    function showMsg(text,type='info'){message.className='message '+type;message.textContent=text;message.style.display='block';setTimeout(()=>message.style.display='none',6000);}
 
-    // ========== DOWNLOAD FUNCTIONS ==========
-    function downloadExcel(data, headers, filename) {
-      const ws = XLSX.utils.aoa_to_sheet([headers, ...data]);
-      // Auto-width columns
-      ws['!cols'] = headers.map((h, i) => {
-        const maxLen = Math.max(h.length, ...data.map(r => String(r[i] || '').length));
-        return { wch: Math.min(maxLen + 2, 30) };
-      });
-      const wb = XLSX.utils.book_new();
-      XLSX.utils.book_append_sheet(wb, ws, 'Data');
-      XLSX.writeFile(wb, filename + '.xlsx');
-    }
-
-    function downloadPdf(data, headers, filename, title) {
-      const { jsPDF } = window.jspdf;
-      const doc = new jsPDF({ orientation: headers.length > 6 ? 'landscape' : 'portrait' });
-      // Title
-      doc.setFontSize(14);
-      doc.setFont(undefined, 'bold');
-      doc.text(title, 14, 18);
-      doc.setFontSize(10);
-      doc.setFont(undefined, 'normal');
-      doc.text('Steelwool Africa LTD - Generated on ' + new Date().toLocaleDateString(), 14, 25);
-      // Table
-      doc.autoTable({
-        head: [headers],
-        body: data,
-        startY: 30,
-        styles: { fontSize: 7, cellPadding: 2 },
-        headStyles: { fillColor: [102, 126, 234], textColor: 255, fontStyle: 'bold' },
-        alternateRowStyles: { fillColor: [245, 247, 255] },
-        margin: { top: 30 }
-      });
-      doc.save(filename + '.pdf');
-    }
-
-    // Download All Leads
-    $('btnDownloadAllExcel').addEventListener('click', () => {
-      if (!currentRepData || !currentRepData.generatedLeads || currentRepData.generatedLeads.length === 0) { showMsg('No leads to download. Select a sales rep first.', 'error'); return; }
-      const headers = ['Code', 'Store Name', 'Area', 'Region', 'Location', 'Contact', 'Mobile', 'Qualification', 'Approval', 'Presentation', 'KYC'];
-      const data = currentRepData.generatedLeads.map(l => [l.customerCode, l.storeName, l.area, l.region, l.location, l.contactPerson, l.mobileNumber, l.qualification, l.approval, l.presentation, l.kycOnboarding]);
-      downloadExcel(data, headers, currentRepData.name + ' - All Leads');
-      showMsg('Excel downloaded!', 'success');
-    });
-
-    $('btnDownloadAllPdf').addEventListener('click', () => {
-      if (!currentRepData || !currentRepData.generatedLeads || currentRepData.generatedLeads.length === 0) { showMsg('No leads to download. Select a sales rep first.', 'error'); return; }
-      const headers = ['Code', 'Store Name', 'Area', 'Region', 'Location', 'Contact', 'Mobile', 'Qualification', 'Approval', 'Presentation', 'KYC'];
-      const data = currentRepData.generatedLeads.map(l => [l.customerCode, l.storeName, l.area, l.region, l.location, l.contactPerson, l.mobileNumber, l.qualification, l.approval, l.presentation, l.kycOnboarding]);
-      downloadPdf(data, headers, currentRepData.name + ' - All Leads', 'All Generated Leads - ' + currentRepData.name);
-      showMsg('PDF downloaded!', 'success');
-    });
-
-    // Download Converted Leads
-    $('btnDownloadConvertedExcel').addEventListener('click', () => {
-      if (!currentRepData || !currentRepData.convertedLeads || currentRepData.convertedLeads.length === 0) { showMsg('No converted leads to download.', 'error'); return; }
-      const headers = ['Code', 'Store Name', 'Area', 'Region', 'Contact', 'Order 1 (Kgs)', 'Order 2 (Kgs)', 'Order 3 (Kgs)', 'Total (Kgs)', 'Milestone'];
-      const data = currentRepData.convertedLeads.map(l => [l.customerCode, l.storeName, l.area, l.region, l.contactPerson, l.order1Qty > 0 ? l.order1Qty : '-', l.order2Qty > 0 ? l.order2Qty : '-', l.order3Qty > 0 ? l.order3Qty : '-', l.totalQty, l.milestone]);
-      downloadExcel(data, headers, currentRepData.name + ' - Converted Leads');
-      showMsg('Excel downloaded!', 'success');
-    });
-
-    $('btnDownloadConvertedPdf').addEventListener('click', () => {
-      if (!currentRepData || !currentRepData.convertedLeads || currentRepData.convertedLeads.length === 0) { showMsg('No converted leads to download.', 'error'); return; }
-      const headers = ['Code', 'Store Name', 'Area', 'Region', 'Contact', 'Order 1 (Kgs)', 'Order 2 (Kgs)', 'Order 3 (Kgs)', 'Total (Kgs)', 'Milestone'];
-      const data = currentRepData.convertedLeads.map(l => [l.customerCode, l.storeName, l.area, l.region, l.contactPerson, l.order1Qty > 0 ? l.order1Qty : '-', l.order2Qty > 0 ? l.order2Qty : '-', l.order3Qty > 0 ? l.order3Qty : '-', l.totalQty, l.milestone]);
-      downloadPdf(data, headers, currentRepData.name + ' - Converted Leads', 'Converted Leads - ' + currentRepData.name);
-      showMsg('PDF downloaded!', 'success');
-    });
+    // Downloads
+    function downloadExcel(data,headers,filename){const ws=XLSX.utils.aoa_to_sheet([headers,...data]);ws['!cols']=headers.map((h,i)=>{const m=Math.max(h.length,...data.map(r=>String(r[i]||'').length));return{wch:Math.min(m+2,30)};});const wb=XLSX.utils.book_new();XLSX.utils.book_append_sheet(wb,ws,'Data');XLSX.writeFile(wb,filename+'.xlsx');}
+    function downloadPdf(data,headers,filename,title){const{jsPDF}=window.jspdf;const doc=new jsPDF({orientation:headers.length>6?'landscape':'portrait'});doc.setFontSize(14);doc.setFont(undefined,'bold');doc.text(title,14,18);doc.setFontSize(10);doc.setFont(undefined,'normal');doc.text('Steelwool Africa LTD - '+new Date().toLocaleDateString(),14,25);doc.autoTable({head:[headers],body:data,startY:30,styles:{fontSize:7,cellPadding:2},headStyles:{fillColor:[102,126,234],textColor:255,fontStyle:'bold'},alternateRowStyles:{fillColor:[245,247,255]},margin:{top:30}});doc.save(filename+'.pdf');}
+    $('btnDownloadAllExcel').addEventListener('click',()=>{if(!currentRepData||!currentRepData.generatedLeads||currentRepData.generatedLeads.length===0){showMsg('No leads to download.','error');return;}const h=['Code','Store Name','Area','Region','Location','Contact','Mobile','Qualification','Approval','Presentation','KYC'];const d=currentRepData.generatedLeads.map(l=>[l.customerCode,l.storeName,l.area,l.region,l.location,l.contactPerson,l.mobileNumber,l.qualification,l.approval,l.presentation,l.kycOnboarding]);downloadExcel(d,h,currentRepData.name+' - All Leads');showMsg('Excel downloaded!','success');});
+    $('btnDownloadAllPdf').addEventListener('click',()=>{if(!currentRepData||!currentRepData.generatedLeads||currentRepData.generatedLeads.length===0){showMsg('No leads to download.','error');return;}const h=['Code','Store Name','Area','Region','Location','Contact','Mobile','Qualification','Approval','Presentation','KYC'];const d=currentRepData.generatedLeads.map(l=>[l.customerCode,l.storeName,l.area,l.region,l.location,l.contactPerson,l.mobileNumber,l.qualification,l.approval,l.presentation,l.kycOnboarding]);downloadPdf(d,h,currentRepData.name+' - All Leads','All Generated Leads - '+currentRepData.name);showMsg('PDF downloaded!','success');});
+    $('btnDownloadConvertedExcel').addEventListener('click',()=>{if(!currentRepData||!currentRepData.convertedLeads||currentRepData.convertedLeads.length===0){showMsg('No converted leads.','error');return;}const h=['Code','Store Name','Area','Region','Contact','Order 1 (Kgs)','Order 2 (Kgs)','Order 3 (Kgs)','Total (Kgs)','Milestone'];const d=currentRepData.convertedLeads.map(l=>[l.customerCode,l.storeName,l.area,l.region,l.contactPerson,l.order1Qty>0?l.order1Qty:'-',l.order2Qty>0?l.order2Qty:'-',l.order3Qty>0?l.order3Qty:'-',l.totalQty,l.milestone]);downloadExcel(d,h,currentRepData.name+' - Converted Leads');showMsg('Excel downloaded!','success');});
+    $('btnDownloadConvertedPdf').addEventListener('click',()=>{if(!currentRepData||!currentRepData.convertedLeads||currentRepData.convertedLeads.length===0){showMsg('No converted leads.','error');return;}const h=['Code','Store Name','Area','Region','Contact','Order 1 (Kgs)','Order 2 (Kgs)','Order 3 (Kgs)','Total (Kgs)','Milestone'];const d=currentRepData.convertedLeads.map(l=>[l.customerCode,l.storeName,l.area,l.region,l.contactPerson,l.order1Qty>0?l.order1Qty:'-',l.order2Qty>0?l.order2Qty:'-',l.order3Qty>0?l.order3Qty:'-',l.totalQty,l.milestone]);downloadPdf(d,h,currentRepData.name+' - Converted Leads','Converted Leads - '+currentRepData.name);showMsg('PDF downloaded!','success');});
 
     // Dashboard
-    async function loadDashboard(){if(!isSupervisorAuth||!supervisorPw)return;const res=await api('getSupervisorDashboard',{password:supervisorPw});if(res.success){dashboardData=res.data;metricTotalLeads.textContent=res.data.totalLeads;metricQualifiedLeads.textContent=res.data.qualifiedLeads;metricQualificationRate.textContent=res.data.qualificationRate+'%';metricApprovedLeads.textContent=res.data.approvedLeadsCount;metricConvertedLeads.textContent=res.data.convertedLeads;metricConversionRate.textContent=res.data.conversionRate+'%';supervisorDashboard.classList.remove('hidden');}else{showMsg('Failed to load dashboard: '+res.message,'error');}}
+    async function loadDashboard(){if(!isSupervisorAuth||!supervisorPw)return;const res=await api('getSupervisorDashboard',{password:supervisorPw});if(res.success){dashboardData=res.data;metricTotalLeads.textContent=res.data.totalLeads;metricQualifiedLeads.textContent=res.data.qualifiedLeads;metricQualificationRate.textContent=res.data.qualificationRate+'%';metricApprovedLeads.textContent=res.data.approvedLeadsCount;metricConvertedLeads.textContent=res.data.convertedLeads;metricConversionRate.textContent=res.data.conversionRate+'%';supervisorDashboard.classList.remove('hidden');}else showMsg('Dashboard error: '+res.message,'error');}
     btnRefreshDashboard.addEventListener('click',()=>{loadDashboard();showMsg('Dashboard refreshed','success');});
-    btnViewApprovedLeads.addEventListener('click',()=>{if(!dashboardData||!dashboardData.approvedLeads){showMsg('No dashboard data. Click Refresh first.','error');return;}if(dashboardData.approvedLeads.length===0){showMsg('No approved leads found','info');return;}renderLeadsTable(dashboardData.approvedLeads,'Approved Leads ('+dashboardData.approvedLeadsCount+')');});
+    btnViewApprovedLeads.addEventListener('click',()=>{if(!dashboardData||!dashboardData.approvedLeads){showMsg('No data. Refresh first.','error');return;}if(dashboardData.approvedLeads.length===0){showMsg('No approved leads','info');return;}renderLeadsTable(dashboardData.approvedLeads,'Approved Leads ('+dashboardData.approvedLeadsCount+')');});
 
     // Sales Rep Details
-    salesRepSelect.addEventListener('change',async()=>{const email=salesRepSelect.value;if(!email){repDetailsCard.classList.add('hidden');repLeadsTableSection.classList.add('hidden');currentRepData=null;return;}const res=await api('getSalesRepDetails',{salesRepEmail:email,password:supervisorPw});if(res.success){currentRepData=res.data;repName.textContent=res.data.name;repEmail.textContent=res.data.email;repTotalLeads.textContent=res.data.totalLeads;repConvertedCount.textContent=res.data.convertedCount;repDetailsCard.classList.remove('hidden');repLeadsTableSection.classList.add('hidden');}else{showMsg(res.message,'error');repDetailsCard.classList.add('hidden');}});
-    btnRepAllLeads.addEventListener('click',()=>{if(!currentRepData||!currentRepData.generatedLeads)return;if(currentRepData.generatedLeads.length===0){showMsg('No leads found for this rep','info');return;}repLeadsTitle.textContent='All Generated Leads ('+currentRepData.totalLeads+')';const headers=['Code','Store Name','Area','Region','Contact','Mobile','Qualification','Approval','Presentation','KYC'];repLeadsTable.innerHTML='<thead><tr>'+headers.map(h=>'<th>'+h+'</th>').join('')+'</tr></thead><tbody>'+currentRepData.generatedLeads.map(l=>'<tr><td>'+l.customerCode+'</td><td>'+l.storeName+'</td><td>'+l.area+'</td><td>'+l.region+'</td><td>'+l.contactPerson+'</td><td>'+l.mobileNumber+'</td><td>'+l.qualification+'</td><td>'+l.approval+'</td><td>'+l.presentation+'</td><td>'+l.kycOnboarding+'</td></tr>').join('')+'</tbody>';repLeadsTableSection.classList.remove('hidden');});
-    btnRepConvertedLeads.addEventListener('click',()=>{if(!currentRepData||!currentRepData.convertedLeads)return;if(currentRepData.convertedLeads.length===0){showMsg('No converted leads for this rep','info');return;}repLeadsTitle.textContent='Converted Leads ('+currentRepData.convertedCount+')';const headers=['Code','Store Name','Area','Order 1 (Kgs)','Order 2 (Kgs)','Order 3 (Kgs)','Total (Kgs)','Milestone'];repLeadsTable.innerHTML='<thead><tr>'+headers.map(h=>'<th>'+h+'</th>').join('')+'</tr></thead><tbody>'+currentRepData.convertedLeads.map(l=>{let badgeClass='milestone-1';if(l.completedOrders===3)badgeClass='milestone-3';else if(l.completedOrders===2)badgeClass='milestone-2';return '<tr><td>'+l.customerCode+'</td><td>'+l.storeName+'</td><td>'+l.area+'</td><td>'+(l.order1Qty>0?l.order1Qty.toFixed(2):'-')+'</td><td>'+(l.order2Qty>0?l.order2Qty.toFixed(2):'-')+'</td><td>'+(l.order3Qty>0?l.order3Qty.toFixed(2):'-')+'</td><td>'+l.totalQty.toFixed(2)+'</td><td><span class="milestone-badge '+badgeClass+'">'+l.milestone+'</span></td></tr>';}).join('')+'</tbody>';repLeadsTableSection.classList.remove('hidden');});
+    salesRepSelect.addEventListener('change',async()=>{const email=salesRepSelect.value;if(!email){repDetailsCard.classList.add('hidden');currentRepData=null;return;}const res=await api('getSalesRepDetails',{salesRepEmail:email,password:supervisorPw});if(res.success){currentRepData=res.data;repName.textContent=res.data.name;repEmail.textContent=res.data.email;repTotalLeads.textContent=res.data.totalLeads;repConvertedCount.textContent=res.data.convertedCount;repDetailsCard.classList.remove('hidden');repLeadsTableSection.classList.add('hidden');}else{showMsg(res.message,'error');repDetailsCard.classList.add('hidden');}});
+    btnRepAllLeads.addEventListener('click',()=>{if(!currentRepData||currentRepData.generatedLeads.length===0){showMsg('No leads','info');return;}repLeadsTitle.textContent='All Leads ('+currentRepData.totalLeads+')';const h=['Code','Store Name','Area','Region','Contact','Mobile','Qualification','Approval','Presentation','KYC'];repLeadsTable.innerHTML='<thead><tr>'+h.map(x=>'<th>'+x+'</th>').join('')+'</tr></thead><tbody>'+currentRepData.generatedLeads.map(l=>'<tr><td>'+l.customerCode+'</td><td>'+l.storeName+'</td><td>'+l.area+'</td><td>'+l.region+'</td><td>'+l.contactPerson+'</td><td>'+l.mobileNumber+'</td><td>'+l.qualification+'</td><td>'+l.approval+'</td><td>'+l.presentation+'</td><td>'+l.kycOnboarding+'</td></tr>').join('')+'</tbody>';repLeadsTableSection.classList.remove('hidden');});
+    btnRepConvertedLeads.addEventListener('click',()=>{if(!currentRepData||currentRepData.convertedLeads.length===0){showMsg('No converted leads','info');return;}repLeadsTitle.textContent='Converted ('+currentRepData.convertedCount+')';const h=['Code','Store Name','Area','Order 1','Order 2','Order 3','Total','Milestone'];repLeadsTable.innerHTML='<thead><tr>'+h.map(x=>'<th>'+x+'</th>').join('')+'</tr></thead><tbody>'+currentRepData.convertedLeads.map(l=>{let bc='milestone-1';if(l.completedOrders===3)bc='milestone-3';else if(l.completedOrders===2)bc='milestone-2';return '<tr><td>'+l.customerCode+'</td><td>'+l.storeName+'</td><td>'+l.area+'</td><td>'+(l.order1Qty>0?l.order1Qty.toFixed(2):'-')+'</td><td>'+(l.order2Qty>0?l.order2Qty.toFixed(2):'-')+'</td><td>'+(l.order3Qty>0?l.order3Qty.toFixed(2):'-')+'</td><td>'+l.totalQty.toFixed(2)+'</td><td><span class="milestone-badge '+bc+'">'+l.milestone+'</span></td></tr>';}).join('')+'</tbody>';repLeadsTableSection.classList.remove('hidden');});
     btnCloseRepLeads.addEventListener('click',()=>repLeadsTableSection.classList.add('hidden'));
 
-    function updateUI(){const role=roleSelect.value;if(role==='Supervisor'&&isSupervisorAuth){supervisorDashboard.classList.remove('hidden');salesRepDetailsSection.classList.remove('hidden');}else{supervisorDashboard.classList.add('hidden');salesRepDetailsSection.classList.add('hidden');}if(role==='SalesRep')salesRepAuth.classList.remove('hidden');else salesRepAuth.classList.add('hidden');if(role==='SalesRep'&&isSalesRepLoggedIn)actionButtons.classList.remove('hidden');else if(role==='Supervisor')actionButtons.classList.remove('hidden');else actionButtons.classList.add('hidden');btnViewLeads.classList.toggle('hidden',role!=='Supervisor');btnViewOrders.classList.toggle('hidden',role!=='Supervisor');btnViewQualified.classList.toggle('hidden',role!=='SalesRep');btnPlaceOrder.classList.toggle('hidden',role!=='SalesRep');approvalButtons.classList.toggle('hidden',role!=='Supervisor'||!isSupervisorAuth);assignSalesRep.classList.toggle('hidden',role!=='Supervisor'||!isSupervisorAuth);qualification.disabled=role!=='Supervisor'||!isSupervisorAuth;presentation.disabled=role!=='SalesRep'||!currentLead||currentLead.approval!=='Approved'||!isSalesRepLoggedIn;kycOnboarding.disabled=role!=='SalesRep'||!currentLead||currentLead.approval!=='Approved'||!isSalesRepLoggedIn;if(role==='SalesRep'){customerCode.disabled=!isSalesRepLoggedIn;btnLoad.disabled=!isSalesRepLoggedIn;}else{customerCode.disabled=false;btnLoad.disabled=false;}qualificationOtherBox.classList.toggle('hidden',qualification.value!=='Other');presentationOtherBox.classList.toggle('hidden',presentation.value!=='Other');if(role==='Supervisor'&&!isSupervisorAuth)showPasswordModal();}
+    // ========== LEAD GENERATION FORM ==========
+    btnGenerateLead.addEventListener('click',()=>{leadFormSection.classList.remove('hidden');ordersSection.classList.add('hidden');leadsSection.classList.add('hidden');detailsSection.classList.add('hidden');});
+    $('btnCloseLeadForm').addEventListener('click',()=>{leadFormSection.classList.add('hidden');});
+
+      // Purchase Frequency "Other" toggle
+    $('lfPurchaseFreq').addEventListener('change', () => {
+      $('lfPurchaseFreqOtherBox').classList.toggle('hidden', $('lfPurchaseFreq').value !== 'Other');
+      if ($('lfPurchaseFreq').value !== 'Other') $('lfPurchaseFreqOther').value = '';
+    });
+
+    $('btnSubmitLeadForm').addEventListener('click',async()=>{
+      const region=$('lfRegion').value;const area=$('lfArea').value.trim();const location=$('lfLocation').value.trim();const storeName=$('lfStoreName').value.trim();const contactPerson=$('lfContactPerson').value.trim();const mobileNumber=$('lfMobileNumber').value.trim();const outletCategory=$('lfOutletCategory').value;const distributorType=$('lfDistributorType').value;const mainSupplier=$('lfMainSupplier').value.trim();const weldplusAwareness=$('lfWeldplusAware').value;const additionalFeedback=$('lfAdditionalFeedback').value.trim();
+      // Handle purchase frequency with "Other" option
+      let purchaseFrequency=$('lfPurchaseFreq').value;
+      if(purchaseFrequency==='Other'){const otherText=$('lfPurchaseFreqOther').value.trim();if(!otherText){showMsg('Please specify the purchase frequency','error');return;}purchaseFrequency='Other: '+otherText;}
+      // Get checked brands
+      const brandCheckboxes=document.querySelectorAll('#lfBrandsGroup input[type="checkbox"]:checked');
+      const brandsStocked=Array.from(brandCheckboxes).map(cb=>cb.value).join(', ');
+      // Validate
+      if(!region){showMsg('Please select a Region','error');return;}
+      if(!area){showMsg('Please enter an Area','error');return;}
+      if(!location){showMsg('Please enter a Location/Landmark','error');return;}
+      if(!storeName){showMsg('Please enter Store Name','error');return;}
+      if(!outletCategory){showMsg('Please select Outlet Category','error');return;}
+      if(!brandsStocked){showMsg('Please select at least one brand','error');return;}
+      if(!purchaseFrequency){showMsg('Please select Purchase Frequency','error');return;}
+      if(!distributorType){showMsg('Please select Manufacturer/Distributor','error');return;}
+      if(!weldplusAwareness){showMsg('Please select Weldplus awareness','error');return;}
+      const res=await api('submitLeadForm',{salesRepEmail:salesRepEmail.value.trim(),salesRepPassword:salesRepPassword.value.trim(),region,area,location,storeName,contactPerson,mobileNumber,outletCategory,brandsStocked,purchaseFrequency,mainSupplier,distributorType,weldplusAwareness,additionalFeedback});
+      if(res.success){showMsg(res.message,'success');
+        // Reset form
+        $('lfRegion').value='';$('lfArea').value='';$('lfLocation').value='';$('lfStoreName').value='';$('lfContactPerson').value='';$('lfMobileNumber').value='';$('lfOutletCategory').value='';$('lfPurchaseFreq').value='';$('lfPurchaseFreqOther').value='';$('lfPurchaseFreqOtherBox').classList.add('hidden');$('lfDistributorType').value='';$('lfMainSupplier').value='';$('lfWeldplusAware').value='';$('lfAdditionalFeedback').value='';
+        document.querySelectorAll('#lfBrandsGroup input[type="checkbox"]').forEach(cb=>cb.checked=false);
+        leadFormSection.classList.add('hidden');
+      }else showMsg(res.message,'error');
+    });
+
+    // UI
+    function updateUI(){const role=roleSelect.value;if(role==='Supervisor'&&isSupervisorAuth){supervisorDashboard.classList.remove('hidden');salesRepDetailsSection.classList.remove('hidden');}else{supervisorDashboard.classList.add('hidden');salesRepDetailsSection.classList.add('hidden');}if(role==='SalesRep')salesRepAuth.classList.remove('hidden');else salesRepAuth.classList.add('hidden');if(role==='SalesRep'&&isSalesRepLoggedIn)actionButtons.classList.remove('hidden');else if(role==='Supervisor')actionButtons.classList.remove('hidden');else actionButtons.classList.add('hidden');btnViewLeads.classList.toggle('hidden',role!=='Supervisor');btnViewOrders.classList.toggle('hidden',role!=='Supervisor');btnViewQualified.classList.toggle('hidden',role!=='SalesRep');btnPlaceOrder.classList.toggle('hidden',role!=='SalesRep');btnGenerateLead.classList.toggle('hidden',role!=='SalesRep');approvalButtons.classList.toggle('hidden',role!=='Supervisor'||!isSupervisorAuth);assignSalesRep.classList.toggle('hidden',role!=='Supervisor'||!isSupervisorAuth);qualification.disabled=role!=='Supervisor'||!isSupervisorAuth;presentation.disabled=role!=='SalesRep'||!currentLead||currentLead.approval!=='Approved'||!isSalesRepLoggedIn;kycOnboarding.disabled=role!=='SalesRep'||!currentLead||currentLead.approval!=='Approved'||!isSalesRepLoggedIn;if(role==='SalesRep'){customerCode.disabled=!isSalesRepLoggedIn;btnLoad.disabled=!isSalesRepLoggedIn;}else{customerCode.disabled=false;btnLoad.disabled=false;}qualificationOtherBox.classList.toggle('hidden',qualification.value!=='Other');presentationOtherBox.classList.toggle('hidden',presentation.value!=='Other');if(role==='Supervisor'&&!isSupervisorAuth)showPasswordModal();}
     function showPasswordModal(){passwordModal.classList.remove('hidden');supervisorPassword.value='';passwordHint.style.display='none';supervisorPassword.focus();}
     function hidePasswordModal(){passwordModal.classList.add('hidden');}
-    roleSelect.addEventListener('change',()=>{currentLead=null;detailsSection.classList.add('hidden');leadsSection.classList.add('hidden');ordersSection.classList.add('hidden');supervisorDashboard.classList.add('hidden');salesRepDetailsSection.classList.add('hidden');qualification.value='';presentation.value='';kycOnboarding.value='';qualificationOther.value='';presentationOther.value='';qualificationOtherBox.classList.add('hidden');presentationOtherBox.classList.add('hidden');salesRepLoginMsg.style.display='none';if(roleSelect.value==='SalesRep'){isSalesRepLoggedIn=false;salesRepName='';salesRepEmail.value='';salesRepPassword.value='';if(loginBadge){loginBadge.classList.remove('show');loginBadgeText.textContent='';}}if(roleSelect.value!=='Supervisor'){isSupervisorAuth=false;supervisorPw='';}updateUI();});
+    roleSelect.addEventListener('change',()=>{currentLead=null;detailsSection.classList.add('hidden');leadsSection.classList.add('hidden');ordersSection.classList.add('hidden');leadFormSection.classList.add('hidden');supervisorDashboard.classList.add('hidden');salesRepDetailsSection.classList.add('hidden');qualification.value='';presentation.value='';kycOnboarding.value='';qualificationOther.value='';presentationOther.value='';qualificationOtherBox.classList.add('hidden');presentationOtherBox.classList.add('hidden');salesRepLoginMsg.style.display='none';if(roleSelect.value==='SalesRep'){isSalesRepLoggedIn=false;salesRepName='';salesRepEmail.value='';salesRepPassword.value='';if(loginBadge){loginBadge.classList.remove('show');loginBadgeText.textContent='';}}if(roleSelect.value!=='Supervisor'){isSupervisorAuth=false;supervisorPw='';}updateUI();});
     btnCancelPassword.addEventListener('click',()=>{hidePasswordModal();roleSelect.value='';updateUI();});
     btnConfirmPassword.addEventListener('click',async()=>{const pw=supervisorPassword.value.trim();if(!pw){passwordHint.textContent='Enter password';passwordHint.style.display='block';return;}const res=await api('validateSupervisorPassword',{password:pw});if(res.success){isSupervisorAuth=true;supervisorPw=pw;hidePasswordModal();if(loginBadge){loginBadge.classList.add('show');loginBadgeText.textContent='Logged in as: Supervisor';}updateUI();loadDashboard();showMsg('Supervisor authenticated','success');}else{passwordHint.textContent=res.message||'Invalid password';passwordHint.style.display='block';}});
-    btnSalesRepLogin.addEventListener('click',async()=>{const email=salesRepEmail.value.trim();const password=salesRepPassword.value.trim();if(!email||!password){salesRepLoginMsg.textContent='Please enter email and password';salesRepLoginMsg.style.display='block';return;}const res=await api('validateSalesRepLogin',{salesRepEmail:email,salesRepPassword:password});if(res.success){isSalesRepLoggedIn=true;salesRepName=res.name;salesRepLoginMsg.style.display='none';if(loginBadge){loginBadge.classList.add('show');loginBadgeText.textContent=`Logged in as: ${res.name}`;}btnSalesRepLogin.textContent='Logged In ✓';btnSalesRepLogin.disabled=true;btnSalesRepLogin.style.background='#22c55e';salesRepEmail.disabled=true;salesRepPassword.disabled=true;updateUI();showMsg(`Welcome, ${res.name}!`,'success');}else{salesRepLoginMsg.textContent=res.message;salesRepLoginMsg.style.display='block';salesRepLoginMsg.style.color='#dc2626';}});
-    btnLoad.addEventListener('click',async()=>{const code=customerCode.value.trim();const role=roleSelect.value;if(!role){showMsg('Select a role first','error');return;}if(!code){showMsg('Enter customer code','error');return;}if(role==='SalesRep'&&!isSalesRepLoggedIn){showMsg('Please login first','error');return;}const res=await api('getLeadStatus',{customerCode:code,role,salesRepEmail:salesRepEmail.value.trim(),salesRepPassword:salesRepPassword.value.trim()});if(!res.success){showMsg(res.message,'error');return;}currentLead=res.data;qualification.value=currentLead.qualification||'';presentation.value=currentLead.presentation||'';kycOnboarding.value=currentLead.kycOnboarding||'';assignEmail.value=currentLead.salesRepEmail||'';if(currentLead.qualification&&currentLead.qualification.startsWith('Other: ')){qualification.value='Other';qualificationOther.value=currentLead.qualification.substring(7);}else qualificationOther.value='';if(currentLead.presentation&&currentLead.presentation.startsWith('Other: ')){presentation.value='Other';presentationOther.value=currentLead.presentation.substring(7);}else presentationOther.value='';renderDetails(currentLead);detailsSection.classList.remove('hidden');leadsSection.classList.add('hidden');ordersSection.classList.add('hidden');updateUI();showMsg('Lead loaded (row '+currentLead.row+')','success');});
-    function renderDetails(d){const fields=[['Region',d.region],['Area',d.area],['Location',d.location],['Store Name',d.storeName],['Contact Person',d.contactPerson],['Mobile',d.mobileNumber],['Outlet Category',d.outletCategory],['Brands Stocked',d.brandsStocked],['Purchase Freq',d.purchaseFrequency],['Main Supplier',d.mainSupplier],['Distributor Type',d.distributorType],['Weldplus Aware',d.weldplusAwareness],['Feedback',d.additionalFeedback],['Customer Code',d.customerCode]];detailsTable.innerHTML='<tr>'+fields.map(f=>`<th>${f[0]}</th>`).join('')+'</tr><tr>'+fields.map(f=>`<td>${f[1]||''}</td>`).join('')+'</tr>';}
+    btnSalesRepLogin.addEventListener('click',async()=>{const email=salesRepEmail.value.trim();const password=salesRepPassword.value.trim();if(!email||!password){salesRepLoginMsg.textContent='Please enter email and password';salesRepLoginMsg.style.display='block';return;}const res=await api('validateSalesRepLogin',{salesRepEmail:email,salesRepPassword:password});if(res.success){isSalesRepLoggedIn=true;salesRepName=res.name;salesRepLoginMsg.style.display='none';if(loginBadge){loginBadge.classList.add('show');loginBadgeText.textContent='Logged in as: '+res.name;}btnSalesRepLogin.textContent='Logged In ✓';btnSalesRepLogin.disabled=true;btnSalesRepLogin.style.background='#22c55e';salesRepEmail.disabled=true;salesRepPassword.disabled=true;updateUI();showMsg('Welcome, '+res.name+'!','success');}else{salesRepLoginMsg.textContent=res.message;salesRepLoginMsg.style.display='block';salesRepLoginMsg.style.color='#dc2626';}});
+    btnLoad.addEventListener('click',async()=>{const code=customerCode.value.trim();const role=roleSelect.value;if(!role){showMsg('Select a role first','error');return;}if(!code){showMsg('Enter customer code','error');return;}if(role==='SalesRep'&&!isSalesRepLoggedIn){showMsg('Please login first','error');return;}const res=await api('getLeadStatus',{customerCode:code,role,salesRepEmail:salesRepEmail.value.trim(),salesRepPassword:salesRepPassword.value.trim()});if(!res.success){showMsg(res.message,'error');return;}currentLead=res.data;qualification.value=currentLead.qualification||'';presentation.value=currentLead.presentation||'';kycOnboarding.value=currentLead.kycOnboarding||'';assignEmail.value=currentLead.salesRepEmail||'';if(currentLead.qualification&&currentLead.qualification.startsWith('Other: ')){qualification.value='Other';qualificationOther.value=currentLead.qualification.substring(7);}else qualificationOther.value='';if(currentLead.presentation&&currentLead.presentation.startsWith('Other: ')){presentation.value='Other';presentationOther.value=currentLead.presentation.substring(7);}else presentationOther.value='';renderDetails(currentLead);detailsSection.classList.remove('hidden');leadsSection.classList.add('hidden');ordersSection.classList.add('hidden');leadFormSection.classList.add('hidden');updateUI();showMsg('Lead loaded (row '+currentLead.row+')','success');});
+    function renderDetails(d){const f=[['Region',d.region],['Area',d.area],['Location',d.location],['Store Name',d.storeName],['Contact',d.contactPerson],['Mobile',d.mobileNumber],['Category',d.outletCategory],['Brands',d.brandsStocked],['Freq',d.purchaseFrequency],['Supplier',d.mainSupplier],['Type',d.distributorType],['Weldplus',d.weldplusAwareness],['Feedback',d.additionalFeedback],['Code',d.customerCode]];detailsTable.innerHTML='<tr>'+f.map(x=>'<th>'+x[0]+'</th>').join('')+'</tr><tr>'+f.map(x=>'<td>'+(x[1]||'')+'</td>').join('')+'</tr>';}
     btnViewLeads.addEventListener('click',async()=>{const res=await api('getAllGeneratedLeads');if(!res.success){showMsg(res.message,'error');return;}renderLeadsTable(res.data,'Generated Leads');});
-    btnViewQualified.addEventListener('click',async()=>{if(!isSalesRepLoggedIn){showMsg('Please login first','error');return;}const res=await api('getQualifiedLeadsBySalesRep',{salesRepEmail:salesRepEmail.value.trim(),salesRepPassword:salesRepPassword.value.trim()});if(!res.success){showMsg(res.message,'error');return;}if(res.data.length===0){showMsg('No qualified leads found','info');return;}renderLeadsTable(res.data,'Qualified Leads');});
+    btnViewQualified.addEventListener('click',async()=>{if(!isSalesRepLoggedIn){showMsg('Login first','error');return;}const res=await api('getQualifiedLeadsBySalesRep',{salesRepEmail:salesRepEmail.value.trim(),salesRepPassword:salesRepPassword.value.trim()});if(!res.success){showMsg(res.message,'error');return;}if(res.data.length===0){showMsg('No qualified leads','info');return;}renderLeadsTable(res.data,'Qualified Leads');});
     btnViewOrders.addEventListener('click',async()=>{const res=await api('getOrdersSummary');if(!res.success){showMsg(res.message,'error');return;}if(res.data.length===0){showMsg('No orders yet','info');return;}renderOrdersTable(res.data);});
-    function renderLeadsTable(leads,title){leadsTitle.textContent=title;const headers=['Region','Area','Location','Store Name','Contact','Mobile','Category','Brands','Freq','Supplier','Dist Type','Weldplus','Feedback','Code'];leadsTable.innerHTML='<thead><tr>'+headers.map(h=>`<th>${h}</th>`).join('')+'</tr></thead><tbody>'+leads.map(l=>`<tr><td>${l.region}</td><td>${l.area}</td><td>${l.location}</td><td>${l.storeName}</td><td>${l.contactPerson}</td><td>${l.mobileNumber}</td><td>${l.outletCategory}</td><td>${l.brandsStocked}</td><td>${l.purchaseFrequency}</td><td>${l.mainSupplier}</td><td>${l.distributorType}</td><td>${l.weldplusAwareness}</td><td>${l.additionalFeedback}</td><td>${l.customerCode}</td></tr>`).join('')+'</tbody>';leadsSection.classList.remove('hidden');detailsSection.classList.add('hidden');ordersSection.classList.add('hidden');}
-    function renderOrdersTable(orders){leadsTitle.textContent='Orders Summary';leadsTable.innerHTML='<thead><tr><th>Customer Code</th><th>Orders</th><th>Total Kgs</th><th>Avg Kgs</th></tr></thead><tbody>'+orders.map(o=>`<tr><td>${o.customerCode}</td><td>${o.numberOfOrders}</td><td>${o.totalQuantity.toFixed(2)}</td><td>${o.averageQuantity.toFixed(2)}</td></tr>`).join('')+'</tbody>';leadsSection.classList.remove('hidden');detailsSection.classList.add('hidden');ordersSection.classList.add('hidden');}
+    function renderLeadsTable(leads,title){leadsTitle.textContent=title;const h=['Region','Area','Location','Store Name','Contact','Mobile','Category','Brands','Freq','Supplier','Dist Type','Weldplus','Feedback','Code'];leadsTable.innerHTML='<thead><tr>'+h.map(x=>'<th>'+x+'</th>').join('')+'</tr></thead><tbody>'+leads.map(l=>'<tr><td>'+l.region+'</td><td>'+l.area+'</td><td>'+l.location+'</td><td>'+l.storeName+'</td><td>'+l.contactPerson+'</td><td>'+l.mobileNumber+'</td><td>'+l.outletCategory+'</td><td>'+l.brandsStocked+'</td><td>'+l.purchaseFrequency+'</td><td>'+l.mainSupplier+'</td><td>'+l.distributorType+'</td><td>'+l.weldplusAwareness+'</td><td>'+l.additionalFeedback+'</td><td>'+l.customerCode+'</td></tr>').join('')+'</tbody>';leadsSection.classList.remove('hidden');detailsSection.classList.add('hidden');ordersSection.classList.add('hidden');leadFormSection.classList.add('hidden');}
+    function renderOrdersTable(orders){leadsTitle.textContent='Orders Summary';leadsTable.innerHTML='<thead><tr><th>Customer Code</th><th>Orders</th><th>Total Kgs</th><th>Avg Kgs</th></tr></thead><tbody>'+orders.map(o=>'<tr><td>'+o.customerCode+'</td><td>'+o.numberOfOrders+'</td><td>'+o.totalQuantity.toFixed(2)+'</td><td>'+o.averageQuantity.toFixed(2)+'</td></tr>').join('')+'</tbody>';leadsSection.classList.remove('hidden');detailsSection.classList.add('hidden');ordersSection.classList.add('hidden');leadFormSection.classList.add('hidden');}
     btnCloseLeads.addEventListener('click',()=>leadsSection.classList.add('hidden'));
     qualification.addEventListener('change',()=>{qualificationOtherBox.classList.toggle('hidden',qualification.value!=='Other');if(qualification.value!=='Other')qualificationOther.value='';});
     presentation.addEventListener('change',()=>{presentationOtherBox.classList.toggle('hidden',presentation.value!=='Other');if(presentation.value!=='Other')presentationOther.value='';});
-    btnPlaceOrder.addEventListener('click',()=>{ordersSection.classList.remove('hidden');leadsSection.classList.add('hidden');detailsSection.classList.add('hidden');orderCustomerCode.value='';orderNumber.innerHTML='<option value="">-- Check status first --</option>';orderNumber.disabled=true;orderQuantity.value='';orderStatus.classList.add('hidden');currentOrderStatus=null;});
+    btnPlaceOrder.addEventListener('click',()=>{ordersSection.classList.remove('hidden');leadsSection.classList.add('hidden');detailsSection.classList.add('hidden');leadFormSection.classList.add('hidden');orderCustomerCode.value='';orderNumber.innerHTML='<option value="">-- Check status first --</option>';orderNumber.disabled=true;orderQuantity.value='';orderStatus.classList.add('hidden');currentOrderStatus=null;});
     btnCloseOrders.addEventListener('click',()=>ordersSection.classList.add('hidden'));
-    btnCheckStatus.addEventListener('click',async()=>{const code=orderCustomerCode.value.trim();if(!code){showMsg('Enter customer code','error');return;}if(!isSalesRepLoggedIn){showMsg('Please login first','error');return;}const res=await api('getAvailableOrders',{customerCode:code,salesRepEmail:salesRepEmail.value.trim(),salesRepPassword:salesRepPassword.value.trim()});if(!res.success){showMsg(res.message,'error');orderStatus.classList.add('hidden');return;}currentOrderStatus=res;updateOrderDropdown(res);let html='';if(res.submittedOrders.length===0)html='No orders yet. You can submit Order 1.';else if(res.nextAvailableOrder===-1)html='All 3 orders submitted.';else html=`Submitted: Order ${res.submittedOrders.join(', ')}<br><strong>Next:</strong> Order ${res.nextAvailableOrder}`;orderStatus.innerHTML=html;orderStatus.classList.remove('hidden');});
-    function updateOrderDropdown(status){let opts='<option value="">-- Select Order --</option>';for(let i=1;i<=3;i++){const submitted=status.submittedOrders.includes(i);const available=i===status.nextAvailableOrder;const disabled=submitted||(!available&&status.nextAvailableOrder!==-1);const label=submitted?`Order ${i} (Done)`:available?`Order ${i} (Available)`:`Order ${i}`;opts+=`<option value="Order ${i}" ${disabled?'disabled':''}>${label}</option>`;}orderNumber.innerHTML=opts;orderNumber.disabled=status.nextAvailableOrder===-1;}
-    btnSubmitOrder.addEventListener('click',async()=>{const code=orderCustomerCode.value.trim();const num=orderNumber.value;const qty=parseFloat(orderQuantity.value);if(!code||!num||!qty||qty<=0){showMsg('Fill all fields','error');return;}if(!currentOrderStatus){showMsg('Check status first','error');return;}if(!isSalesRepLoggedIn){showMsg('Please login first','error');return;}const res=await api('submitOrder',{customerCode:code,orderNumber:num,quantity:qty,salesRepEmail:salesRepEmail.value.trim(),salesRepPassword:salesRepPassword.value.trim()});if(res.success){showMsg(res.message,'success');orderQuantity.value='';btnCheckStatus.click();}else showMsg(res.message,'error');});
-    btnApprove.addEventListener('click',()=>updateQualification('Approved'));
-    btnDecline.addEventListener('click',()=>updateQualification('Declined'));
-    async function updateQualification(action){if(!currentLead){showMsg('Load a lead first','error');return;}if(!qualification.value){showMsg('Select qualification first','error');return;}let qualValue=qualification.value;if(qualValue==='Other'){const customText=qualificationOther.value.trim();if(!customText){showMsg('Please specify the qualification reason','error');return;}qualValue='Other: '+customText;}const res=await api('updateQualificationBySupervisor',{customerCode:customerCode.value.trim(),qualificationValue:qualValue,approvalAction:action,salesRepEmail:assignEmail.value.trim(),password:supervisorPw});if(res.success){showMsg(`Lead ${action.toLowerCase()}`,'success');btnLoad.click();loadDashboard();}else showMsg(res.message,'error');}
-    btnSubmit.addEventListener('click',async()=>{const role=roleSelect.value;const code=customerCode.value.trim();if(!currentLead||!code){showMsg('Load a lead first','error');return;}if(role==='Supervisor'){let qualValue=qualification.value;if(qualValue==='Other'){const customText=qualificationOther.value.trim();if(!customText){showMsg('Please specify the qualification reason','error');return;}qualValue='Other: '+customText;}const res=await api('updateQualificationBySupervisor',{customerCode:code,qualificationValue:qualValue,approvalAction:'',salesRepEmail:assignEmail.value.trim(),password:supervisorPw});if(res.success){showMsg('Qualification updated','success');btnLoad.click();loadDashboard();}else showMsg(res.message,'error');}else if(role==='SalesRep'){let updatesMade=[],errors=[];if(presentation.value){let presValue=presentation.value;if(presValue==='Other'){const customText=presentationOther.value.trim();if(!customText){showMsg('Please specify the presentation reason','error');return;}presValue='Other: '+customText;}const currentPres=currentLead.presentation||'';if(presValue!==currentPres){const presRes=await api('updatePresentationBySalesRep',{customerCode:code,presentationValue:presValue,salesRepEmail:salesRepEmail.value.trim(),password:salesRepPassword.value.trim()});if(presRes.success)updatesMade.push('Presentation');else errors.push('Presentation: '+presRes.message);}}if(kycOnboarding.value&&kycOnboarding.value!==currentLead.kycOnboarding){const kycRes=await api('updateKYCOnboardingBySalesRep',{customerCode:code,kycValue:kycOnboarding.value,salesRepEmail:salesRepEmail.value.trim(),password:salesRepPassword.value.trim()});if(kycRes.success)updatesMade.push('KYC Onboarding');else errors.push('KYC: '+kycRes.message);}if(updatesMade.length>0){showMsg(updatesMade.join(' and ')+' updated successfully. You have been logged out.','success');setTimeout(()=>logoutSalesRep(),2000);}else if(errors.length>0)showMsg(errors.join('; '),'error');else showMsg('No changes to save','info');}});
-    function logoutSalesRep(){isSalesRepLoggedIn=false;salesRepName='';salesRepEmail.value='';salesRepPassword.value='';salesRepEmail.disabled=false;salesRepPassword.disabled=false;btnSalesRepLogin.disabled=false;btnSalesRepLogin.textContent='Login';btnSalesRepLogin.style.background='';if(loginBadge){loginBadge.classList.remove('show');loginBadgeText.textContent='';}customerCode.value='';qualification.value='';presentation.value='';kycOnboarding.value='';qualificationOther.value='';presentationOther.value='';currentLead=null;detailsSection.classList.add('hidden');leadsSection.classList.add('hidden');ordersSection.classList.add('hidden');qualificationOtherBox.classList.add('hidden');presentationOtherBox.classList.add('hidden');updateUI();showMsg('You have been logged out. Please login again to continue.','info');}
+    btnCheckStatus.addEventListener('click',async()=>{const code=orderCustomerCode.value.trim();if(!code){showMsg('Enter customer code','error');return;}if(!isSalesRepLoggedIn){showMsg('Login first','error');return;}const res=await api('getAvailableOrders',{customerCode:code,salesRepEmail:salesRepEmail.value.trim(),salesRepPassword:salesRepPassword.value.trim()});if(!res.success){showMsg(res.message,'error');orderStatus.classList.add('hidden');return;}currentOrderStatus=res;updateOrderDropdown(res);let html='';if(res.submittedOrders.length===0)html='No orders yet. Submit Order 1.';else if(res.nextAvailableOrder===-1)html='All 3 orders submitted.';else html='Submitted: Order '+res.submittedOrders.join(', ')+'<br><strong>Next:</strong> Order '+res.nextAvailableOrder;orderStatus.innerHTML=html;orderStatus.classList.remove('hidden');});
+    function updateOrderDropdown(s){let o='<option value="">-- Select Order --</option>';for(let i=1;i<=3;i++){const sub=s.submittedOrders.includes(i);const av=i===s.nextAvailableOrder;const dis=sub||(!av&&s.nextAvailableOrder!==-1);const lab=sub?'Order '+i+' (Done)':av?'Order '+i+' (Available)':'Order '+i;o+='<option value="Order '+i+'" '+(dis?'disabled':'')+'>'+lab+'</option>';}orderNumber.innerHTML=o;orderNumber.disabled=s.nextAvailableOrder===-1;}
+    btnSubmitOrder.addEventListener('click',async()=>{const code=orderCustomerCode.value.trim();const num=orderNumber.value;const qty=parseFloat(orderQuantity.value);if(!code||!num||!qty||qty<=0){showMsg('Fill all fields','error');return;}if(!currentOrderStatus){showMsg('Check status first','error');return;}if(!isSalesRepLoggedIn){showMsg('Login first','error');return;}const res=await api('submitOrder',{customerCode:code,orderNumber:num,quantity:qty,salesRepEmail:salesRepEmail.value.trim(),salesRepPassword:salesRepPassword.value.trim()});if(res.success){showMsg(res.message,'success');orderQuantity.value='';btnCheckStatus.click();}else showMsg(res.message,'error');});
+    btnApprove.addEventListener('click',()=>updateQualification('Approved'));btnDecline.addEventListener('click',()=>updateQualification('Declined'));
+    async function updateQualification(action){if(!currentLead){showMsg('Load a lead first','error');return;}if(!qualification.value){showMsg('Select qualification','error');return;}let qv=qualification.value;if(qv==='Other'){const ct=qualificationOther.value.trim();if(!ct){showMsg('Specify reason','error');return;}qv='Other: '+ct;}const res=await api('updateQualificationBySupervisor',{customerCode:customerCode.value.trim(),qualificationValue:qv,approvalAction:action,salesRepEmail:assignEmail.value.trim(),password:supervisorPw});if(res.success){showMsg('Lead '+action.toLowerCase(),'success');btnLoad.click();loadDashboard();}else showMsg(res.message,'error');}
+    btnSubmit.addEventListener('click',async()=>{const role=roleSelect.value;const code=customerCode.value.trim();if(!currentLead||!code){showMsg('Load a lead first','error');return;}if(role==='Supervisor'){let qv=qualification.value;if(qv==='Other'){const ct=qualificationOther.value.trim();if(!ct){showMsg('Specify reason','error');return;}qv='Other: '+ct;}const res=await api('updateQualificationBySupervisor',{customerCode:code,qualificationValue:qv,approvalAction:'',salesRepEmail:assignEmail.value.trim(),password:supervisorPw});if(res.success){showMsg('Qualification updated','success');btnLoad.click();loadDashboard();}else showMsg(res.message,'error');}else if(role==='SalesRep'){let u=[],er=[];if(presentation.value){let pv=presentation.value;if(pv==='Other'){const ct=presentationOther.value.trim();if(!ct){showMsg('Specify reason','error');return;}pv='Other: '+ct;}if(pv!==(currentLead.presentation||'')){const r=await api('updatePresentationBySalesRep',{customerCode:code,presentationValue:pv,salesRepEmail:salesRepEmail.value.trim(),password:salesRepPassword.value.trim()});if(r.success)u.push('Presentation');else er.push(r.message);}}if(kycOnboarding.value&&kycOnboarding.value!==currentLead.kycOnboarding){const r=await api('updateKYCOnboardingBySalesRep',{customerCode:code,kycValue:kycOnboarding.value,salesRepEmail:salesRepEmail.value.trim(),password:salesRepPassword.value.trim()});if(r.success)u.push('KYC Onboarding');else er.push(r.message);}if(u.length>0){showMsg(u.join(' and ')+' updated. Logged out.','success');setTimeout(()=>logoutSalesRep(),2000);}else if(er.length>0)showMsg(er.join('; '),'error');else showMsg('No changes','info');}});
+    function logoutSalesRep(){isSalesRepLoggedIn=false;salesRepName='';salesRepEmail.value='';salesRepPassword.value='';salesRepEmail.disabled=false;salesRepPassword.disabled=false;btnSalesRepLogin.disabled=false;btnSalesRepLogin.textContent='Login';btnSalesRepLogin.style.background='';if(loginBadge){loginBadge.classList.remove('show');loginBadgeText.textContent='';}customerCode.value='';qualification.value='';presentation.value='';kycOnboarding.value='';qualificationOther.value='';presentationOther.value='';currentLead=null;detailsSection.classList.add('hidden');leadsSection.classList.add('hidden');ordersSection.classList.add('hidden');leadFormSection.classList.add('hidden');qualificationOtherBox.classList.add('hidden');presentationOtherBox.classList.add('hidden');updateUI();showMsg('Logged out. Login again to continue.','info');}
     updateUI();
     if('serviceWorker' in navigator){navigator.serviceWorker.register('service-worker.js').catch(e=>console.log('SW error',e));}
   </script>
