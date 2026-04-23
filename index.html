@@ -2,596 +2,344 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <title>Steelwool Africa LTD - Lead Management</title>
-  
-  <!-- PWA Meta Tags -->
-  <link rel="manifest" href="manifest.json">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="theme-color" content="#667eea">
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  <meta name="apple-mobile-web-app-title" content="SWAL Leads">
-  
+  <title>Steelwool Africa LTD - Lead Generation Follow-up</title>
+  <link rel="manifest" href="manifest.json">
+  <!-- Libraries for PDF and Excel export -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
   <style>
-    * { margin:0; padding:0; box-sizing:border-box; }
-    body { font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: linear-gradient(135deg,#667eea 0%,#764ba2 100%); min-height:100vh; padding:20px; display:flex; justify-content:center; align-items:center; }
-    .container { background:white; border-radius:12px; box-shadow:0 20px 60px rgba(0,0,0,0.3); max-width:760px; width:100%; padding:28px; }
-    .header { text-align:center; margin-bottom:18px; padding-bottom:12px; border-bottom:3px solid #667eea; }
-    h1 { color:#333; font-size:22px; margin-bottom:4px; }
-    .subtitle { color:#666; font-size:14px; }
-    .form-group { margin-bottom:14px; }
-    label { display:block; margin-bottom:8px; color:#333; font-weight:600; font-size:13px; }
-    input[type="text"], input[type="password"], input[type="email"], input[type="number"], select { width:100%; padding:10px 12px; border:2px solid #e1e8ed; border-radius:8px; font-size:13px; background:white; }
-    .section-title { color:#667eea; font-size:16px; font-weight:700; margin-top:18px; margin-bottom:10px; padding-bottom:6px; border-bottom:2px solid #f0f0f0; }
-    .btn { width:100%; padding:12px; background: linear-gradient(135deg,#667eea 0%,#764ba2 100%); color:white; border:none; border-radius:8px; font-size:15px; font-weight:600; cursor:pointer; margin-top:8px; }
-    .btn.small { width:48%; padding:10px; font-size:13px; }
-    .btn-row { display:flex; gap:8px; }
-    .message { padding:12px; border-radius:8px; margin-top:14px; display:none; font-size:13px; }
-    .message.success { background:#d4edda; color:#155724; border:1px solid #c3e6cb; }
-    .message.error { background:#f8d7da; color:#721c24; border:1px solid #f5c6cb; }
-    .message.info { background:#d1ecf1; color:#0c5460; border:1px solid #bee5eb; }
-    .message.show { display:block; }
-    .loading { display:none; text-align:center; color:#667eea; font-size:13px; margin-top:8px; }
-    .loading.show { display:block; }
-    .meta { font-size:12px; color:#666; margin-top:6px; }
-    .details-table { width:100%; border-collapse:collapse; margin-top:12px; }
-    .details-table th, .details-table td { padding:10px 12px; border-bottom:1px solid #f0f0f0; text-align:left; font-size:13px; }
-    .details-table th { background:#fafafa; font-weight:700; color:#333; width:40%; }
-    .small-muted { font-size:12px; color:#666; margin-top:6px; }
-    .hidden { display:none; }
-    .field-inline { display:flex; gap:8px; align-items:center; }
-    .field-inline > * { flex:1; }
-    .offline-banner { background:#ffc107; color:#333; padding:8px; text-align:center; border-radius:8px; margin-bottom:15px; font-size:12px; display:none; }
-    .offline-banner.show { display:block; }
-    @media (max-width:640px) { .btn-row { flex-direction:column; } .btn.small { width:100%; } }
+    *{margin:0;padding:0;box-sizing:border-box}
+    body{font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);min-height:100vh;padding:20px;display:flex;justify-content:center;align-items:center}
+    .container{background:#fff;border-radius:12px;box-shadow:0 20px 60px rgba(0,0,0,0.3);max-width:760px;width:100%;padding:28px}
+    .header{text-align:center;margin-bottom:18px;padding-bottom:12px;border-bottom:3px solid #667eea}
+    .header-title{display:flex;align-items:center;justify-content:center;gap:12px;flex-wrap:wrap}
+    h1{color:#333;font-size:22px;margin-bottom:4px}
+    .subtitle{color:#666;font-size:14px}
+    .form-group{margin-bottom:14px}
+    label{display:block;margin-bottom:8px;color:#333;font-weight:600;font-size:13px}
+    input[type="text"],input[type="password"],input[type="email"],input[type="number"],select{width:100%;padding:12px 14px;border:2px solid #e1e8ed;border-radius:8px;font-size:16px;transition:all 0.3s;background:#fff;-webkit-appearance:none;appearance:none}
+    input:focus,select:focus{outline:none;border-color:#667eea;box-shadow:0 0 0 3px rgba(102,126,234,0.2)}
+    select{cursor:pointer}
+    .section-title{color:#667eea;font-size:16px;font-weight:700;margin-top:18px;margin-bottom:10px;padding-bottom:6px;border-bottom:2px solid #f0f0f0}
+    .btn{width:100%;padding:12px;background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);color:#fff;border:none;border-radius:8px;font-size:15px;font-weight:600;cursor:pointer;transition:all 0.3s;margin-top:8px}
+    .btn:hover{transform:translateY(-1px);box-shadow:0 4px 12px rgba(102,126,234,0.4)}
+    .btn:disabled{opacity:0.6;cursor:not-allowed;transform:none}
+    .btn.small{width:auto;padding:10px 14px;font-size:13px}
+    .btn-row{display:flex;gap:8px;flex-wrap:wrap}
+    .btn-green{background:linear-gradient(135deg,#22c55e 0%,#16a34a 100%)}
+    .btn-red{background:linear-gradient(135deg,#ef4444 0%,#dc2626 100%)}
+    .btn-blue{background:linear-gradient(135deg,#3b82f6 0%,#2563eb 100%)}
+    .btn-gray{background:#9ca3af}
+    .btn-teal{background:linear-gradient(135deg,#10b981 0%,#059669 100%)}
+    .btn-purple{background:linear-gradient(135deg,#a855f7 0%,#9333ea 100%)}
+    .btn-orange{background:linear-gradient(135deg,#f97316 0%,#ea580c 100%)}
+    .btn-dark{background:linear-gradient(135deg,#374151 0%,#1f2937 100%)}
+    .message{padding:12px;border-radius:8px;margin-top:14px;display:none;font-size:13px}
+    .message.success{background:#d4edda;color:#155724;border:1px solid #c3e6cb;display:block}
+    .message.error{background:#f8d7da;color:#721c24;border:1px solid #f5c6cb;display:block}
+    .message.info{background:#d1ecf1;color:#0c5460;border:1px solid #bee5eb;display:block}
+    .loading{display:none;text-align:center;color:#667eea;font-size:13px;margin-top:8px}
+    .loading.show{display:block}
+    .meta{font-size:12px;color:#666;margin-top:6px}
+    .hidden{display:none!important}
+    .field-inline{display:flex;gap:8px;align-items:stretch;flex-wrap:wrap}
+    .field-inline>input{flex:1;min-width:0;min-height:48px}
+    .field-inline>.btn{flex-shrink:0;height:auto;min-height:48px;display:flex;align-items:center;justify-content:center}
+    .details-table{width:100%;border-collapse:collapse;margin-top:12px;border-radius:8px;overflow:hidden;box-shadow:0 6px 20px rgba(0,0,0,0.06);font-size:12px}
+    .details-table th,.details-table td{padding:8px 10px;border-bottom:1px solid #f0f0f0;text-align:left}
+    .details-table th{background:#fafafa;font-weight:700;color:#333}
+    .leads-table{width:100%;border-collapse:collapse;margin-top:12px;font-size:11px}
+    .leads-table th,.leads-table td{padding:6px;border:1px solid #e1e8ed;text-align:left}
+    .leads-table th{background:#fafafa;font-weight:700;position:sticky;top:0}
+    .table-wrap{max-height:300px;overflow:auto;margin-top:12px}
+    .order-status{font-size:12px;color:#666;margin-top:8px;padding:8px;background:#f9fafb;border-radius:6px}
+    .modal-overlay{position:fixed;left:0;top:0;right:0;bottom:0;background:rgba(0,0,0,0.5);display:flex;justify-content:center;align-items:center;z-index:1000}
+    .modal{background:#fff;padding:18px;border-radius:8px;width:320px;box-shadow:0 10px 30px rgba(0,0,0,0.3)}
+    .modal h3{margin-bottom:10px;font-size:16px;color:#333}
+    .modal-actions{display:flex;gap:8px;justify-content:flex-end;margin-top:12px}
+    .hint{font-size:12px;color:#dc2626;margin-top:8px;display:none}
+    .login-badge{background:linear-gradient(135deg,#52595d 0%,#040720 100%);color:#fff;padding:12px 20px;border-radius:8px;text-align:center;font-weight:600;font-size:15px;margin-bottom:16px;box-shadow:0 4px 12px rgba(16,185,129,0.3);display:none}
+    .login-badge.show{display:block}
+    .login-badge .icon{font-size:18px;margin-right:8px}
+    .dashboard{background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);border-radius:12px;padding:20px;margin-bottom:20px;color:#fff;box-shadow:0 8px 24px rgba(102,126,234,0.3)}
+    .dashboard-title{font-size:18px;font-weight:700;margin-bottom:16px;text-align:center}
+    .dashboard-metrics{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;margin-bottom:16px}
+    .metric-card{background:rgba(255,255,255,0.15);backdrop-filter:blur(10px);border-radius:8px;padding:14px;text-align:center;border:1px solid rgba(255,255,255,0.2)}
+    .metric-value{font-size:28px;font-weight:700;margin-bottom:4px}
+    .metric-label{font-size:12px;opacity:0.9;text-transform:uppercase;letter-spacing:0.5px}
+    .dashboard-actions{display:flex;gap:8px;justify-content:center;flex-wrap:wrap}
+    .rep-details-card{background:#f8f9ff;border:2px solid #667eea;border-radius:10px;padding:16px;margin-top:14px}
+    .rep-details-card .rep-header{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;margin-bottom:12px}
+    .rep-name{font-size:16px;font-weight:700;color:#333}
+    .rep-email{font-size:13px;color:#667eea}
+    .rep-stats{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:12px}
+    .rep-stat{background:#fff;border:1px solid #e1e8ed;border-radius:6px;padding:8px 14px;text-align:center;min-width:100px}
+    .rep-stat-value{font-size:20px;font-weight:700;color:#667eea}
+    .rep-stat-label{font-size:11px;color:#666;text-transform:uppercase}
+    .milestone-badge{display:inline-block;padding:3px 8px;border-radius:12px;font-size:11px;font-weight:600;color:#fff}
+    .milestone-1{background:#f97316}
+    .milestone-2{background:#3b82f6}
+    .milestone-3{background:#22c55e}
+    .download-row{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px;padding-top:8px;border-top:1px dashed #e1e8ed}
+    .download-row .btn.small{font-size:11px;padding:6px 10px}
+    @media(max-width:640px){
+      .btn-row{flex-direction:column}
+      .btn.small{width:100%}
+      .container{padding:16px;margin:10px}
+      .field-inline{flex-direction:column}
+      .field-inline>input{width:100%;min-height:50px;font-size:16px}
+      .field-inline>.btn{width:100%;min-height:48px}
+      input[type="text"],input[type="password"],input[type="email"],input[type="number"],select{font-size:16px;padding:14px;min-height:50px}
+      h1{font-size:20px}
+      .dashboard-metrics{grid-template-columns:1fr 1fr}
+      .metric-card{padding:12px}
+      .metric-value{font-size:24px}
+      .rep-stats{flex-direction:column}
+      .download-row{flex-direction:column}
+    }
   </style>
 </head>
 <body>
   <div class="container">
-    <div class="offline-banner" id="offlineBanner">⚠️ You are offline. Please check your connection.</div>
-    
     <div class="header">
-      <h1>Steelwool Africa LTD</h1>
-      <p class="subtitle">Lead Generation Follow-up System</p>
+      <div class="header-title"><h1>Steelwool (Africa) Limited</h1></div>
+      <p class="subtitle">Hardware Lead Generation Follow-up</p>
+    </div>
+    <div id="loginBadge" class="login-badge"><span class="icon">👨‍💼</span><span id="loginBadgeText"></span></div>
+
+    <div id="supervisorDashboard" class="dashboard hidden">
+      <div class="dashboard-title">📊 Supervisor Dashboard</div>
+      <div class="dashboard-metrics">
+        <div class="metric-card"><div class="metric-value" id="metricTotalLeads">0</div><div class="metric-label">Total Leads</div></div>
+        <div class="metric-card"><div class="metric-value" id="metricQualifiedLeads">0</div><div class="metric-label">Qualified Leads</div></div>
+        <div class="metric-card"><div class="metric-value" id="metricQualificationRate">0%</div><div class="metric-label">Qualification Rate</div></div>
+        <div class="metric-card"><div class="metric-value" id="metricApprovedLeads">0</div><div class="metric-label">Approved Leads</div></div>
+        <div class="metric-card" style="background:rgba(34,197,94,0.2);border-color:rgba(34,197,94,0.3)"><div class="metric-value" id="metricConvertedLeads">0</div><div class="metric-label">Converted Leads</div></div>
+        <div class="metric-card" style="background:rgba(34,197,94,0.2);border-color:rgba(34,197,94,0.3)"><div class="metric-value" id="metricConversionRate">0%</div><div class="metric-label">Conversion Rate</div></div>
+      </div>
+      <div class="dashboard-actions">
+        <button class="btn small" id="btnRefreshDashboard" style="background:rgba(255,255,255,0.2)">🔄 Refresh</button>
+        <button class="btn small" id="btnViewApprovedLeads" style="background:rgba(34,197,94,0.9)">✅ View Approved Leads</button>
+      </div>
     </div>
 
-    <form id="leadForm">
+    <div id="salesRepDetailsSection" class="hidden">
+      <div class="section-title">👤 Sales Representative Details</div>
       <div class="form-group">
-        <label for="roleSelect">Select Role *</label>
-        <select id="roleSelect" required>
-          <option value="">-- Select Role --</option>
-          <option value="Supervisor">Supervisor</option>
-          <option value="SalesRep">Sales Representative</option>
+        <label>Select Sales Representative</label>
+        <select id="salesRepSelect">
+          <option value="">-- Select Sales Rep --</option>
+          <option value="hardware1.swal@gmail.com">VALTO ONYANGO</option>
+          <option value="mountain.swal@gmail.com">FRANCIS OBALA</option>
+          <option value="hardware2.swal@gmail.com">STEPHEN MUENDO</option>
+          <option value="hardware3.swal@gmail.com">LAVINE KISANYA</option>
+          <option value="hardware4.swal@gmail.com">NGAIRA BRIAN</option>
+          <option value="hardware5.swal@gmail.com">KENNETH MUGAH</option>
+          <option value="hardware6.swal@gmail.com">ANTHONY BUNDI MUGAMBI</option>
+          <option value="eastern.swal@gmail.com">MUSYA KITHEKA</option>
         </select>
       </div>
-
-      <div id="salesRepAuthSection" class="hidden">
-        <div class="form-group">
-          <label for="salesRepEmailAuth">Sales Rep Email *</label>
-          <input type="email" id="salesRepEmailAuth" placeholder="salesrep@example.com">
+      <div id="repDetailsCard" class="rep-details-card hidden">
+        <div class="rep-header">
+          <div><div class="rep-name" id="repName"></div><div class="rep-email" id="repEmail"></div></div>
         </div>
-        <div class="form-group">
-          <label for="salesRepPasswordAuth">Sales Rep Password *</label>
-          <input type="password" id="salesRepPasswordAuth" placeholder="Enter your password">
+        <div class="rep-stats">
+          <div class="rep-stat"><div class="rep-stat-value" id="repTotalLeads">0</div><div class="rep-stat-label">Generated Leads</div></div>
+          <div class="rep-stat"><div class="rep-stat-value" id="repConvertedCount">0</div><div class="rep-stat-label">Converted Leads</div></div>
+        </div>
+        <div class="btn-row" style="margin-bottom:4px">
+          <button class="btn small btn-blue" id="btnRepAllLeads">📋 View All Leads</button>
+          <button class="btn small btn-orange" id="btnRepConvertedLeads">📦 View Converted Leads</button>
+        </div>
+        <!-- Download Buttons -->
+        <div class="download-row">
+          <span style="font-size:12px;font-weight:600;color:#333;margin-right:4px;align-self:center">⬇️ Download All Leads:</span>
+          <button class="btn small btn-teal" id="btnDownloadAllExcel">📗 Excel</button>
+          <button class="btn small btn-red" id="btnDownloadAllPdf">📕 PDF</button>
+        </div>
+        <div class="download-row">
+          <span style="font-size:12px;font-weight:600;color:#333;margin-right:4px;align-self:center">⬇️ Download Converted:</span>
+          <button class="btn small btn-teal" id="btnDownloadConvertedExcel">📗 Excel</button>
+          <button class="btn small btn-red" id="btnDownloadConvertedPdf">📕 PDF</button>
+        </div>
+        <div id="repLeadsTableSection" class="hidden">
+          <div class="section-title" id="repLeadsTitle" style="margin-top:8px">Leads</div>
+          <div class="table-wrap"><table class="leads-table" id="repLeadsTable"></table></div>
+          <button class="btn small btn-gray" id="btnCloseRepLeads" style="margin-top:8px">Close</button>
         </div>
       </div>
+    </div>
 
+    <div id="app">
       <div class="form-group">
-        <label for="customerCode">Customer Code *</label>
-        <div class="field-inline">
-          <input type="text" id="customerCode" required placeholder="Enter customer code">
-          <button type="button" id="loadBtn" class="btn small" style="width:auto;padding:10px 14px;">Load</button>
-        </div>
+        <label>Select Role *</label>
+        <select id="roleSelect"><option value="">-- Select Role --</option><option value="Supervisor">Supervisor</option><option value="SalesRep">Sales Representative</option></select>
+        <div class="meta">Supervisor: edit Qualification, Approve/Decline. Sales Rep: edit Presentation, place Orders.</div>
       </div>
-
-      <div id="detailsSection" class="hidden">
-        <div class="section-title">Customer Details</div>
-        <div style="overflow-x:auto;">
-          <table class="details-table" id="detailsTable">
-            <tbody id="detailsTableBody"></tbody>
-          </table>
-        </div>
+      <div id="salesRepAuth" class="hidden">
+        <div class="form-group"><label>Sales Rep Email *</label><input type="email" id="salesRepEmail" placeholder="salesrep@example.com"></div>
+        <div class="form-group"><label>Sales Rep Password *</label><input type="password" id="salesRepPassword" placeholder="Enter password"></div>
+        <button type="button" class="btn" id="btnSalesRepLogin" style="margin-top:8px">Login</button>
+        <div id="salesRepLoginMsg" class="meta" style="margin-top:8px;color:#dc2626;display:none"></div>
       </div>
-
+      <div id="actionButtons" class="hidden btn-row" style="margin-bottom:14px">
+        <button class="btn small btn-blue" id="btnViewLeads">View Generated Leads</button>
+        <button class="btn small btn-blue" id="btnViewOrders">View Orders Placed</button>
+        <button class="btn small btn-blue hidden" id="btnViewQualified">View Qualified Leads</button>
+        <button class="btn small btn-teal hidden" id="btnPlaceOrder">Place Order</button>
+      </div>
+      <div class="form-group"><label>Customer Code *</label><div class="field-inline"><input type="text" id="customerCode" placeholder="Enter customer code"><button class="btn small" id="btnLoad">Load</button></div><div class="meta">Enter code and click Load to fetch data.</div></div>
+      <div id="detailsSection" class="hidden"><div class="section-title">Customer Details</div><div style="overflow-x:auto"><table class="details-table" id="detailsTable"></table></div></div>
+      <div id="leadsSection" class="hidden"><div class="section-title" id="leadsTitle">Leads</div><div class="table-wrap"><table class="leads-table" id="leadsTable"></table></div><button class="btn small btn-gray" id="btnCloseLeads" style="margin-top:12px">Close List</button></div>
+      <div id="ordersSection" class="hidden">
+        <div class="section-title">Place Order</div>
+        <div class="form-group"><label>Customer Code *</label><div class="field-inline"><input type="text" id="orderCustomerCode" placeholder="Enter customer code"><button class="btn small" id="btnCheckStatus">Check Status</button></div></div>
+        <div id="orderStatus" class="order-status hidden"></div>
+        <div class="form-group"><label>Order Number *</label><select id="orderNumber" disabled><option value="">-- Check status first --</option></select></div>
+        <div class="form-group"><label>Quantity (Kgs) *</label><input type="number" id="orderQuantity" placeholder="Enter quantity" min="0" step="0.01"></div>
+        <div class="btn-row"><button class="btn small btn-teal" id="btnSubmitOrder">Submit Order</button><button class="btn small btn-gray" id="btnCloseOrders">Close</button></div>
+      </div>
       <div class="section-title">Qualification</div>
-      <div class="form-group">
-        <select id="qualification">
-          <option value="">-- Select Status --</option>
-          <option value="YES">YES</option>
-          <option value="NO">NO</option>
-          <option value="Volume Too Small">Volume Too Small</option>
-          <option value="Bad Previous History">Bad Previous History</option>
-          <option value="Other">Other</option>
-        </select>
-      </div>
-
-      <div class="btn-row">
-        <button type="button" id="approveBtn" class="btn small" style="background:linear-gradient(135deg,#22c55e 0%,#16a34a 100%); display:none;">Approve</button>
-        <button type="button" id="declineBtn" class="btn small" style="background:linear-gradient(135deg,#ef4444 0%,#dc2626 100%); display:none;">Decline</button>
-      </div>
-
+      <div class="form-group"><label>Qualification Status *</label><select id="qualification" disabled><option value="">-- Select Status --</option><option value="YES">YES</option><option value="NO">NO</option><option value="Volume Too Small">Volume Too Small</option><option value="Bad Previous History">Bad Previous History</option><option value="Other">Other</option></select></div>
+      <div id="qualificationOtherBox" class="form-group hidden"><label>Specify Other Qualification Reason *</label><input type="text" id="qualificationOther" placeholder="Enter reason" maxlength="200"><div class="meta">Describe the qualification reason (max 200 characters)</div></div>
+      <div id="approvalButtons" class="btn-row hidden" style="margin-bottom:14px"><button class="btn small btn-green" id="btnApprove">Approve</button><button class="btn small btn-red" id="btnDecline">Decline</button></div>
       <div class="section-title">Presentation</div>
-      <div class="form-group">
-        <select id="presentation">
-          <option value="">-- Select Status --</option>
-          <option value="YES">YES</option>
-          <option value="Refused to Trade">Refused to Trade</option>
-          <option value="Refuse to Provide KYC">Refuse to Provide KYC</option>
-          <option value="Other">Other</option>
-        </select>
-      </div>
-
+      <div class="form-group"><label>Presentation Status *</label><select id="presentation" disabled><option value="">-- Select Status --</option><option value="YES">YES</option><option value="Refused to Trade">Refused to Trade</option><option value="Refuse to Provide KYC">Refuse to Provide KYC</option><option value="Other">Other</option></select></div>
+      <div id="presentationOtherBox" class="form-group hidden"><label>Specify Other Presentation Reason *</label><input type="text" id="presentationOther" placeholder="Enter reason" maxlength="200"><div class="meta">Describe the presentation reason (max 200 characters)</div></div>
       <div class="section-title">KYC Onboarding</div>
-      <div class="form-group">
-        <select id="kycOnboarding">
-          <option value="">-- Select KYC Status --</option>
-          <option value="YES">YES</option>
-          <option value="NO">NO</option>
-          <option value="Pending">Pending</option>
-        </select>
-      </div>
-
-      <div id="salesRepEmailContainer" class="form-group hidden">
-        <label for="salesRepEmail">Sales Rep Email</label>
-        <input type="email" id="salesRepEmail" placeholder="salesrep@example.com">
-      </div>
-
-      <button type="submit" class="btn" id="submitBtn">Submit</button>
-
+      <div class="form-group"><label>KYC Onboarding Status *</label><select id="kycOnboarding" disabled><option value="">-- Select Status --</option><option value="YES">YES</option><option value="NO">NO</option><option value="Pending">Pending</option></select><div class="meta">Lead must be KYC Onboarded before placing order.</div></div>
+      <div id="assignSalesRep" class="form-group hidden"><label>Assign Sales Rep Email</label><input type="email" id="assignEmail" placeholder="salesrep@example.com"><div class="meta">Optional: assign a sales rep to this lead.</div></div>
+      <button class="btn" id="btnSubmit">Submit</button>
       <div class="loading" id="loading">Processing...</div>
-      <div class="message" id="message"></div>
-    </form>
+      <div id="message"></div>
+    </div>
   </div>
+  <div id="passwordModal" class="hidden"><div class="modal-overlay"><div class="modal"><h3>Supervisor Password</h3><input type="password" id="supervisorPassword" placeholder="Enter password" style="width:100%;padding:10px;border:1px solid #e1e8ed;border-radius:6px"><div id="passwordHint" class="hint"></div><div class="modal-actions"><button class="btn small btn-gray" id="btnCancelPassword">Cancel</button><button class="btn small" id="btnConfirmPassword">Submit</button></div></div></div></div>
 
   <script>
-    // ========== CONFIGURATION ==========
-    // IMPORTANT: You MUST deploy your Google Apps Script as a Web App
-    // and set "Execute as: Me" and "Who has access: Anyone"
-    // Then copy the URL here:
-    const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyHKyPOx-80IHPmAPV3JehaNJDhjWlR3aE4wwGgyNd-FUzPsNUJnQU25_9k1DN6oSAN/exec';
-    
-    // ========== STATE ==========
-    let currentLoadedLead = null;
-    let isSupervisorAuthenticated = false;
-    let supervisorPasswordCached = '';
-    
-    // ========== DOM ELEMENTS ==========
-    const roleSelect = document.getElementById('roleSelect');
-    const loadBtn = document.getElementById('loadBtn');
-    const customerCodeInput = document.getElementById('customerCode');
-    const qualificationSelect = document.getElementById('qualification');
-    const presentationSelect = document.getElementById('presentation');
-    const kycSelect = document.getElementById('kycOnboarding');
-    const approveBtn = document.getElementById('approveBtn');
-    const declineBtn = document.getElementById('declineBtn');
-    const submitBtn = document.getElementById('submitBtn');
-    const loading = document.getElementById('loading');
-    const message = document.getElementById('message');
-    const detailsSection = document.getElementById('detailsSection');
-    const detailsTableBody = document.getElementById('detailsTableBody');
-    const salesRepEmailContainer = document.getElementById('salesRepEmailContainer');
-    const salesRepEmailInput = document.getElementById('salesRepEmail');
-    const salesRepAuthSection = document.getElementById('salesRepAuthSection');
-    const salesRepEmailAuth = document.getElementById('salesRepEmailAuth');
-    const salesRepPasswordAuth = document.getElementById('salesRepPasswordAuth');
-    const offlineBanner = document.getElementById('offlineBanner');
-    
-    function showMessage(text, type) {
-      message.className = `message ${type} show`;
-      message.textContent = text;
-      setTimeout(() => message.classList.remove('show'), 5000);
-    }
-    
-    // ========== GOOGLE APPS SCRIPT API CALL (Using Google.script.run alternative) ==========
-    // Since we can't use google.script.run on GitHub Pages, we use fetch with CORS
-    // But Google Apps Script requires special handling
-    
-    async function callGoogleScript(action, params = {}) {
-      return new Promise((resolve, reject) => {
-        // Create a form data object
-        const formData = new FormData();
-        const data = { action, ...params };
-        formData.append('data', JSON.stringify(data));
-        
-        // Use fetch with no-cors mode and form data
-        fetch(SCRIPT_URL, {
-          method: 'POST',
-          mode: 'no-cors',
-          body: formData
-        }).then(() => {
-          // With no-cors, we can't read the response
-          // So we assume success and rely on the server
-          resolve({ success: true });
-        }).catch(error => {
-          reject(error);
-        });
+    const API_URL='https://script.google.com/macros/s/AKfycbwMY1AnBlsXSYXEj0eCVjR8i5hNvF6c5nSf11plZfZznc19RmOQIeNUZX0rsvHHhn2uvA/exec';
+    let currentLead=null,isSupervisorAuth=false,supervisorPw='',currentOrderStatus=null,salesRepName='',isSalesRepLoggedIn=false,dashboardData=null,currentRepData=null;
+    const $=id=>document.getElementById(id);
+    const roleSelect=$('roleSelect'),salesRepAuth=$('salesRepAuth'),salesRepEmail=$('salesRepEmail'),salesRepPassword=$('salesRepPassword'),btnSalesRepLogin=$('btnSalesRepLogin'),salesRepLoginMsg=$('salesRepLoginMsg'),loginBadge=$('loginBadge'),loginBadgeText=$('loginBadgeText'),actionButtons=$('actionButtons'),btnViewLeads=$('btnViewLeads'),btnViewOrders=$('btnViewOrders'),btnViewQualified=$('btnViewQualified'),btnPlaceOrder=$('btnPlaceOrder'),customerCode=$('customerCode'),btnLoad=$('btnLoad'),detailsSection=$('detailsSection'),detailsTable=$('detailsTable'),leadsSection=$('leadsSection'),leadsTitle=$('leadsTitle'),leadsTable=$('leadsTable'),btnCloseLeads=$('btnCloseLeads'),ordersSection=$('ordersSection'),orderCustomerCode=$('orderCustomerCode'),btnCheckStatus=$('btnCheckStatus'),orderStatus=$('orderStatus'),orderNumber=$('orderNumber'),orderQuantity=$('orderQuantity'),btnSubmitOrder=$('btnSubmitOrder'),btnCloseOrders=$('btnCloseOrders'),qualification=$('qualification'),approvalButtons=$('approvalButtons'),btnApprove=$('btnApprove'),btnDecline=$('btnDecline'),presentation=$('presentation'),presentationOtherBox=$('presentationOtherBox'),presentationOther=$('presentationOther'),kycOnboarding=$('kycOnboarding'),qualificationOtherBox=$('qualificationOtherBox'),qualificationOther=$('qualificationOther'),assignSalesRep=$('assignSalesRep'),assignEmail=$('assignEmail'),btnSubmit=$('btnSubmit'),loading=$('loading'),message=$('message'),passwordModal=$('passwordModal'),supervisorPassword=$('supervisorPassword'),passwordHint=$('passwordHint'),btnCancelPassword=$('btnCancelPassword'),btnConfirmPassword=$('btnConfirmPassword');
+    const supervisorDashboard=$('supervisorDashboard'),metricTotalLeads=$('metricTotalLeads'),metricQualifiedLeads=$('metricQualifiedLeads'),metricQualificationRate=$('metricQualificationRate'),metricApprovedLeads=$('metricApprovedLeads'),metricConvertedLeads=$('metricConvertedLeads'),metricConversionRate=$('metricConversionRate'),btnRefreshDashboard=$('btnRefreshDashboard'),btnViewApprovedLeads=$('btnViewApprovedLeads');
+    const salesRepDetailsSection=$('salesRepDetailsSection'),salesRepSelect=$('salesRepSelect'),repDetailsCard=$('repDetailsCard'),repName=$('repName'),repEmail=$('repEmail'),repTotalLeads=$('repTotalLeads'),repConvertedCount=$('repConvertedCount'),btnRepAllLeads=$('btnRepAllLeads'),btnRepConvertedLeads=$('btnRepConvertedLeads'),repLeadsTableSection=$('repLeadsTableSection'),repLeadsTitle=$('repLeadsTitle'),repLeadsTable=$('repLeadsTable'),btnCloseRepLeads=$('btnCloseRepLeads');
+
+    async function api(action,data={}){loading.classList.add('show');try{const res=await fetch(API_URL,{method:'POST',headers:{'Content-Type':'text/plain'},body:JSON.stringify({action,...data})});return await res.json();}catch(e){return{success:false,message:'Network error: '+e.message};}finally{loading.classList.remove('show');}}
+    function showMsg(text,type='info'){message.className='message '+type;message.textContent=text;message.style.display='block';setTimeout(()=>message.style.display='none',5000);}
+
+    // ========== DOWNLOAD FUNCTIONS ==========
+    function downloadExcel(data, headers, filename) {
+      const ws = XLSX.utils.aoa_to_sheet([headers, ...data]);
+      // Auto-width columns
+      ws['!cols'] = headers.map((h, i) => {
+        const maxLen = Math.max(h.length, ...data.map(r => String(r[i] || '').length));
+        return { wch: Math.min(maxLen + 2, 30) };
       });
+      const wb = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(wb, ws, 'Data');
+      XLSX.writeFile(wb, filename + '.xlsx');
     }
-    
-    // Alternative: Use JSONP approach (more reliable)
-    function callGoogleScriptJSONP(action, params = {}, callback) {
-      const callbackName = 'callback_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
-      const data = { action, ...params, callback: callbackName };
-      
-      window[callbackName] = function(response) {
-        delete window[callbackName];
-        document.body.removeChild(script);
-        callback(response);
-      };
-      
-      const queryString = Object.keys(data).map(key => 
-        encodeURIComponent(key) + '=' + encodeURIComponent(JSON.stringify(data[key]))
-      ).join('&');
-      
-      const script = document.createElement('script');
-      script.src = `${SCRIPT_URL}?${queryString}`;
-      document.body.appendChild(script);
-      
-      setTimeout(() => {
-        if (window[callbackName]) {
-          delete window[callbackName];
-          callback({ success: false, message: 'Request timeout' });
-        }
-      }, 30000);
+
+    function downloadPdf(data, headers, filename, title) {
+      const { jsPDF } = window.jspdf;
+      const doc = new jsPDF({ orientation: headers.length > 6 ? 'landscape' : 'portrait' });
+      // Title
+      doc.setFontSize(14);
+      doc.setFont(undefined, 'bold');
+      doc.text(title, 14, 18);
+      doc.setFontSize(10);
+      doc.setFont(undefined, 'normal');
+      doc.text('Steelwool Africa LTD - Generated on ' + new Date().toLocaleDateString(), 14, 25);
+      // Table
+      doc.autoTable({
+        head: [headers],
+        body: data,
+        startY: 30,
+        styles: { fontSize: 7, cellPadding: 2 },
+        headStyles: { fillColor: [102, 126, 234], textColor: 255, fontStyle: 'bold' },
+        alternateRowStyles: { fillColor: [245, 247, 255] },
+        margin: { top: 30 }
+      });
+      doc.save(filename + '.pdf');
     }
-    
-    // For this to work, you need to modify your Google Apps Script doGet() to handle JSONP
-    // Add this to your code.gs doGet() function:
-    /*
-    function doGet(e) {
-      const callback = e.parameter.callback;
-      const data = JSON.parse(e.parameter.data);
-      const result = processRequest(data);
-      return ContentService.createTextOutput(callback + '(' + JSON.stringify(result) + ')')
-        .setMimeType(ContentService.MimeType.JAVASCRIPT);
-    }
-    */
-    
-    // SIMPLER SOLUTION: Use Google Apps Script as a Web App with CORS enabled
-    // Add this to your doPost() in code.gs:
-    /*
-    function doPost(e) {
-      const result = processRequest(JSON.parse(e.postData.contents));
-      return ContentService.createTextOutput(JSON.stringify(result))
-        .setMimeType(ContentService.MimeType.JSON)
-        .setHeader('Access-Control-Allow-Origin', '*')
-        .setHeader('Access-Control-Allow-Methods', 'POST, GET, OPTIONS')
-        .setHeader('Access-Control-Allow-Headers', 'Content-Type');
-    }
-    
-    function doGet(e) {
-      if (e.parameter.method === 'OPTIONS') {
-        return ContentService.createTextOutput('')
-          .setHeader('Access-Control-Allow-Origin', '*')
-          .setHeader('Access-Control-Allow-Methods', 'POST, GET, OPTIONS')
-          .setHeader('Access-Control-Allow-Headers', 'Content-Type');
-      }
-      return ContentService.createTextOutput(JSON.stringify({ success: true, message: 'API is running' }))
-        .setMimeType(ContentService.MimeType.JSON)
-        .setHeader('Access-Control-Allow-Origin', '*');
-    }
-    */
-    
-    // For now, let's use a proxy or direct fetch with proper CORS
-    async function callAPI(action, data = {}) {
-      if (!navigator.onLine) {
-        showMessage('You are offline. Please check your connection.', 'error');
-        throw new Error('Offline');
-      }
-      
-      const payload = { action, ...data };
-      console.log('Calling API:', action, payload);
-      
-      try {
-        // Try with CORS mode first
-        const response = await fetch(SCRIPT_URL, {
-          method: 'POST',
-          mode: 'cors',
-          headers: { 
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(payload)
-        });
-        
-        if (!response.ok) {
-          throw new Error(`HTTP ${response.status}`);
-        }
-        
-        const result = await response.json();
-        return result;
-      } catch (error) {
-        console.log('CORS fetch failed, trying no-cors mode...', error);
-        
-        // Fallback to no-cors mode (won't get response but request might work)
-        try {
-          await fetch(SCRIPT_URL, {
-            method: 'POST',
-            mode: 'no-cors',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(payload)
-          });
-          
-          // Since we can't read response, we assume success
-          return { success: true, message: 'Request sent' };
-        } catch (fallbackError) {
-          console.error('Both fetch attempts failed:', fallbackError);
-          throw fallbackError;
-        }
-      }
-    }
-    
-    // ========== LOAD LEAD ==========
-    async function loadLead() {
-      const code = customerCodeInput.value.trim();
-      const role = roleSelect.value;
-      
-      if (!role) {
-        showMessage('Please select a role first.', 'error');
-        return;
-      }
-      
-      if (!code) {
-        showMessage('Enter customer code to load.', 'error');
-        return;
-      }
-      
-      let salesRepEmail = '';
-      let salesRepPassword = '';
-      
-      if (role === 'SalesRep') {
-        salesRepEmail = salesRepEmailAuth.value.trim();
-        salesRepPassword = salesRepPasswordAuth.value.trim();
-        if (!salesRepEmail || !salesRepPassword) {
-          showMessage('Please enter your Sales Rep email and password.', 'error');
-          return;
-        }
-      }
-      
-      loading.classList.add('show');
-      
-      try {
-        const result = await callAPI('getLeadStatus', {
-          customerCode: code,
-          role: role,
-          salesRepEmail: salesRepEmail,
-          salesRepPassword: salesRepPassword
-        });
-        
-        loading.classList.remove('show');
-        
-        if (!result || !result.success) {
-          showMessage(result?.message || 'Unable to load lead. Make sure your Google Script URL is correct and deployed.', 'error');
-          return;
-        }
-        
-        currentLoadedLead = result.data;
-        qualificationSelect.value = currentLoadedLead.qualification || '';
-        presentationSelect.value = currentLoadedLead.presentation || '';
-        kycSelect.value = currentLoadedLead.kycOnboarding || '';
-        salesRepEmailInput.value = currentLoadedLead.salesRepEmail || '';
-        
-        // Display details
-        const details = [
-          ['Region', currentLoadedLead.region], ['Area', currentLoadedLead.area],
-          ['Location', currentLoadedLead.location], ['Store Name', currentLoadedLead.storeName],
-          ['Contact Person', currentLoadedLead.contactPerson], ['Mobile Number', currentLoadedLead.mobileNumber],
-          ['Outlet Category', currentLoadedLead.outletCategory], ['Brands Stocked', currentLoadedLead.brandsStocked],
-          ['Purchase Frequency', currentLoadedLead.purchaseFrequency], ['Main Supplier', currentLoadedLead.mainSupplier],
-          ['Distributor Type', currentLoadedLead.distributorType], ['Weldplus Awareness', currentLoadedLead.weldplusAwareness],
-          ['Additional Feedback', currentLoadedLead.additionalFeedback], ['Customer Code', currentLoadedLead.customerCode]
-        ];
-        
-        detailsTableBody.innerHTML = details.map(([field, value]) => `
-          <tr><th>${field}</th><td>${value || 'N/A'}</td></tr>
-        `).join('');
-        
-        detailsSection.classList.remove('hidden');
-        updateUiForRoleAndStatus();
-        showMessage('Lead loaded successfully!', 'success');
-        
-      } catch (error) {
-        loading.classList.remove('show');
-        showMessage('Error: ' + error.message + '. Check console for details.', 'error');
-        console.error('Load lead error:', error);
-      }
-    }
-    
-    // ========== SUPERVISOR VALIDATION ==========
-    async function validateSupervisor(password) {
-      try {
-        const result = await callAPI('validateSupervisorPassword', { password: password });
-        return result && result.success;
-      } catch (error) {
-        console.error('Validation error:', error);
-        return false;
-      }
-    }
-    
-    // ========== UPDATE UI ==========
-    async function updateUiForRoleAndStatus() {
-      const role = roleSelect.value;
-      const approval = currentLoadedLead?.approval || '';
-      
-      qualificationSelect.disabled = true;
-      presentationSelect.disabled = true;
-      kycSelect.disabled = true;
-      approveBtn.style.display = 'none';
-      declineBtn.style.display = 'none';
-      salesRepEmailContainer.classList.add('hidden');
-      salesRepAuthSection.classList.add('hidden');
-      
-      if (role === 'Supervisor') {
-        if (!isSupervisorAuthenticated) {
-          const password = prompt('Enter Supervisor Password:');
-          if (password) {
-            loading.classList.add('show');
-            const valid = await validateSupervisor(password);
-            loading.classList.remove('show');
-            
-            if (valid) {
-              isSupervisorAuthenticated = true;
-              supervisorPasswordCached = password;
-              updateUiForRoleAndStatus();
-              showMessage('Supervisor authenticated!', 'success');
-            } else {
-              showMessage('Invalid supervisor password', 'error');
-              roleSelect.value = '';
-            }
-          } else {
-            roleSelect.value = '';
-          }
-        } else {
-          qualificationSelect.disabled = false;
-          kycSelect.disabled = false;
-          approveBtn.style.display = 'inline-block';
-          declineBtn.style.display = 'inline-block';
-          salesRepEmailContainer.classList.remove('hidden');
-        }
-      } else if (role === 'SalesRep') {
-        salesRepAuthSection.classList.remove('hidden');
-        if (approval === 'Approved') {
-          presentationSelect.disabled = false;
-          kycSelect.disabled = false;
-        }
-      }
-    }
-    
-    // ========== APPROVE ==========
-    async function approveLead() {
-      if (!currentLoadedLead) { showMessage('Load a lead first', 'error'); return; }
-      
-      const code = customerCodeInput.value.trim();
-      const qualificationValue = qualificationSelect.value;
-      const salesEmail = salesRepEmailInput.value.trim();
-      
-      if (!qualificationValue) { showMessage('Please select a qualification status', 'error'); return; }
-      
-      loading.classList.add('show');
-      try {
-        await callAPI('updateQualificationBySupervisor', {
-          customerCode: code,
-          qualificationValue: qualificationValue,
-          approvalAction: 'Approved',
-          salesRepEmail: salesEmail,
-          password: supervisorPasswordCached
-        });
-        showMessage('Lead approved!', 'success');
-        await loadLead();
-      } catch (error) {
-        showMessage('Error approving lead', 'error');
-      } finally {
-        loading.classList.remove('show');
-      }
-    }
-    
-    // ========== DECLINE ==========
-    async function declineLead() {
-      if (!currentLoadedLead) { showMessage('Load a lead first', 'error'); return; }
-      
-      const code = customerCodeInput.value.trim();
-      const qualificationValue = qualificationSelect.value;
-      const salesEmail = salesRepEmailInput.value.trim();
-      
-      if (!qualificationValue) { showMessage('Please select a qualification status', 'error'); return; }
-      
-      loading.classList.add('show');
-      try {
-        await callAPI('updateQualificationBySupervisor', {
-          customerCode: code,
-          qualificationValue: qualificationValue,
-          approvalAction: 'Declined',
-          salesRepEmail: salesEmail,
-          password: supervisorPasswordCached
-        });
-        showMessage('Lead declined', 'info');
-        await loadLead();
-      } catch (error) {
-        showMessage('Error declining lead', 'error');
-      } finally {
-        loading.classList.remove('show');
-      }
-    }
-    
-    // ========== SUBMIT ==========
-    async function handleSubmit(e) {
-      e.preventDefault();
-      
-      const code = customerCodeInput.value.trim();
-      if (!code || !currentLoadedLead) { showMessage('Load a lead first', 'error'); return; }
-      
-      const role = roleSelect.value;
-      
-      if (role === 'Supervisor') {
-        if (!isSupervisorAuthenticated) { showMessage('Supervisor not authenticated', 'error'); return; }
-        
-        loading.classList.add('show');
-        try {
-          await callAPI('updateQualificationBySupervisor', {
-            customerCode: code,
-            qualificationValue: qualificationSelect.value,
-            approvalAction: '',
-            salesRepEmail: salesRepEmailInput.value.trim(),
-            password: supervisorPasswordCached
-          });
-          showMessage('Qualification updated', 'success');
-          await loadLead();
-        } catch (error) {
-          showMessage('Error updating', 'error');
-        } finally {
-          loading.classList.remove('show');
-        }
-      } else if (role === 'SalesRep') {
-        const salesRepEmail = salesRepEmailAuth.value.trim();
-        const salesRepPassword = salesRepPasswordAuth.value.trim();
-        
-        if (!salesRepEmail || !salesRepPassword) { showMessage('Please enter your credentials', 'error'); return; }
-        
-        loading.classList.add('show');
-        try {
-          await callAPI('updatePresentationBySalesRep', {
-            customerCode: code,
-            presentationValue: presentationSelect.value,
-            kycValue: kycSelect.value,
-            salesRepEmail: salesRepEmail,
-            password: salesRepPassword
-          });
-          showMessage('Presentation and KYC updated', 'success');
-          await loadLead();
-        } catch (error) {
-          showMessage('Error updating', 'error');
-        } finally {
-          loading.classList.remove('show');
-        }
-      }
-    }
-    
-    // ========== EVENT LISTENERS ==========
-    loadBtn.addEventListener('click', loadLead);
-    approveBtn.addEventListener('click', approveLead);
-    declineBtn.addEventListener('click', declineLead);
-    roleSelect.addEventListener('change', () => {
-      currentLoadedLead = null;
-      detailsSection.classList.add('hidden');
-      isSupervisorAuthenticated = false;
-      updateUiForRoleAndStatus();
+
+    // Download All Leads
+    $('btnDownloadAllExcel').addEventListener('click', () => {
+      if (!currentRepData || !currentRepData.generatedLeads || currentRepData.generatedLeads.length === 0) { showMsg('No leads to download. Select a sales rep first.', 'error'); return; }
+      const headers = ['Code', 'Store Name', 'Area', 'Region', 'Location', 'Contact', 'Mobile', 'Qualification', 'Approval', 'Presentation', 'KYC'];
+      const data = currentRepData.generatedLeads.map(l => [l.customerCode, l.storeName, l.area, l.region, l.location, l.contactPerson, l.mobileNumber, l.qualification, l.approval, l.presentation, l.kycOnboarding]);
+      downloadExcel(data, headers, currentRepData.name + ' - All Leads');
+      showMsg('Excel downloaded!', 'success');
     });
-    document.getElementById('leadForm').addEventListener('submit', handleSubmit);
-    
-    window.addEventListener('online', () => {
-      offlineBanner.classList.remove('show');
-      showMessage('Back online!', 'success');
+
+    $('btnDownloadAllPdf').addEventListener('click', () => {
+      if (!currentRepData || !currentRepData.generatedLeads || currentRepData.generatedLeads.length === 0) { showMsg('No leads to download. Select a sales rep first.', 'error'); return; }
+      const headers = ['Code', 'Store Name', 'Area', 'Region', 'Location', 'Contact', 'Mobile', 'Qualification', 'Approval', 'Presentation', 'KYC'];
+      const data = currentRepData.generatedLeads.map(l => [l.customerCode, l.storeName, l.area, l.region, l.location, l.contactPerson, l.mobileNumber, l.qualification, l.approval, l.presentation, l.kycOnboarding]);
+      downloadPdf(data, headers, currentRepData.name + ' - All Leads', 'All Generated Leads - ' + currentRepData.name);
+      showMsg('PDF downloaded!', 'success');
     });
-    window.addEventListener('offline', () => {
-      offlineBanner.classList.add('show');
-      showMessage('You are offline', 'info');
+
+    // Download Converted Leads
+    $('btnDownloadConvertedExcel').addEventListener('click', () => {
+      if (!currentRepData || !currentRepData.convertedLeads || currentRepData.convertedLeads.length === 0) { showMsg('No converted leads to download.', 'error'); return; }
+      const headers = ['Code', 'Store Name', 'Area', 'Region', 'Contact', 'Order 1 (Kgs)', 'Order 2 (Kgs)', 'Order 3 (Kgs)', 'Total (Kgs)', 'Milestone'];
+      const data = currentRepData.convertedLeads.map(l => [l.customerCode, l.storeName, l.area, l.region, l.contactPerson, l.order1Qty > 0 ? l.order1Qty : '-', l.order2Qty > 0 ? l.order2Qty : '-', l.order3Qty > 0 ? l.order3Qty : '-', l.totalQty, l.milestone]);
+      downloadExcel(data, headers, currentRepData.name + ' - Converted Leads');
+      showMsg('Excel downloaded!', 'success');
     });
-    
-    // Register Service Worker
-    if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('/sw.js').catch(err => console.log('SW registration failed:', err));
-    }
-    
-    showMessage('System ready. Please deploy your Google Apps Script as a Web App first.', 'info');
+
+    $('btnDownloadConvertedPdf').addEventListener('click', () => {
+      if (!currentRepData || !currentRepData.convertedLeads || currentRepData.convertedLeads.length === 0) { showMsg('No converted leads to download.', 'error'); return; }
+      const headers = ['Code', 'Store Name', 'Area', 'Region', 'Contact', 'Order 1 (Kgs)', 'Order 2 (Kgs)', 'Order 3 (Kgs)', 'Total (Kgs)', 'Milestone'];
+      const data = currentRepData.convertedLeads.map(l => [l.customerCode, l.storeName, l.area, l.region, l.contactPerson, l.order1Qty > 0 ? l.order1Qty : '-', l.order2Qty > 0 ? l.order2Qty : '-', l.order3Qty > 0 ? l.order3Qty : '-', l.totalQty, l.milestone]);
+      downloadPdf(data, headers, currentRepData.name + ' - Converted Leads', 'Converted Leads - ' + currentRepData.name);
+      showMsg('PDF downloaded!', 'success');
+    });
+
+    // Dashboard
+    async function loadDashboard(){if(!isSupervisorAuth||!supervisorPw)return;const res=await api('getSupervisorDashboard',{password:supervisorPw});if(res.success){dashboardData=res.data;metricTotalLeads.textContent=res.data.totalLeads;metricQualifiedLeads.textContent=res.data.qualifiedLeads;metricQualificationRate.textContent=res.data.qualificationRate+'%';metricApprovedLeads.textContent=res.data.approvedLeadsCount;metricConvertedLeads.textContent=res.data.convertedLeads;metricConversionRate.textContent=res.data.conversionRate+'%';supervisorDashboard.classList.remove('hidden');}else{showMsg('Failed to load dashboard: '+res.message,'error');}}
+    btnRefreshDashboard.addEventListener('click',()=>{loadDashboard();showMsg('Dashboard refreshed','success');});
+    btnViewApprovedLeads.addEventListener('click',()=>{if(!dashboardData||!dashboardData.approvedLeads){showMsg('No dashboard data. Click Refresh first.','error');return;}if(dashboardData.approvedLeads.length===0){showMsg('No approved leads found','info');return;}renderLeadsTable(dashboardData.approvedLeads,'Approved Leads ('+dashboardData.approvedLeadsCount+')');});
+
+    // Sales Rep Details
+    salesRepSelect.addEventListener('change',async()=>{const email=salesRepSelect.value;if(!email){repDetailsCard.classList.add('hidden');repLeadsTableSection.classList.add('hidden');currentRepData=null;return;}const res=await api('getSalesRepDetails',{salesRepEmail:email,password:supervisorPw});if(res.success){currentRepData=res.data;repName.textContent=res.data.name;repEmail.textContent=res.data.email;repTotalLeads.textContent=res.data.totalLeads;repConvertedCount.textContent=res.data.convertedCount;repDetailsCard.classList.remove('hidden');repLeadsTableSection.classList.add('hidden');}else{showMsg(res.message,'error');repDetailsCard.classList.add('hidden');}});
+    btnRepAllLeads.addEventListener('click',()=>{if(!currentRepData||!currentRepData.generatedLeads)return;if(currentRepData.generatedLeads.length===0){showMsg('No leads found for this rep','info');return;}repLeadsTitle.textContent='All Generated Leads ('+currentRepData.totalLeads+')';const headers=['Code','Store Name','Area','Region','Contact','Mobile','Qualification','Approval','Presentation','KYC'];repLeadsTable.innerHTML='<thead><tr>'+headers.map(h=>'<th>'+h+'</th>').join('')+'</tr></thead><tbody>'+currentRepData.generatedLeads.map(l=>'<tr><td>'+l.customerCode+'</td><td>'+l.storeName+'</td><td>'+l.area+'</td><td>'+l.region+'</td><td>'+l.contactPerson+'</td><td>'+l.mobileNumber+'</td><td>'+l.qualification+'</td><td>'+l.approval+'</td><td>'+l.presentation+'</td><td>'+l.kycOnboarding+'</td></tr>').join('')+'</tbody>';repLeadsTableSection.classList.remove('hidden');});
+    btnRepConvertedLeads.addEventListener('click',()=>{if(!currentRepData||!currentRepData.convertedLeads)return;if(currentRepData.convertedLeads.length===0){showMsg('No converted leads for this rep','info');return;}repLeadsTitle.textContent='Converted Leads ('+currentRepData.convertedCount+')';const headers=['Code','Store Name','Area','Order 1 (Kgs)','Order 2 (Kgs)','Order 3 (Kgs)','Total (Kgs)','Milestone'];repLeadsTable.innerHTML='<thead><tr>'+headers.map(h=>'<th>'+h+'</th>').join('')+'</tr></thead><tbody>'+currentRepData.convertedLeads.map(l=>{let badgeClass='milestone-1';if(l.completedOrders===3)badgeClass='milestone-3';else if(l.completedOrders===2)badgeClass='milestone-2';return '<tr><td>'+l.customerCode+'</td><td>'+l.storeName+'</td><td>'+l.area+'</td><td>'+(l.order1Qty>0?l.order1Qty.toFixed(2):'-')+'</td><td>'+(l.order2Qty>0?l.order2Qty.toFixed(2):'-')+'</td><td>'+(l.order3Qty>0?l.order3Qty.toFixed(2):'-')+'</td><td>'+l.totalQty.toFixed(2)+'</td><td><span class="milestone-badge '+badgeClass+'">'+l.milestone+'</span></td></tr>';}).join('')+'</tbody>';repLeadsTableSection.classList.remove('hidden');});
+    btnCloseRepLeads.addEventListener('click',()=>repLeadsTableSection.classList.add('hidden'));
+
+    function updateUI(){const role=roleSelect.value;if(role==='Supervisor'&&isSupervisorAuth){supervisorDashboard.classList.remove('hidden');salesRepDetailsSection.classList.remove('hidden');}else{supervisorDashboard.classList.add('hidden');salesRepDetailsSection.classList.add('hidden');}if(role==='SalesRep')salesRepAuth.classList.remove('hidden');else salesRepAuth.classList.add('hidden');if(role==='SalesRep'&&isSalesRepLoggedIn)actionButtons.classList.remove('hidden');else if(role==='Supervisor')actionButtons.classList.remove('hidden');else actionButtons.classList.add('hidden');btnViewLeads.classList.toggle('hidden',role!=='Supervisor');btnViewOrders.classList.toggle('hidden',role!=='Supervisor');btnViewQualified.classList.toggle('hidden',role!=='SalesRep');btnPlaceOrder.classList.toggle('hidden',role!=='SalesRep');approvalButtons.classList.toggle('hidden',role!=='Supervisor'||!isSupervisorAuth);assignSalesRep.classList.toggle('hidden',role!=='Supervisor'||!isSupervisorAuth);qualification.disabled=role!=='Supervisor'||!isSupervisorAuth;presentation.disabled=role!=='SalesRep'||!currentLead||currentLead.approval!=='Approved'||!isSalesRepLoggedIn;kycOnboarding.disabled=role!=='SalesRep'||!currentLead||currentLead.approval!=='Approved'||!isSalesRepLoggedIn;if(role==='SalesRep'){customerCode.disabled=!isSalesRepLoggedIn;btnLoad.disabled=!isSalesRepLoggedIn;}else{customerCode.disabled=false;btnLoad.disabled=false;}qualificationOtherBox.classList.toggle('hidden',qualification.value!=='Other');presentationOtherBox.classList.toggle('hidden',presentation.value!=='Other');if(role==='Supervisor'&&!isSupervisorAuth)showPasswordModal();}
+    function showPasswordModal(){passwordModal.classList.remove('hidden');supervisorPassword.value='';passwordHint.style.display='none';supervisorPassword.focus();}
+    function hidePasswordModal(){passwordModal.classList.add('hidden');}
+    roleSelect.addEventListener('change',()=>{currentLead=null;detailsSection.classList.add('hidden');leadsSection.classList.add('hidden');ordersSection.classList.add('hidden');supervisorDashboard.classList.add('hidden');salesRepDetailsSection.classList.add('hidden');qualification.value='';presentation.value='';kycOnboarding.value='';qualificationOther.value='';presentationOther.value='';qualificationOtherBox.classList.add('hidden');presentationOtherBox.classList.add('hidden');salesRepLoginMsg.style.display='none';if(roleSelect.value==='SalesRep'){isSalesRepLoggedIn=false;salesRepName='';salesRepEmail.value='';salesRepPassword.value='';if(loginBadge){loginBadge.classList.remove('show');loginBadgeText.textContent='';}}if(roleSelect.value!=='Supervisor'){isSupervisorAuth=false;supervisorPw='';}updateUI();});
+    btnCancelPassword.addEventListener('click',()=>{hidePasswordModal();roleSelect.value='';updateUI();});
+    btnConfirmPassword.addEventListener('click',async()=>{const pw=supervisorPassword.value.trim();if(!pw){passwordHint.textContent='Enter password';passwordHint.style.display='block';return;}const res=await api('validateSupervisorPassword',{password:pw});if(res.success){isSupervisorAuth=true;supervisorPw=pw;hidePasswordModal();if(loginBadge){loginBadge.classList.add('show');loginBadgeText.textContent='Logged in as: Supervisor';}updateUI();loadDashboard();showMsg('Supervisor authenticated','success');}else{passwordHint.textContent=res.message||'Invalid password';passwordHint.style.display='block';}});
+    btnSalesRepLogin.addEventListener('click',async()=>{const email=salesRepEmail.value.trim();const password=salesRepPassword.value.trim();if(!email||!password){salesRepLoginMsg.textContent='Please enter email and password';salesRepLoginMsg.style.display='block';return;}const res=await api('validateSalesRepLogin',{salesRepEmail:email,salesRepPassword:password});if(res.success){isSalesRepLoggedIn=true;salesRepName=res.name;salesRepLoginMsg.style.display='none';if(loginBadge){loginBadge.classList.add('show');loginBadgeText.textContent=`Logged in as: ${res.name}`;}btnSalesRepLogin.textContent='Logged In ✓';btnSalesRepLogin.disabled=true;btnSalesRepLogin.style.background='#22c55e';salesRepEmail.disabled=true;salesRepPassword.disabled=true;updateUI();showMsg(`Welcome, ${res.name}!`,'success');}else{salesRepLoginMsg.textContent=res.message;salesRepLoginMsg.style.display='block';salesRepLoginMsg.style.color='#dc2626';}});
+    btnLoad.addEventListener('click',async()=>{const code=customerCode.value.trim();const role=roleSelect.value;if(!role){showMsg('Select a role first','error');return;}if(!code){showMsg('Enter customer code','error');return;}if(role==='SalesRep'&&!isSalesRepLoggedIn){showMsg('Please login first','error');return;}const res=await api('getLeadStatus',{customerCode:code,role,salesRepEmail:salesRepEmail.value.trim(),salesRepPassword:salesRepPassword.value.trim()});if(!res.success){showMsg(res.message,'error');return;}currentLead=res.data;qualification.value=currentLead.qualification||'';presentation.value=currentLead.presentation||'';kycOnboarding.value=currentLead.kycOnboarding||'';assignEmail.value=currentLead.salesRepEmail||'';if(currentLead.qualification&&currentLead.qualification.startsWith('Other: ')){qualification.value='Other';qualificationOther.value=currentLead.qualification.substring(7);}else qualificationOther.value='';if(currentLead.presentation&&currentLead.presentation.startsWith('Other: ')){presentation.value='Other';presentationOther.value=currentLead.presentation.substring(7);}else presentationOther.value='';renderDetails(currentLead);detailsSection.classList.remove('hidden');leadsSection.classList.add('hidden');ordersSection.classList.add('hidden');updateUI();showMsg('Lead loaded (row '+currentLead.row+')','success');});
+    function renderDetails(d){const fields=[['Region',d.region],['Area',d.area],['Location',d.location],['Store Name',d.storeName],['Contact Person',d.contactPerson],['Mobile',d.mobileNumber],['Outlet Category',d.outletCategory],['Brands Stocked',d.brandsStocked],['Purchase Freq',d.purchaseFrequency],['Main Supplier',d.mainSupplier],['Distributor Type',d.distributorType],['Weldplus Aware',d.weldplusAwareness],['Feedback',d.additionalFeedback],['Customer Code',d.customerCode]];detailsTable.innerHTML='<tr>'+fields.map(f=>`<th>${f[0]}</th>`).join('')+'</tr><tr>'+fields.map(f=>`<td>${f[1]||''}</td>`).join('')+'</tr>';}
+    btnViewLeads.addEventListener('click',async()=>{const res=await api('getAllGeneratedLeads');if(!res.success){showMsg(res.message,'error');return;}renderLeadsTable(res.data,'Generated Leads');});
+    btnViewQualified.addEventListener('click',async()=>{if(!isSalesRepLoggedIn){showMsg('Please login first','error');return;}const res=await api('getQualifiedLeadsBySalesRep',{salesRepEmail:salesRepEmail.value.trim(),salesRepPassword:salesRepPassword.value.trim()});if(!res.success){showMsg(res.message,'error');return;}if(res.data.length===0){showMsg('No qualified leads found','info');return;}renderLeadsTable(res.data,'Qualified Leads');});
+    btnViewOrders.addEventListener('click',async()=>{const res=await api('getOrdersSummary');if(!res.success){showMsg(res.message,'error');return;}if(res.data.length===0){showMsg('No orders yet','info');return;}renderOrdersTable(res.data);});
+    function renderLeadsTable(leads,title){leadsTitle.textContent=title;const headers=['Region','Area','Location','Store Name','Contact','Mobile','Category','Brands','Freq','Supplier','Dist Type','Weldplus','Feedback','Code'];leadsTable.innerHTML='<thead><tr>'+headers.map(h=>`<th>${h}</th>`).join('')+'</tr></thead><tbody>'+leads.map(l=>`<tr><td>${l.region}</td><td>${l.area}</td><td>${l.location}</td><td>${l.storeName}</td><td>${l.contactPerson}</td><td>${l.mobileNumber}</td><td>${l.outletCategory}</td><td>${l.brandsStocked}</td><td>${l.purchaseFrequency}</td><td>${l.mainSupplier}</td><td>${l.distributorType}</td><td>${l.weldplusAwareness}</td><td>${l.additionalFeedback}</td><td>${l.customerCode}</td></tr>`).join('')+'</tbody>';leadsSection.classList.remove('hidden');detailsSection.classList.add('hidden');ordersSection.classList.add('hidden');}
+    function renderOrdersTable(orders){leadsTitle.textContent='Orders Summary';leadsTable.innerHTML='<thead><tr><th>Customer Code</th><th>Orders</th><th>Total Kgs</th><th>Avg Kgs</th></tr></thead><tbody>'+orders.map(o=>`<tr><td>${o.customerCode}</td><td>${o.numberOfOrders}</td><td>${o.totalQuantity.toFixed(2)}</td><td>${o.averageQuantity.toFixed(2)}</td></tr>`).join('')+'</tbody>';leadsSection.classList.remove('hidden');detailsSection.classList.add('hidden');ordersSection.classList.add('hidden');}
+    btnCloseLeads.addEventListener('click',()=>leadsSection.classList.add('hidden'));
+    qualification.addEventListener('change',()=>{qualificationOtherBox.classList.toggle('hidden',qualification.value!=='Other');if(qualification.value!=='Other')qualificationOther.value='';});
+    presentation.addEventListener('change',()=>{presentationOtherBox.classList.toggle('hidden',presentation.value!=='Other');if(presentation.value!=='Other')presentationOther.value='';});
+    btnPlaceOrder.addEventListener('click',()=>{ordersSection.classList.remove('hidden');leadsSection.classList.add('hidden');detailsSection.classList.add('hidden');orderCustomerCode.value='';orderNumber.innerHTML='<option value="">-- Check status first --</option>';orderNumber.disabled=true;orderQuantity.value='';orderStatus.classList.add('hidden');currentOrderStatus=null;});
+    btnCloseOrders.addEventListener('click',()=>ordersSection.classList.add('hidden'));
+    btnCheckStatus.addEventListener('click',async()=>{const code=orderCustomerCode.value.trim();if(!code){showMsg('Enter customer code','error');return;}if(!isSalesRepLoggedIn){showMsg('Please login first','error');return;}const res=await api('getAvailableOrders',{customerCode:code,salesRepEmail:salesRepEmail.value.trim(),salesRepPassword:salesRepPassword.value.trim()});if(!res.success){showMsg(res.message,'error');orderStatus.classList.add('hidden');return;}currentOrderStatus=res;updateOrderDropdown(res);let html='';if(res.submittedOrders.length===0)html='No orders yet. You can submit Order 1.';else if(res.nextAvailableOrder===-1)html='All 3 orders submitted.';else html=`Submitted: Order ${res.submittedOrders.join(', ')}<br><strong>Next:</strong> Order ${res.nextAvailableOrder}`;orderStatus.innerHTML=html;orderStatus.classList.remove('hidden');});
+    function updateOrderDropdown(status){let opts='<option value="">-- Select Order --</option>';for(let i=1;i<=3;i++){const submitted=status.submittedOrders.includes(i);const available=i===status.nextAvailableOrder;const disabled=submitted||(!available&&status.nextAvailableOrder!==-1);const label=submitted?`Order ${i} (Done)`:available?`Order ${i} (Available)`:`Order ${i}`;opts+=`<option value="Order ${i}" ${disabled?'disabled':''}>${label}</option>`;}orderNumber.innerHTML=opts;orderNumber.disabled=status.nextAvailableOrder===-1;}
+    btnSubmitOrder.addEventListener('click',async()=>{const code=orderCustomerCode.value.trim();const num=orderNumber.value;const qty=parseFloat(orderQuantity.value);if(!code||!num||!qty||qty<=0){showMsg('Fill all fields','error');return;}if(!currentOrderStatus){showMsg('Check status first','error');return;}if(!isSalesRepLoggedIn){showMsg('Please login first','error');return;}const res=await api('submitOrder',{customerCode:code,orderNumber:num,quantity:qty,salesRepEmail:salesRepEmail.value.trim(),salesRepPassword:salesRepPassword.value.trim()});if(res.success){showMsg(res.message,'success');orderQuantity.value='';btnCheckStatus.click();}else showMsg(res.message,'error');});
+    btnApprove.addEventListener('click',()=>updateQualification('Approved'));
+    btnDecline.addEventListener('click',()=>updateQualification('Declined'));
+    async function updateQualification(action){if(!currentLead){showMsg('Load a lead first','error');return;}if(!qualification.value){showMsg('Select qualification first','error');return;}let qualValue=qualification.value;if(qualValue==='Other'){const customText=qualificationOther.value.trim();if(!customText){showMsg('Please specify the qualification reason','error');return;}qualValue='Other: '+customText;}const res=await api('updateQualificationBySupervisor',{customerCode:customerCode.value.trim(),qualificationValue:qualValue,approvalAction:action,salesRepEmail:assignEmail.value.trim(),password:supervisorPw});if(res.success){showMsg(`Lead ${action.toLowerCase()}`,'success');btnLoad.click();loadDashboard();}else showMsg(res.message,'error');}
+    btnSubmit.addEventListener('click',async()=>{const role=roleSelect.value;const code=customerCode.value.trim();if(!currentLead||!code){showMsg('Load a lead first','error');return;}if(role==='Supervisor'){let qualValue=qualification.value;if(qualValue==='Other'){const customText=qualificationOther.value.trim();if(!customText){showMsg('Please specify the qualification reason','error');return;}qualValue='Other: '+customText;}const res=await api('updateQualificationBySupervisor',{customerCode:code,qualificationValue:qualValue,approvalAction:'',salesRepEmail:assignEmail.value.trim(),password:supervisorPw});if(res.success){showMsg('Qualification updated','success');btnLoad.click();loadDashboard();}else showMsg(res.message,'error');}else if(role==='SalesRep'){let updatesMade=[],errors=[];if(presentation.value){let presValue=presentation.value;if(presValue==='Other'){const customText=presentationOther.value.trim();if(!customText){showMsg('Please specify the presentation reason','error');return;}presValue='Other: '+customText;}const currentPres=currentLead.presentation||'';if(presValue!==currentPres){const presRes=await api('updatePresentationBySalesRep',{customerCode:code,presentationValue:presValue,salesRepEmail:salesRepEmail.value.trim(),password:salesRepPassword.value.trim()});if(presRes.success)updatesMade.push('Presentation');else errors.push('Presentation: '+presRes.message);}}if(kycOnboarding.value&&kycOnboarding.value!==currentLead.kycOnboarding){const kycRes=await api('updateKYCOnboardingBySalesRep',{customerCode:code,kycValue:kycOnboarding.value,salesRepEmail:salesRepEmail.value.trim(),password:salesRepPassword.value.trim()});if(kycRes.success)updatesMade.push('KYC Onboarding');else errors.push('KYC: '+kycRes.message);}if(updatesMade.length>0){showMsg(updatesMade.join(' and ')+' updated successfully. You have been logged out.','success');setTimeout(()=>logoutSalesRep(),2000);}else if(errors.length>0)showMsg(errors.join('; '),'error');else showMsg('No changes to save','info');}});
+    function logoutSalesRep(){isSalesRepLoggedIn=false;salesRepName='';salesRepEmail.value='';salesRepPassword.value='';salesRepEmail.disabled=false;salesRepPassword.disabled=false;btnSalesRepLogin.disabled=false;btnSalesRepLogin.textContent='Login';btnSalesRepLogin.style.background='';if(loginBadge){loginBadge.classList.remove('show');loginBadgeText.textContent='';}customerCode.value='';qualification.value='';presentation.value='';kycOnboarding.value='';qualificationOther.value='';presentationOther.value='';currentLead=null;detailsSection.classList.add('hidden');leadsSection.classList.add('hidden');ordersSection.classList.add('hidden');qualificationOtherBox.classList.add('hidden');presentationOtherBox.classList.add('hidden');updateUI();showMsg('You have been logged out. Please login again to continue.','info');}
+    updateUI();
+    if('serviceWorker' in navigator){navigator.serviceWorker.register('service-worker.js').catch(e=>console.log('SW error',e));}
   </script>
 </body>
 </html>
