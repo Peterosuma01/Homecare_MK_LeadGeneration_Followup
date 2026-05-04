@@ -1,20 +1,20 @@
 {
-  "name": "SWAL Hardware Lead-Generation",
-  "short_name": "SWAL Leads",
-  "start_url": "./",  
+  "name": "SWAL Homecare Lead-Generation",
+  "short_name": "SWAL Homecare",
+  "start_url": "./",
   "scope": "./",
   "display": "standalone",
   "background_color": "#667eea",
   "theme_color": "#667eea",
-  "description": "PWA wrapper for Steelwool (Africa) Limited lead-generation app",
+  "description": "PWA wrapper for Steelwool (Africa) Limited Homecare lead-generation app",
   "icons": [
     {
-      "src": "/SWAL-Hardware-LeadGeneration/icons/icon-192.png",
+      "src": "/SWAL-Homecare-LeadGeneration/icons/icon-192.png",
       "sizes": "192x192",
       "type": "image/png"
     },
     {
-      "src": "/SWAL-Hardware-LeadGeneration/icons/icon-512.png",
+      "src": "/SWAL-Homecare-LeadGeneration/icons/icon-512.png",
       "sizes": "512x512",
       "type": "image/png"
     }
