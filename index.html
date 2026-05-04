@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="theme-color" content="#667eea">
-  <title>Steelwool Africa LTD - Lead Generation Follow-up</title>
+  <title>Steelwool Africa LTD - Homecare Lead Generation</title>
   <link rel="manifest" href="manifest.json">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js"></script>
@@ -87,6 +87,24 @@
     .checkbox-group label{display:flex;align-items:center;gap:6px;font-weight:400;font-size:14px;cursor:pointer;padding:6px 12px;border:2px solid #e1e8ed;border-radius:6px;transition:all 0.2s}
     .checkbox-group label:has(input:checked){border-color:#667eea;background:#f0f3ff}
     .checkbox-group input[type="checkbox"]{width:18px;height:18px;accent-color:#667eea}
+    /* Radio group styles */
+    .radio-group{display:flex;flex-wrap:wrap;gap:10px;margin-top:6px}
+    .radio-group label{display:flex;align-items:center;gap:6px;font-weight:400;font-size:14px;cursor:pointer;padding:6px 12px;border:2px solid #e1e8ed;border-radius:6px;transition:all 0.2s}
+    .radio-group label:has(input:checked){border-color:#667eea;background:#f0f3ff}
+    .radio-group input[type="radio"]{width:18px;height:18px;accent-color:#667eea}
+    /* Willingness matrix table */
+    .willingness-table{width:100%;border-collapse:collapse;margin-top:8px;font-size:13px}
+    .willingness-table th,.willingness-table td{padding:8px 10px;border:1px solid #e1e8ed;text-align:center}
+    .willingness-table th{background:#f0f3ff;font-weight:700;color:#333}
+    .willingness-table td:first-child{text-align:left;font-weight:500}
+    .willingness-table input[type="radio"]{width:16px;height:16px;accent-color:#667eea;cursor:pointer}
+    /* Price table */
+    .price-table{width:100%;border-collapse:collapse;margin-top:8px;font-size:13px}
+    .price-table th,.price-table td{padding:7px 8px;border:1px solid #e1e8ed;text-align:center}
+    .price-table th{background:#f0f3ff;font-weight:700;color:#333}
+    .price-table td:first-child{text-align:left;font-weight:500;background:#fafafa}
+    .price-table input[type="number"]{width:100%;padding:5px 6px;border:1px solid #e1e8ed;border-radius:4px;font-size:12px;text-align:center;min-height:unset}
+    .price-table input[type="number"]:focus{outline:none;border-color:#667eea}
     .lead-form-card{background:linear-gradient(135deg,#f0fdf4 0%,#ecfdf5 100%);border:2px solid #22c55e;border-radius:12px;padding:20px;margin-top:14px}
     .lead-form-card .section-title{color:#16a34a}
     .required{color:#dc2626}
@@ -96,13 +114,15 @@
       .field-inline>.btn{width:100%;min-height:48px}
       input[type="text"],input[type="password"],input[type="email"],input[type="number"],input[type="tel"],select,textarea{font-size:16px;padding:14px;min-height:50px}
       h1{font-size:20px}.dashboard-metrics{grid-template-columns:1fr 1fr}.metric-card{padding:12px}.metric-value{font-size:24px}
-      .rep-stats{flex-direction:column}.download-row{flex-direction:column}.checkbox-group{flex-direction:column}
+      .rep-stats{flex-direction:column}.download-row{flex-direction:column}.checkbox-group{flex-direction:column}.radio-group{flex-direction:column}
+      .willingness-table{font-size:11px}.willingness-table th,.willingness-table td{padding:5px 4px}
+      .price-table{font-size:11px}.price-table th,.price-table td{padding:4px 3px}
     }
   </style>
 </head>
 <body>
   <div class="container">
-    <div class="header"><div class="header-title"><h1>Steelwool (Africa) Limited</h1></div><p class="subtitle">Hardware Lead Generation Follow-up</p></div>
+    <div class="header"><div class="header-title"><h1>Steelwool (Africa) Limited</h1></div><p class="subtitle">Homecare Lead Generation Follow-up</p></div>
     <div id="loginBadge" class="login-badge"><span class="icon">👨‍💼</span><span id="loginBadgeText"></span></div>
     <div id="supervisorDashboard" class="dashboard hidden">
       <div class="dashboard-title">📊 Supervisor Dashboard</div>
@@ -147,21 +167,167 @@
       <!-- LEAD GENERATION FORM -->
       <div id="leadFormSection" class="hidden">
         <div class="lead-form-card">
-          <div class="section-title">📝 Lead Generation Form</div>
+          <div class="section-title">📝 Homecare Lead Generation Form</div>
+
+          <!-- Basic Info -->
           <div class="form-group"><label>Region <span class="required">*</span></label><select id="lfRegion"><option value="">-- Select Region --</option><option>Nairobi Central</option><option>Nairobi East</option><option>Nairobi West</option><option>Nairobi North</option><option>Nairobi South</option><option>Mt Kenya Region</option><option>Eastern Region</option><option>Rift Valley Region</option><option>Western Region</option><option>Coast Region</option></select></div>
           <div class="form-group"><label>Area <span class="required">*</span></label><input type="text" id="lfArea" placeholder="Enter area"></div>
           <div class="form-group"><label>Location/Landmark <span class="required">*</span></label><input type="text" id="lfLocation" placeholder="Enter location or landmark"></div>
           <div class="form-group"><label>Store Name (as it appears on the store signage) <span class="required">*</span></label><input type="text" id="lfStoreName" placeholder="Enter store name"></div>
           <div class="form-group"><label>Contact Person</label><input type="text" id="lfContactPerson" placeholder="Enter contact person name"></div>
           <div class="form-group"><label>Mobile Number</label><input type="tel" id="lfMobileNumber" placeholder="Enter mobile number"></div>
-          <div class="form-group"><label>Outlet Category (based on monthly sales volume) <span class="required">*</span></label><select id="lfOutletCategory"><option value="">-- Select Category --</option><option>Small ( Monthly volume of less than 100Kg)</option><option>Medium ( Monthly volume between 100Kg-400kg)</option><option>Large: ( Monthly Volume between 400kg-1000kg)</option><option>Mega: ( Monthly Volume above 1000kg)</option></select></div>
-          <div class="form-group"><label>Which brands is the outlet currently stocking? <span class="required">*</span></label><div class="checkbox-group" id="lfBrandsGroup"><label><input type="checkbox" value="Weldplus">Weldplus</label><label><input type="checkbox" value="AGI">AGI</label><label><input type="checkbox" value="Maruthi">Maruthi</label><label><input type="checkbox" value="Simba">Simba</label><label><input type="checkbox" value="Hero">Hero</label><label><input type="checkbox" value="Fontarc">Fontarc</label></div></div>
-         <div class="form-group"><label>Frequency of purchase of welding electrodes <span class="required">*</span></label><select id="lfPurchaseFreq"><option value="">-- Select Frequency --</option><option>Weekly</option><option>Twice per month</option><option>Monthly</option><option>Other</option></select></div>
-<div id="lfPurchaseFreqOtherBox" class="form-group hidden"><label>Specify other frequency <span class="required">*</span></label><input type="text" id="lfPurchaseFreqOther" placeholder="Enter purchase frequency" maxlength="200"></div>
-          <div class="form-group"><label>Do they purchase from Manufacturer or Distributor? <span class="required">*</span></label><select id="lfDistributorType"><option value="">-- Select --</option><option>Manufacturer</option><option>Distributor</option></select></div>
-        <div class="form-group"><label>Which distributor do they buy welding electrodes from?</label><input type="text" id="lfMainSupplier" placeholder="Enter distributor name"></div>
-          <div class="form-group"><label>Have they ever heard about Weldplus? <span class="required">*</span></label><select id="lfWeldplusAware"><option value="">-- Select --</option><option>Yes</option><option>No</option></select></div>
+
+          <!-- NEW Q1: Is customer selling steelwool? -->
+          <div class="form-group">
+            <label>Is the customer selling steelwool? <span class="required">*</span></label>
+            <div class="radio-group" id="lfSellingSwoolGroup">
+              <label><input type="radio" name="lfSellingSwool" value="Yes - Sokoni"> Yes – Sokoni</label>
+              <label><input type="radio" name="lfSellingSwool" value="Yes - Other"> Yes – Other</label>
+              <label><input type="radio" name="lfSellingSwool" value="No"> No</label>
+            </div>
+          </div>
+
+          <!-- NEW Q2: Where does the shop purchase Sokoni Steelwool from? (visible if selling Sokoni) -->
+          <div id="lfSokoniSourceBox" class="form-group hidden">
+            <label>Where does the shop purchase Sokoni Steelwool from? <span class="required">*</span></label>
+            <input type="text" id="lfSokoniSource" placeholder="Enter supplier / distributor name">
+          </div>
+
+          <!-- NEW Q3: Which other brand besides Sokoni? (visible if selling steelwool) -->
+          <div id="lfOtherBrandsBox" class="form-group hidden">
+            <label>Which other brand is the shop selling other than Sokoni? <span class="required">*</span></label>
+            <div class="checkbox-group" id="lfOtherBrandsGroup">
+              <label><input type="checkbox" value="None"> None</label>
+              <label><input type="checkbox" value="Easyclean"> Easyclean</label>
+              <label><input type="checkbox" value="Safisha"> Safisha</label>
+              <label><input type="checkbox" value="Farasi"> Farasi</label>
+              <label><input type="checkbox" value="Maxbrite"> Maxbrite</label>
+              <label><input type="checkbox" value="Suguwa"> Suguwa</label>
+              <label><input type="checkbox" value="Other"> Other</label>
+            </div>
+          </div>
+
+          <!-- NEW Q4: Willingness matrix (visible if NOT selling steelwool / selling Other brand) -->
+          <div id="lfWillingnessBox" class="form-group hidden">
+            <label>If the customer is not selling SOKONI steelwool, are they willing to stock it and come on board with us? <span class="required">*</span></label>
+            <div style="overflow-x:auto">
+              <table class="willingness-table">
+                <thead>
+                  <tr>
+                    <th style="text-align:left">Criteria</th>
+                    <th>Yes</th>
+                    <th>No</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Willing to stock</td>
+                    <td><input type="radio" name="wStock" value="Yes"></td>
+                    <td><input type="radio" name="wStock" value="No"></td>
+                  </tr>
+                  <tr>
+                    <td>Able to consistently purchase 10 bales monthly</td>
+                    <td><input type="radio" name="wPurchase" value="Yes"></td>
+                    <td><input type="radio" name="wPurchase" value="No"></td>
+                  </tr>
+                  <tr>
+                    <td>Willing to submit KYC</td>
+                    <td><input type="radio" name="wKYC" value="Yes"></td>
+                    <td><input type="radio" name="wKYC" value="No"></td>
+                  </tr>
+                  <tr>
+                    <td>Willing to abide to Payment terms (Mpesa on delivery)</td>
+                    <td><input type="radio" name="wPayment" value="Yes"></td>
+                    <td><input type="radio" name="wPayment" value="No"></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- NEW Q5: Reason for not wanting to stock steelwool -->
+          <div class="form-group">
+            <label>What reason has the customer shared for not wanting to stock steelwool? <span class="required">*</span></label>
+            <textarea id="lfNotStockingReason" placeholder="Enter customer's reason..."></textarea>
+          </div>
+
+          <!-- NEW Q6: Comments / suggestions / observations -->
+          <div class="form-group">
+            <label>Comments, suggestions or observations <span class="required">*</span></label>
+            <textarea id="lfComments" placeholder="Enter comments, suggestions or observations..."></textarea>
+          </div>
+
+          <!-- NEW Q7: Estimated monthly volume -->
+          <div class="form-group">
+            <label>What is the estimated monthly volume of sales? <span class="required">*</span></label>
+            <input type="text" id="lfMonthlyVolume" placeholder="e.g. 50 bales">
+          </div>
+
+          <!-- NEW Q8: Price feedback table -->
+          <div class="form-group">
+            <label>Feedback on purchase price of selected SKUs across different brands</label>
+            <div style="overflow-x:auto">
+              <table class="price-table">
+                <thead>
+                  <tr>
+                    <th style="text-align:left">Brand</th>
+                    <th>750g</th>
+                    <th>75g</th>
+                    <th>15g</th>
+                    <th>Pot Scrubber<br>6pc × 60pk</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Sokoni</td>
+                    <td><input type="number" id="price_sokoni_750" placeholder="—" min="0" step="0.01"></td>
+                    <td><input type="number" id="price_sokoni_75" placeholder="—" min="0" step="0.01"></td>
+                    <td><input type="number" id="price_sokoni_15" placeholder="—" min="0" step="0.01"></td>
+                    <td><input type="number" id="price_sokoni_pot" placeholder="—" min="0" step="0.01"></td>
+                  </tr>
+                  <tr>
+                    <td>Easyclean</td>
+                    <td><input type="number" id="price_easyclean_750" placeholder="—" min="0" step="0.01"></td>
+                    <td><input type="number" id="price_easyclean_75" placeholder="—" min="0" step="0.01"></td>
+                    <td><input type="number" id="price_easyclean_15" placeholder="—" min="0" step="0.01"></td>
+                    <td><input type="number" id="price_easyclean_pot" placeholder="—" min="0" step="0.01"></td>
+                  </tr>
+                  <tr>
+                    <td>Farasi</td>
+                    <td><input type="number" id="price_farasi_750" placeholder="—" min="0" step="0.01"></td>
+                    <td><input type="number" id="price_farasi_75" placeholder="—" min="0" step="0.01"></td>
+                    <td><input type="number" id="price_farasi_15" placeholder="—" min="0" step="0.01"></td>
+                    <td><input type="number" id="price_farasi_pot" placeholder="—" min="0" step="0.01"></td>
+                  </tr>
+                  <tr>
+                    <td>Safisha</td>
+                    <td><input type="number" id="price_safisha_750" placeholder="—" min="0" step="0.01"></td>
+                    <td><input type="number" id="price_safisha_75" placeholder="—" min="0" step="0.01"></td>
+                    <td><input type="number" id="price_safisha_15" placeholder="—" min="0" step="0.01"></td>
+                    <td><input type="number" id="price_safisha_pot" placeholder="—" min="0" step="0.01"></td>
+                  </tr>
+                  <tr>
+                    <td>Suguwa</td>
+                    <td><input type="number" id="price_suguwa_750" placeholder="—" min="0" step="0.01"></td>
+                    <td><input type="number" id="price_suguwa_75" placeholder="—" min="0" step="0.01"></td>
+                    <td><input type="number" id="price_suguwa_15" placeholder="—" min="0" step="0.01"></td>
+                    <td><input type="number" id="price_suguwa_pot" placeholder="—" min="0" step="0.01"></td>
+                  </tr>
+                  <tr>
+                    <td>Other</td>
+                    <td><input type="number" id="price_other_750" placeholder="—" min="0" step="0.01"></td>
+                    <td><input type="number" id="price_other_75" placeholder="—" min="0" step="0.01"></td>
+                    <td><input type="number" id="price_other_15" placeholder="—" min="0" step="0.01"></td>
+                    <td><input type="number" id="price_other_pot" placeholder="—" min="0" step="0.01"></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- Additional Feedback (unchanged) -->
           <div class="form-group"><label>Additional feedback (leave blank if none)</label><textarea id="lfAdditionalFeedback" placeholder="Record any additional feedback..."></textarea></div>
+
           <div class="btn-row"><button class="btn btn-green" id="btnSubmitLeadForm">✅ Submit Lead</button><button class="btn btn-gray" id="btnCloseLeadForm" style="margin-top:4px">Cancel</button></div>
         </div>
       </div>
@@ -217,39 +383,111 @@
     btnRepConvertedLeads.addEventListener('click',()=>{if(!currentRepData||currentRepData.convertedLeads.length===0){showMsg('No converted leads','info');return;}repLeadsTitle.textContent='Converted ('+currentRepData.convertedCount+')';const h=['Code','Store Name','Area','Order 1','Order 2','Order 3','Total','Milestone'];repLeadsTable.innerHTML='<thead><tr>'+h.map(x=>'<th>'+x+'</th>').join('')+'</tr></thead><tbody>'+currentRepData.convertedLeads.map(l=>{let bc='milestone-1';if(l.completedOrders===3)bc='milestone-3';else if(l.completedOrders===2)bc='milestone-2';return '<tr><td>'+l.customerCode+'</td><td>'+l.storeName+'</td><td>'+l.area+'</td><td>'+(l.order1Qty>0?l.order1Qty.toFixed(2):'-')+'</td><td>'+(l.order2Qty>0?l.order2Qty.toFixed(2):'-')+'</td><td>'+(l.order3Qty>0?l.order3Qty.toFixed(2):'-')+'</td><td>'+l.totalQty.toFixed(2)+'</td><td><span class="milestone-badge '+bc+'">'+l.milestone+'</span></td></tr>';}).join('')+'</tbody>';repLeadsTableSection.classList.remove('hidden');});
     btnCloseRepLeads.addEventListener('click',()=>repLeadsTableSection.classList.add('hidden'));
 
-    // ========== LEAD GENERATION FORM ==========
+    // ========== LEAD GENERATION FORM LOGIC ==========
     btnGenerateLead.addEventListener('click',()=>{leadFormSection.classList.remove('hidden');ordersSection.classList.add('hidden');leadsSection.classList.add('hidden');detailsSection.classList.add('hidden');});
     $('btnCloseLeadForm').addEventListener('click',()=>{leadFormSection.classList.add('hidden');});
 
-      // Purchase Frequency "Other" toggle
-    $('lfPurchaseFreq').addEventListener('change', () => {
-      $('lfPurchaseFreqOtherBox').classList.toggle('hidden', $('lfPurchaseFreq').value !== 'Other');
-      if ($('lfPurchaseFreq').value !== 'Other') $('lfPurchaseFreqOther').value = '';
+    // Show/hide conditional fields based on steelwool selling answer
+    document.querySelectorAll('input[name="lfSellingSwool"]').forEach(radio=>{
+      radio.addEventListener('change',()=>{
+        const val=radio.value;
+        // Sokoni source: only if selling Sokoni
+        $('lfSokoniSourceBox').classList.toggle('hidden', val!=='Yes - Sokoni');
+        // Other brands: only if selling steelwool (Sokoni or Other)
+        $('lfOtherBrandsBox').classList.toggle('hidden', val==='No');
+        // Willingness table: if NOT selling Sokoni (i.e. selling Other brand or No)
+        $('lfWillingnessBox').classList.toggle('hidden', val==='Yes - Sokoni');
+      });
     });
 
+    // Helper: read price table
+    function getPriceTable(){
+      const brands=['sokoni','easyclean','farasi','safisha','suguwa','other'];
+      const skus=['750','75','15','pot'];
+      const result={};
+      brands.forEach(b=>{
+        result[b]={};
+        skus.forEach(s=>{
+          const v=$('price_'+b+'_'+s).value;
+          result[b][s]=v?parseFloat(v):'';
+        });
+      });
+      return result;
+    }
+
+    // Helper: read willingness matrix
+    function getWillingnessMatrix(){
+      const fields=['wStock','wPurchase','wKYC','wPayment'];
+      const labels=['Willing to stock','Able to consistently purchase 10 bales monthly','Willing to submit KYC','Willing to abide to Payment terms (Mpesa on delivery)'];
+      const result={};
+      fields.forEach((f,i)=>{
+        const selected=document.querySelector('input[name="'+f+'"]:checked');
+        result[labels[i]]=selected?selected.value:'Not answered';
+      });
+      return result;
+    }
+
     $('btnSubmitLeadForm').addEventListener('click',async()=>{
-      const region=$('lfRegion').value;const area=$('lfArea').value.trim();const location=$('lfLocation').value.trim();const storeName=$('lfStoreName').value.trim();const contactPerson=$('lfContactPerson').value.trim();const mobileNumber=$('lfMobileNumber').value.trim();const outletCategory=$('lfOutletCategory').value;const distributorType=$('lfDistributorType').value;const mainSupplier=$('lfMainSupplier').value.trim();const weldplusAwareness=$('lfWeldplusAware').value;const additionalFeedback=$('lfAdditionalFeedback').value.trim();
-      // Handle purchase frequency with "Other" option
-      let purchaseFrequency=$('lfPurchaseFreq').value;
-      if(purchaseFrequency==='Other'){const otherText=$('lfPurchaseFreqOther').value.trim();if(!otherText){showMsg('Please specify the purchase frequency','error');return;}purchaseFrequency='Other: '+otherText;}
-      // Get checked brands
-      const brandCheckboxes=document.querySelectorAll('#lfBrandsGroup input[type="checkbox"]:checked');
-      const brandsStocked=Array.from(brandCheckboxes).map(cb=>cb.value).join(', ');
-      // Validate
+      const region=$('lfRegion').value;
+      const area=$('lfArea').value.trim();
+      const location=$('lfLocation').value.trim();
+      const storeName=$('lfStoreName').value.trim();
+      const contactPerson=$('lfContactPerson').value.trim();
+      const mobileNumber=$('lfMobileNumber').value.trim();
+      const additionalFeedback=$('lfAdditionalFeedback').value.trim();
+
+      // New fields
+      const sellingSwoolRadio=document.querySelector('input[name="lfSellingSwool"]:checked');
+      const sellingSwool=sellingSwoolRadio?sellingSwoolRadio.value:'';
+      const sokoniSource=$('lfSokoniSource').value.trim();
+      const otherBrandCheckboxes=document.querySelectorAll('#lfOtherBrandsGroup input[type="checkbox"]:checked');
+      const otherBrands=Array.from(otherBrandCheckboxes).map(cb=>cb.value).join(', ');
+      const willingnessMatrix=getWillingnessMatrix();
+      const willingnessStr=JSON.stringify(willingnessMatrix);
+      const notStockingReason=$('lfNotStockingReason').value.trim();
+      const comments=$('lfComments').value.trim();
+      const monthlyVolume=$('lfMonthlyVolume').value.trim();
+      const priceTable=getPriceTable();
+      const priceTableStr=JSON.stringify(priceTable);
+
+      // Validation
       if(!region){showMsg('Please select a Region','error');return;}
       if(!area){showMsg('Please enter an Area','error');return;}
       if(!location){showMsg('Please enter a Location/Landmark','error');return;}
       if(!storeName){showMsg('Please enter Store Name','error');return;}
-      if(!outletCategory){showMsg('Please select Outlet Category','error');return;}
-      if(!brandsStocked){showMsg('Please select at least one brand','error');return;}
-      if(!purchaseFrequency){showMsg('Please select Purchase Frequency','error');return;}
-      if(!distributorType){showMsg('Please select Manufacturer/Distributor','error');return;}
-      if(!weldplusAwareness){showMsg('Please select Weldplus awareness','error');return;}
-      const res=await api('submitLeadForm',{salesRepEmail:salesRepEmail.value.trim(),salesRepPassword:salesRepPassword.value.trim(),region,area,location,storeName,contactPerson,mobileNumber,outletCategory,brandsStocked,purchaseFrequency,mainSupplier,distributorType,weldplusAwareness,additionalFeedback});
-      if(res.success){showMsg(res.message,'success');
+      if(!sellingSwool){showMsg('Please answer: Is the customer selling steelwool?','error');return;}
+      if(sellingSwool==='Yes - Sokoni'&&!sokoniSource){showMsg('Please enter where the shop purchases Sokoni Steelwool from','error');return;}
+      if(sellingSwool!=='No'&&!otherBrands){showMsg('Please select other brands (or None)','error');return;}
+      if(!notStockingReason){showMsg('Please fill in the reason for not wanting to stock steelwool','error');return;}
+      if(!comments){showMsg('Please fill in comments, suggestions or observations','error');return;}
+      if(!monthlyVolume){showMsg('Please enter the estimated monthly volume of sales','error');return;}
+
+      const res=await api('submitLeadForm',{
+        salesRepEmail:salesRepEmail.value.trim(),
+        salesRepPassword:salesRepPassword.value.trim(),
+        region, area, location, storeName, contactPerson, mobileNumber,
+        sellingSwool, sokoniSource, otherBrands,
+        willingnessMatrix:willingnessStr,
+        notStockingReason, comments, monthlyVolume,
+        priceTable:priceTableStr,
+        additionalFeedback
+      });
+
+      if(res.success){
+        showMsg(res.message,'success');
         // Reset form
-        $('lfRegion').value='';$('lfArea').value='';$('lfLocation').value='';$('lfStoreName').value='';$('lfContactPerson').value='';$('lfMobileNumber').value='';$('lfOutletCategory').value='';$('lfPurchaseFreq').value='';$('lfPurchaseFreqOther').value='';$('lfPurchaseFreqOtherBox').classList.add('hidden');$('lfDistributorType').value='';$('lfMainSupplier').value='';$('lfWeldplusAware').value='';$('lfAdditionalFeedback').value='';
-        document.querySelectorAll('#lfBrandsGroup input[type="checkbox"]').forEach(cb=>cb.checked=false);
+        $('lfRegion').value='';$('lfArea').value='';$('lfLocation').value='';$('lfStoreName').value='';$('lfContactPerson').value='';$('lfMobileNumber').value='';
+        document.querySelectorAll('input[name="lfSellingSwool"]').forEach(r=>r.checked=false);
+        $('lfSokoniSource').value='';$('lfSokoniSourceBox').classList.add('hidden');
+        document.querySelectorAll('#lfOtherBrandsGroup input[type="checkbox"]').forEach(cb=>cb.checked=false);
+        $('lfOtherBrandsBox').classList.add('hidden');
+        document.querySelectorAll('input[name="wStock"],input[name="wPurchase"],input[name="wKYC"],input[name="wPayment"]').forEach(r=>r.checked=false);
+        $('lfWillingnessBox').classList.add('hidden');
+        $('lfNotStockingReason').value='';$('lfComments').value='';$('lfMonthlyVolume').value='';
+        ['sokoni','easyclean','farasi','safisha','suguwa','other'].forEach(b=>{
+          ['750','75','15','pot'].forEach(s=>{ $('price_'+b+'_'+s).value=''; });
+        });
+        $('lfAdditionalFeedback').value='';
         leadFormSection.classList.add('hidden');
       }else showMsg(res.message,'error');
     });
@@ -263,11 +501,11 @@
     btnConfirmPassword.addEventListener('click',async()=>{const pw=supervisorPassword.value.trim();if(!pw){passwordHint.textContent='Enter password';passwordHint.style.display='block';return;}const res=await api('validateSupervisorPassword',{password:pw});if(res.success){isSupervisorAuth=true;supervisorPw=pw;hidePasswordModal();if(loginBadge){loginBadge.classList.add('show');loginBadgeText.textContent='Logged in as: Supervisor';}updateUI();loadDashboard();showMsg('Supervisor authenticated','success');}else{passwordHint.textContent=res.message||'Invalid password';passwordHint.style.display='block';}});
     btnSalesRepLogin.addEventListener('click',async()=>{const email=salesRepEmail.value.trim();const password=salesRepPassword.value.trim();if(!email||!password){salesRepLoginMsg.textContent='Please enter email and password';salesRepLoginMsg.style.display='block';return;}const res=await api('validateSalesRepLogin',{salesRepEmail:email,salesRepPassword:password});if(res.success){isSalesRepLoggedIn=true;salesRepName=res.name;salesRepLoginMsg.style.display='none';if(loginBadge){loginBadge.classList.add('show');loginBadgeText.textContent='Logged in as: '+res.name;}btnSalesRepLogin.textContent='Logged In ✓';btnSalesRepLogin.disabled=true;btnSalesRepLogin.style.background='#22c55e';salesRepEmail.disabled=true;salesRepPassword.disabled=true;updateUI();showMsg('Welcome, '+res.name+'!','success');}else{salesRepLoginMsg.textContent=res.message;salesRepLoginMsg.style.display='block';salesRepLoginMsg.style.color='#dc2626';}});
     btnLoad.addEventListener('click',async()=>{const code=customerCode.value.trim();const role=roleSelect.value;if(!role){showMsg('Select a role first','error');return;}if(!code){showMsg('Enter customer code','error');return;}if(role==='SalesRep'&&!isSalesRepLoggedIn){showMsg('Please login first','error');return;}const res=await api('getLeadStatus',{customerCode:code,role,salesRepEmail:salesRepEmail.value.trim(),salesRepPassword:salesRepPassword.value.trim()});if(!res.success){showMsg(res.message,'error');return;}currentLead=res.data;qualification.value=currentLead.qualification||'';presentation.value=currentLead.presentation||'';kycOnboarding.value=currentLead.kycOnboarding||'';assignEmail.value=currentLead.salesRepEmail||'';if(currentLead.qualification&&currentLead.qualification.startsWith('Other: ')){qualification.value='Other';qualificationOther.value=currentLead.qualification.substring(7);}else qualificationOther.value='';if(currentLead.presentation&&currentLead.presentation.startsWith('Other: ')){presentation.value='Other';presentationOther.value=currentLead.presentation.substring(7);}else presentationOther.value='';renderDetails(currentLead);detailsSection.classList.remove('hidden');leadsSection.classList.add('hidden');ordersSection.classList.add('hidden');leadFormSection.classList.add('hidden');updateUI();showMsg('Lead loaded (row '+currentLead.row+')','success');});
-    function renderDetails(d){const f=[['Region',d.region],['Area',d.area],['Location',d.location],['Store Name',d.storeName],['Contact',d.contactPerson],['Mobile',d.mobileNumber],['Category',d.outletCategory],['Brands',d.brandsStocked],['Freq',d.purchaseFrequency],['Supplier',d.mainSupplier],['Type',d.distributorType],['Weldplus',d.weldplusAwareness],['Feedback',d.additionalFeedback],['Code',d.customerCode]];detailsTable.innerHTML='<tr>'+f.map(x=>'<th>'+x[0]+'</th>').join('')+'</tr><tr>'+f.map(x=>'<td>'+(x[1]||'')+'</td>').join('')+'</tr>';}
+    function renderDetails(d){const f=[['Region',d.region],['Area',d.area],['Location',d.location],['Store Name',d.storeName],['Contact',d.contactPerson],['Mobile',d.mobileNumber],['Selling Steelwool',d.sellingSwool||''],['Sokoni Source',d.sokoniSource||''],['Other Brands',d.otherBrands||''],['Monthly Volume',d.monthlyVolume||''],['Code',d.customerCode]];detailsTable.innerHTML='<tr>'+f.map(x=>'<th>'+x[0]+'</th>').join('')+'</tr><tr>'+f.map(x=>'<td>'+(x[1]||'')+'</td>').join('')+'</tr>';}
     btnViewLeads.addEventListener('click',async()=>{const res=await api('getAllGeneratedLeads');if(!res.success){showMsg(res.message,'error');return;}renderLeadsTable(res.data,'Generated Leads');});
     btnViewQualified.addEventListener('click',async()=>{if(!isSalesRepLoggedIn){showMsg('Login first','error');return;}const res=await api('getQualifiedLeadsBySalesRep',{salesRepEmail:salesRepEmail.value.trim(),salesRepPassword:salesRepPassword.value.trim()});if(!res.success){showMsg(res.message,'error');return;}if(res.data.length===0){showMsg('No qualified leads','info');return;}renderLeadsTable(res.data,'Qualified Leads');});
     btnViewOrders.addEventListener('click',async()=>{const res=await api('getOrdersSummary');if(!res.success){showMsg(res.message,'error');return;}if(res.data.length===0){showMsg('No orders yet','info');return;}renderOrdersTable(res.data);});
-    function renderLeadsTable(leads,title){leadsTitle.textContent=title;const h=['Region','Area','Location','Store Name','Contact','Mobile','Category','Brands','Freq','Supplier','Dist Type','Weldplus','Feedback','Code'];leadsTable.innerHTML='<thead><tr>'+h.map(x=>'<th>'+x+'</th>').join('')+'</tr></thead><tbody>'+leads.map(l=>'<tr><td>'+l.region+'</td><td>'+l.area+'</td><td>'+l.location+'</td><td>'+l.storeName+'</td><td>'+l.contactPerson+'</td><td>'+l.mobileNumber+'</td><td>'+l.outletCategory+'</td><td>'+l.brandsStocked+'</td><td>'+l.purchaseFrequency+'</td><td>'+l.mainSupplier+'</td><td>'+l.distributorType+'</td><td>'+l.weldplusAwareness+'</td><td>'+l.additionalFeedback+'</td><td>'+l.customerCode+'</td></tr>').join('')+'</tbody>';leadsSection.classList.remove('hidden');detailsSection.classList.add('hidden');ordersSection.classList.add('hidden');leadFormSection.classList.add('hidden');}
+    function renderLeadsTable(leads,title){leadsTitle.textContent=title;const h=['Region','Area','Location','Store Name','Contact','Mobile','Selling Steelwool','Sokoni Source','Other Brands','Monthly Volume','Comments','Code'];leadsTable.innerHTML='<thead><tr>'+h.map(x=>'<th>'+x+'</th>').join('')+'</tr></thead><tbody>'+leads.map(l=>'<tr><td>'+(l.region||'')+'</td><td>'+(l.area||'')+'</td><td>'+(l.location||'')+'</td><td>'+(l.storeName||'')+'</td><td>'+(l.contactPerson||'')+'</td><td>'+(l.mobileNumber||'')+'</td><td>'+(l.sellingSwool||'')+'</td><td>'+(l.sokoniSource||'')+'</td><td>'+(l.otherBrands||'')+'</td><td>'+(l.monthlyVolume||'')+'</td><td>'+(l.comments||'')+'</td><td>'+(l.customerCode||'')+'</td></tr>').join('')+'</tbody>';leadsSection.classList.remove('hidden');detailsSection.classList.add('hidden');ordersSection.classList.add('hidden');leadFormSection.classList.add('hidden');}
     function renderOrdersTable(orders){leadsTitle.textContent='Orders Summary';leadsTable.innerHTML='<thead><tr><th>Customer Code</th><th>Orders</th><th>Total Kgs</th><th>Avg Kgs</th></tr></thead><tbody>'+orders.map(o=>'<tr><td>'+o.customerCode+'</td><td>'+o.numberOfOrders+'</td><td>'+o.totalQuantity.toFixed(2)+'</td><td>'+o.averageQuantity.toFixed(2)+'</td></tr>').join('')+'</tbody>';leadsSection.classList.remove('hidden');detailsSection.classList.add('hidden');ordersSection.classList.add('hidden');leadFormSection.classList.add('hidden');}
     btnCloseLeads.addEventListener('click',()=>leadsSection.classList.add('hidden'));
     qualification.addEventListener('change',()=>{qualificationOtherBox.classList.toggle('hidden',qualification.value!=='Other');if(qualification.value!=='Other')qualificationOther.value='';});
