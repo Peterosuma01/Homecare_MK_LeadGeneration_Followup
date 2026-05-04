@@ -1,4 +1,4 @@
-const CACHE_NAME = 'steelwool-v23';
+const CACHE_NAME = 'steelwool-homecare-v1';
 const OFFLINE_URL = '/offline.html';
 
 // Files to cache immediately on install
@@ -23,7 +23,7 @@ self.addEventListener('install', (event) => {
 // Activate - cleanup old caches
 self.addEventListener('activate', (event) => {
   event.waitUntil(
-    caches.keys().then(keys => 
+    caches.keys().then(keys =>
       Promise.all(
         keys.filter(k => k !== CACHE_NAME).map(k => caches.delete(k))
       )
@@ -62,7 +62,7 @@ self.addEventListener('fetch', (event) => {
             caches.open(CACHE_NAME).then(cache => cache.put(req, copy));
             return res;
           })
-          .catch(() => 
+          .catch(() =>
             caches.match(req).then(cached => cached || caches.match(OFFLINE_URL))
           )
       );
